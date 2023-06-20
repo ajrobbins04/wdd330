@@ -1,51 +1,25 @@
 /*** GENERAL CONTENT ***/
+
+:root {
+    --font-body: 'Oxygen', Arial, sans-serif;
+    --font-headline: 'Open Sans', sans-serif;
+
+    /* colors */
+    --primary-color: #FFEDD9;
+    --secondary-color: #4F7E51;
+    --tertiary-color: #845A4B;
+    --accent-color: #AC372B; 
+    --font-color: #313131;
+
+    /* font sizes */
+    --font-base: 18px;
+    --small-font: 0.9rem;
+    --medium-font: 1.4rem;
+    --large-font: 1.8rem;
+}
+
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-}
-
-p,
-li,
-a,
-#last-updated {
-    font-family: 'Montserrat', sans-serif;
-    font-weight: 400;
-    font-size: 16px;
-}
-
-h1,
-h2,
-h3 {
-    font-family: 'Merriweather', serif;
-    font-weight: 300;
-}
- 
-p,
-a,
-#last-updated {
-    font-size: 18px;
-}
-
-h1 {
-    font-size: 38px;
-}
-
-h2 {
-    font-size: 30px;
-}
-
-
-li {
-    font-size : 20px;
-}
-
-body {
-    background-color: #C6D7DDff;
-    /*#98c1d9*/
-}
-
-
-.contain-offWhite {
-    background-color: #F7F6F3ff;
 }
