@@ -1,5 +1,3 @@
-/*** GENERAL CONTENT ***/
-
 :root {
 
     /* fonts */
@@ -32,6 +30,18 @@
     padding: 0;
 }
 
+/* all images */
+img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.header-img {
+    width: min(25vw, 250px);
+}
+
+/* major elements */
 body {
     font-family: var(--font-body);
     font-size: var(--font-base);
@@ -39,14 +49,8 @@ body {
     background-color: var(--primary-color);
 }
 
-img {
-    width: 100%;
-    height: auto;
-    display: block;
-}
-
 header {
-    font-size: var(--large-font);
+    font-size: var(--medium-font);
     color: var(--tertiary-color);
     font-weight: 700;
     display: flex;
@@ -54,25 +58,27 @@ header {
     text-align: center;
 }
 
-h1 {
-    font-size: var(--large-font);
-}
- 
-a { 
-    text-decoration: none;
-    cursor: pointer;
-    font-size: var(--medium-font);
-    color: var(--primary-color);
-    font-weight: 700;
-}
-
+/* applies to top banner and footer */
 .banner-green {
     background-color: var(--secondary-color);   
     color: var(--primary-color);
 }
 
+h1,
+.header-title {
+    font-size: var(--large-font);
+    margin: 1rem;
+}
+ 
 ul {
     list-style-type: none;
+}
+
+a { 
+    text-decoration: none;
+    cursor: pointer;
+    color: var(--primary-color);
+    font-weight: 700;
 }
 
 li:hover {
@@ -83,13 +89,4 @@ p,
 li,
 a {
     padding: 1rem;
-}
-
-h1,
-.header-title {
-    margin: 1rem;
-}
-
-.header-logo {
-    width: min(25vw, 250px);
 }
