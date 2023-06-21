@@ -20,7 +20,6 @@ export async function apiFetch() {
         console.log(error);
     }
 }
-  // addEventListener('load', apiFetch);
 
   export function setLocalStorage(key, data) {}
   export function getLocalStorage(key) {}
