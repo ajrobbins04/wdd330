@@ -40,6 +40,16 @@ h1,
     font-weight: 700;
 }
 
+p,
+li,
+a {
+    padding: 1rem;
+}
+
+h1,
+.header-title {
+    margin: 1rem;
+}
 
 img {
     width: 100%;
