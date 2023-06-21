@@ -34,23 +34,40 @@ export async function apiFetch() {
 
   export async function renderWithTemplate(templateFn,
     parentElement,
-    data,
+    data, 
     callback,
     position = "afterbegin",
-    clear = true) {}
+    clear = true) {
+      if (clear) {
+        parentElement.innerHTML = "";   
+      }
+    
+      const htmlString = await templateFn(data);
+      parentElement.insertAdjacentHTML(position, htmlString);
+    
+      // callback function isn't always included
+      if (callback) {
+        callback(data);
+      }
+    
+    }
 
 
   function loadTemplate(path) {
     return async function() {
+
+       // make fetch request to provided filepath
       const response = await fetch(path);
       if (response.ok) {
+
+        // must process as text - not JSON
         const html = await response.text();
         return html;
       }
     }
   }
   
-  // year will be placed in footer
+  // year will be placed in footer, next to copyright
   function getCurrentYear() {
     const date = new Date();
     const year = date.getFullYear();
@@ -59,14 +76,18 @@ export async function apiFetch() {
 
   export function loadHeaderFooter() {
   
-    const headerTemplateFn = loadTemplate('/header.html');
-    const footerTemplateFn = loadTemplate('/footer.html');
+    const headerTemplateFn = loadTemplate('./partials/header.html');
+    const footerTemplateFn = loadTemplate('./partials/footer.html');
 
-    const header = document.querySelector("#template-header");
-    const footer = document.querySelector("#template-footer");
+    const header = document.querySelector('#template-header');
+    const footer = document.querySelector('#template-footer');
   
+   // const year = getCurrentYear();
+   // document.querySelector('#copyright-year').textContent = ` ${year}`; 
+
     renderWithTemplate(headerTemplateFn, header);
     renderWithTemplate(footerTemplateFn, footer);
 
-    document.querySelector('#copyright-year').textContent = ` ${getCurrentYear}`; 
+
+   
   }

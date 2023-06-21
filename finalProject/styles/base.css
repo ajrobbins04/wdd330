@@ -12,12 +12,18 @@
     --tertiary-color: #845A4B;
     --accent-color: #AC372B; 
     --font-color: #303030;
+    --hover-color: rgba(79, 126, 81, 1);
 
     /* font sizes */
     --font-base: 18px;
-    --small-font: clamp(0.8rem, 0.56rem + 0.960vw, 1.1rem);
-    --medium-font: clamp(1.4rem, 1.16rem + 0.960vw, 1.7rem);
-    --large-font: clamp(1.8rem, 1.56rem + 0.960vw, 2.1rem);
+   /* --small-font: clamp(0.8rem, 0.56rem + 0.960vw, 1.1rem);*/
+    --small-font: clamp(0.7rem, 0.40769rem + 1.2307vw, 1.1rem);
+    /*--medium-font: clamp(1.4rem, 1.16rem + 0.960vw, 1.7rem);*/
+    /*--medium-font: clamp( 1.3rem, 1.007692rem + 1.230769vw, 1.7rem);*/
+    --medium-font: clamp(1.2rem, 0.90769rem + 1.230769vw, 1.6rem);
+
+   /* --large-font: clamp(1.8rem, 1.56rem + 0.960vw, 2.1rem);*/
+   --large-font: clamp(1.7rem, 1.40769rem + 1.230769vw, 2.1rem);
 }
 
 * {
@@ -33,11 +39,44 @@ body {
     background-color: var(--primary-color);
 }
 
-h1,
-.header-title {
+img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+header {
     font-size: var(--large-font);
     color: var(--tertiary-color);
     font-weight: 700;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+}
+
+h1 {
+    font-size: var(--large-font);
+}
+ 
+a { 
+    text-decoration: none;
+    cursor: pointer;
+    font-size: var(--medium-font);
+    color: var(--primary-color);
+    font-weight: 700;
+}
+
+.banner-green {
+    background-color: var(--secondary-color);   
+    color: var(--primary-color);
+}
+
+ul {
+    list-style-type: none;
+}
+
+li:hover {
+    background-color: var(--tertiary-color);
 }
 
 p,
@@ -51,32 +90,6 @@ h1,
     margin: 1rem;
 }
 
-img {
-    width: 100%;
-}
-
-header {
-    display: flex;
-    flex-flow: column;
-    text-align: center;
-}
-
-ul {
-    list-style-type: none;
-}
-
-a { 
-    text-decoration: none;
-    font-size: var(--medium-font);
-    color: var(--primary-color);
-    font-weight: 700;
-}
-
-.banner-green {
-    background-color: var(--secondary-color);
-     
-}
-
 .header-logo {
-    width: min(35vw, 250px);
+    width: min(25vw, 250px);
 }

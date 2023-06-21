@@ -1,10 +1,10 @@
 // Program source is from
 // https://css-tricks.com/linearly-scale-font-size-with-css-clamp-based-on-the-viewport/#for-those-who-dont-mind-that-edge-case
 
-const minWidthPx = 400;
+const minWidthPx = 380;
 const maxWidthPx = 900;
-minFontSize = 1.8;
-maxFontSize = 2.1;
+minFontSize = 1.2;
+maxFontSize = 1.6;
 
 function clampBuilder( minWidthPx, maxWidthPx, minFontSize, maxFontSize ) {
     const root = document.querySelector( "html" );
