@@ -1,12 +1,10 @@
-//import { apiFetch } from './utils.mjs';
+import { apiFetch } from './utils.mjs';
+
+document.getElementById('search').className.replace('menu-link', 'active menu-link');
 
 
-const date = new Date();
 
-let year = date.getFullYear();
-document.querySelector('#copyright-year').textContent = ` ${year}`; 
-
-async function apiFetch()
+/*async function apiFetch()
 {
 const apiKey = 'dofSYJEmYCOaEjAr8dNzn9MdUkwJFbSHenA3X9Bv';
 const url = `https://developer.nps.gov/api/v1/parks?`;
@@ -29,6 +27,6 @@ try {
     console.log(error);
 }
 
-}
+}*/
 addEventListener('load', apiFetch);
 

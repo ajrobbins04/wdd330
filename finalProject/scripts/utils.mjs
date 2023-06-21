@@ -50,14 +50,23 @@ export async function apiFetch() {
     }
   }
   
+  // year will be placed in footer
+  function getCurrentYear() {
+    const date = new Date();
+    const year = date.getFullYear();
+    return year;
+  }
+
   export function loadHeaderFooter() {
   
-    const headerTemplateFn = loadTemplate("/partials/header.html");
-    const footerTemplateFn = loadTemplate("/partials/footer.html");
-  
+    const headerTemplateFn = loadTemplate('/header.html');
+    const footerTemplateFn = loadTemplate('/footer.html');
+
     const header = document.querySelector("#template-header");
     const footer = document.querySelector("#template-footer");
   
     renderWithTemplate(headerTemplateFn, header);
     renderWithTemplate(footerTemplateFn, footer);
+
+    document.querySelector('#copyright-year').textContent = ` ${getCurrentYear}`; 
   }
