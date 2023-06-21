@@ -39,5 +39,25 @@ export async function apiFetch() {
     position = "afterbegin",
     clear = true) {}
 
-  export function loadHeaderFooter() {}
 
+  function loadTemplate(path) {
+    return async function() {
+      const response = await fetch(path);
+      if (response.ok) {
+        const html = await response.text();
+        return html;
+      }
+    }
+  }
+  
+  export function loadHeaderFooter() {
+  
+    const headerTemplateFn = loadTemplate("/partials/header.html");
+    const footerTemplateFn = loadTemplate("/partials/footer.html");
+  
+    const header = document.querySelector("#template-header");
+    const footer = document.querySelector("#template-footer");
+  
+    renderWithTemplate(headerTemplateFn, header);
+    renderWithTemplate(footerTemplateFn, footer);
+  }
