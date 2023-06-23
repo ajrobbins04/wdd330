@@ -10,8 +10,7 @@ export async function apiFetch() {
  
     if (response.ok) {
         const parkData = await response.json();
-        console.log(parkData);
-        //displayResults(parkData);
+        return parkData;
     } else {
         throw Error(await response.text());
     }
@@ -28,17 +27,23 @@ export async function apiFetch() {
   export async function renderListWithTemplate(templateFn,
     parentElement,
     list,
-    position = "afterbegin",
-    clear = true) {}
+    position = 'afterbegin',
+    clear = true) {
+      if (clear) {
+        parentElement.innerHTML = '';   
+      }
+      const htmlString = list.map(templateFn);
+      parentElement.insertAdjacentHTML(position, htmlString.join(''));
+    }
 
   export async function renderWithTemplate(templateFn,
     parentElement,
     data, 
     callback,
-    position = "afterbegin",
+    position = 'afterbegin',
     clear = true) {
       if (clear) {
-        parentElement.innerHTML = "";   
+        parentElement.innerHTML = '';   
       }
     
       const htmlString = await templateFn(data);

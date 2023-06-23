@@ -23,9 +23,9 @@
     <main>
         <section class="searchOptions">
           <h2>Sort Results By</h2>
-          <form name="parkSearch">
-            <label for="parks">
-              <select name="parks" class="sortBar" id="selectPark">
+          <form name="park-form">
+            <label for="parkSearch">
+              <select name="parkSearch" class="sortBar" id="selectPark">
                 <option value="a-z" standard selected>A-Z</option>
                 <option value="state">State</option>
                 <option value="region">Region</option>
@@ -33,6 +33,9 @@
             </label>
             <!--<button id="parkSearchSubmit" type="submit">Search</button>-->
           </form>
+        </section>
+        <section class="parkResults">
+          <ul class="parkList"></ul>
         </section>
     </main>
     <footer id="template-footer" class="banner-green">
