@@ -43,6 +43,10 @@ img {
 
 /* major elements */
 body {
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    min-height: 100vh;
+    text-align: center;
     font-family: var(--font-body);
     font-size: var(--font-base);
     color: var(--font-color);
@@ -54,20 +58,48 @@ header {
     color: var(--tertiary-color);
     font-weight: 700;
     display: flex;
-    flex-direction: column;
-    text-align: center;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+ 
+h1,
+h2,
+header > div,
+main > section {
+    margin: 1rem;
+}
+p,
+li,
+a {
+    padding: 1rem;
 }
 
 /* applies to top banner and footer */
 .banner-green {
     background-color: var(--secondary-color);   
     color: var(--primary-color);
+    width: 100%;
+    padding: 0.5rem;
+}
+ 
+/* title in header */
+.exploreParks {
+    font-size: var(--large-font);
+    margin-bottom: 1rem;
 }
 
-h1,
-.header-title {
-    font-size: var(--large-font);
-    margin: 1rem;
+.primaryNav {
+    display: flex;
+    justify-content: space-evenly;
+    margin-bottom: 1.5rem;
+}
+
+.sortBar {
+    width: 80%;
+    padding: 0.75rem 0.15rem;
+    text-align: center;
+    background-color: var(--font-color);
+    color: var(--primary-color);
 }
  
 ul {
@@ -84,9 +116,4 @@ a {
 li:hover {
     background-color: var(--tertiary-color);
 }
-
-p,
-li,
-a {
-    padding: 1rem;
-}
+ 
