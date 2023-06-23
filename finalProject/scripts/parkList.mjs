@@ -2,8 +2,12 @@ import { apiFetch, renderListWithTemplate } from './utils.mjs';
 
 export default async function parkList(selector) {
     const parks = await apiFetch();
-    console.log(parks);
  
+
+    const element = document.querySelector(selector);
+
+    renderListWithTemplate(parkResultTemplate, element, Array.from(parks.data));
+    console.log(parks);
 }
 
 // returns array of park names from A - Z
@@ -29,11 +33,32 @@ function getLocation(parks) {
 
 }*/
 
-function parkResultTemplate(parks) {
+/*function parkResultTemplate(parks) {
     return `<li class="park-result">
     <div class="park-result-img">
         <img src="${parks.data.images[0].url}" alt="${parks.data.images[0].altText}">
     </div>
     <p class="park-result-name">${parks.data.fullName}</p>
-    <p class="park-result-state">${parks.data.states}></p>`;
+    <p class="park-result-state">${parks.data.states}</p>`;
+}*/
+
+
+function parkResultTemplate(data) {
+
+    // make sure an image is included before trying to place
+    // it in the html
+    if (data.images.length > 0) {
+        return `<li class="park-result">
+        <div class="park-result-img">
+            <img src="${data.images[0].url}" alt="${data.images[0].altText}">
+        </div>
+        <p class="park-result-name">${data.fullName}</p>
+        <p class="park-result-state">${data.states}</p>`;
+    }
+    else {
+        return `<li class="park-result">
+        <p class="park-result-noImg">[No Image Provided]</p>
+        <p class="park-result-name">${data.fullName}</p>
+        <p class="park-result-state">${data.states}</p>`;
+    }
 }
