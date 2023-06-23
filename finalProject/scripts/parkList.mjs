@@ -1,4 +1,6 @@
-import { apiFetch, renderListWithTemplate } from './utils.mjs';
+import { apiFetch, 
+        convertStateAbbr,
+        renderListWithTemplate } from './utils.mjs';
 
 export default async function parkList(selector) {
     const parks = await apiFetch();
@@ -44,7 +46,11 @@ function getLocation(parks) {
 
 
 function parkResultTemplate(data) {
-
+ 
+    const fullStates = convertStateAbbr(data.states);
+   
+    console.log(fullStates);
+  
     // make sure an image is included before trying to place
     // it in the html
     if (data.images.length > 0) {
@@ -53,12 +59,12 @@ function parkResultTemplate(data) {
             <img src="${data.images[0].url}" alt="${data.images[0].altText}">
         </div>
         <p class="park-result-name">${data.fullName}</p>
-        <p class="park-result-state">${data.states}</p>`;
+        <p class="park-result-state">${fullStates}</p>`;
     }
     else {
         return `<li class="park-result">
         <p class="park-result-noImg">[No Image Provided]</p>
         <p class="park-result-name">${data.fullName}</p>
-        <p class="park-result-state">${data.states}</p>`;
+        <p class="park-result-state">${fullStates}</p>`;
     }
 }

@@ -92,278 +92,316 @@ export async function apiFetch() {
     renderWithTemplate(headerTemplateFn, header);
     renderWithTemplate(footerTemplateFn, footer);
   }
+
+  export function convertStateAbbr(states){
+
+    // If one park has multiple states listed, then
+    // it splits each state into its own substring.
+    const abbrStates = states.split(',');
+
+    let fullStates = [];
   
-  export function convertStateAbbr(state){
-
-    // 'A' states
-    if (state[0] === 'A') {
-      if (state === 'AL') {
-        const name = 'Alabama';
-        return name;
+    abbrStates.forEach((state) => {
+      // 'A' states
+      if (state[0] === 'A') {
+        if (state === 'AL') {
+          const name = 'Alabama';
+          fullStates.push(name);
+        }
+        else if (state === 'AK') {
+          const name = 'Alaska';
+          fullStates.push(name);
+        }
+        else if (state === 'AZ') {
+          const name = 'Arizona';
+          fullStates.push(name);
+        }
+        else if (state === 'AR') {
+          const name = 'Arkansas';
+          fullStates.push(name);
+        }
+        else if (state === 'AS') {
+          const name = 'American Samoa';
+          fullStates.push(name);
+        }
       }
-      else if (state === 'AK') {
-        const name = 'Alaska';
-        return name;
-      }
-      else if (state === 'AZ') {
-        const name = 'Arizona';
-        return name;
-      }
-      else if (state === 'AR') {
-        const name = 'Arkansas';
-        return name;
-      }
-    }
   
-    // 'C' states
-    else if (state[0] === 'C') {
-      if (state === 'CA') {
-        const name = 'California';
-        return name;
+      // 'C' states
+      else if (state[0] === 'C') {
+        if (state === 'CA') {
+          const name = 'California';
+          fullStates.push(name);
+        }
+        else if (state === 'CO') {
+          const name = 'Colorado';
+          fullStates.push(name);
+        }
+        else if (state === 'CT') {
+          const name = 'Connecticut';
+          fullStates.push(name);
+        }
       }
-      else if (state === 'CO') {
-        const name = 'Colorado';
-        return name;
+
+      // 'D' states
+      else if (state[0] === 'D') {
+        if (state === 'DE') {
+          const name = 'Delaware';
+          fullStates.push(name);
+        }
+        else if (state === 'DC') {
+          const name = 'District of Columbia';
+          fullStates.push(name);
+        }
       }
-      else if (state === 'CT') {
-        const name = 'Connecticut';
-        return name;
+
+      // Florida
+      else if (state === 'FL') {
+        const name = 'Florida';
+        fullStates.push(name);
       }
+
+      // 'G' state & territory
+      else if (state[0] === 'G') {
+        if (state === 'GA') {
+          const name = 'Georgia';
+          fullStates.push(name);
+        }
+        else if (state === 'GU') {
+          const name = 'Guam';
+          fullStates.push(name);
+        }
     }
 
-    // 'D' states
-    else if (state[0] === 'D') {
-      if (state === 'DE') {
-        const name = 'Delaware';
-        return name;
+      // Hawaii
+      else if (state === 'HI') {
+        const name = 'Hawaii';
+        fullStates.push(name);
       }
-      else if (state === 'DC') {
-        const name = 'District of Columbia';
-        return name;
-      }
-    }
 
-    // Florida
-    else if (state === 'FL') {
-      const name = 'Florida';
-      return name;
-    }
+      // 'I' states
+      else if (state[0] === 'I') {
+        if (state === 'ID') {
+          const name = 'Idaho';
+          fullStates.push(name);
+        }
+        else if (state === 'IL') {
+          const name = 'Illinois';
+          fullStates.push(name);
+        }
+        else if (state === 'IN') {
+          const name = 'Indiana';
+          fullStates.push(name);
+        }
+        else if (state == 'IA') {
+          const name = 'Iowa';
+        }
+      }
 
-    // Georgia
-    else if (state === 'GA') {
-      const name = 'Georgia';
-      return name;
-    }
+      // 'K' states
+      else if (state[0] === 'K') {
+        if (state === 'KS') {
+          const name = 'Kansas';
+          fullStates.push(name);
+        }
+        else if (state === 'KY') {
+          const name = 'Kentucky';
+          fullStates.push(name);
+        }
+      }
 
-    // Hawaii
-    else if (state === 'HI') {
-      const name = 'Hawaii';
-      return name;
-    }
+      // Louisiana
+      else if (state === 'LA') {
+        const name = 'Louisiana';
+        fullStates.push(name);
+      }
 
-    // 'I' states
-    else if (state[0] === 'I') {
-      if (state === 'ID') {
-        const name = 'Idaho';
-        return name;
+      // 'M' states
+      else if (state[0] === 'M') {
+        if (state === 'ME') {
+          const name = 'Maine';
+          fullStates.push(name);
+        }
+        else if (state === 'MD') {
+          const name = 'Maryland';
+          fullStates.push(name);
+        }
+        else if (state === 'MA') {
+          const name = 'Massachusetts';
+          fullStates.push(name);
+        }
+        else if (state === 'MI') {
+          const name = 'Michigan';
+          fullStates.push(name);
+        }
+        else if (state === 'MN') {
+          const name = 'Minnesota';
+          fullStates.push(name);
+        }
+        else if (state === 'MS') {
+          const name = 'Mississippi';
+          fullStates.push(name);
+        }
+        else if (state === 'MO') {
+          const name = 'Missouri';
+          fullStates.push(name);
+        }
+        else if (state === 'MT') {
+          const name = 'Montana';
+          fullStates.push(name);
+        }
+        else if (state === 'MP') {
+          const name = 'Northern Mariana Islands';
+          fullStates.push(name);
+        }
       }
-      else if (state === 'IL') {
-        const name = 'Illinois';
-        return name;
-      }
-      else if (state === 'IN') {
-        const name = 'Indiana';
-        return name;
-      }
-      else if (state == 'IA') {
-        const name = 'Iowa';
-      }
-    }
 
-    // 'K' states
-    else if (state[0] === 'K') {
-      if (state === 'KS') {
-        const name = 'Kansas';
-        return name;
-      }
-      else if (state === 'KY') {
-        const name = 'Kentucky';
-        return name;
-      }
-    }
-
-    // Louisiana
-    else if (state === 'LA') {
-      const name = 'Louisiana';
-      return name;
-    }
-
-    // 'M' states
-    else if (state[0] === 'M') {
-      if (state === 'ME') {
-        const name = 'Maine';
-        return name;
-      }
-      else if (state === 'MD') {
-        const name = 'Maryland';
-        return name;
-      }
-      else if (state === 'MA') {
-        const name = 'Massachusetts';
-        return name;
-      }
-      else if (state === 'MI') {
-        const name = 'Michigan';
-        return name;
-      }
-      else if (state === 'MN') {
-        const name = 'Minnesota';
-        return name;
-      }
-      else if (state === 'MS') {
-        const name = 'Mississippi';
-        return name;
-      }
-      else if (state === 'MO') {
-        const name = 'Missouri';
-        return name;
-      }
-      else if (state === 'MI') {
-        const name = 'Montana';
-        return name;
-      }
-    }
-
-     // 'N' states
-    else if (state[0] === 'N') {
-      if (state === 'NE') {
-        const name = 'Nebraska';
-        return name;
-      }
-      else if (state === 'NV') {
-        const name = 'Nevada';
-        return name;
-      }
-      else if (state === 'NH') {
-        const name = 'New Hampshire';
-        return name;
-      }
-      else if (state === 'NJ') {
+      // 'N' states
+      else if (state[0] === 'N') {
+        if (state === 'NE') {
+          const name = 'Nebraska';
+          fullStates.push(name);
+        }
+        else if (state === 'NV') {
+          const name = 'Nevada';
+          fullStates.push(name);
+        }
+        else if (state === 'NH') {
+          const name = 'New Hampshire';
+          fullStates.push(name);
+        }
+        else if (state === 'NJ') {
         const name = 'New Jersey';
-        return name;
+        fullStates.push(name);
+        }
+        else if (state === 'NM') {
+          const name = 'New Mexico';
+          fullStates.push(name);
+        }
+        else if (state === 'NY') {
+          const name = 'New York';
+          fullStates.push(name);
+        }
+        else if (state === 'NC') {
+          const name = 'North Carolina';
+          fullStates.push(name);
+        }
+        else if (state === 'ND') {
+          const name = 'North Dakota';
+          fullStates.push(name);
+        }
       }
-      else if (state === 'NM') {
-        const name = 'New Mexico';
-        return name;
+
+      // 'O' states
+      else if (state[0] === 'O') {
+      if (state === 'OH') {
+        const name = 'Ohio';
+        fullStates.push(name);
       }
-      else if (state === 'NY') {
-        const name = 'New York';
-        return name;
+      else if (state === 'OK') {
+        const name = 'Oklahoma';
+        fullStates.push(name);
       }
-      else if (state === 'NC') {
-        const name = 'North Carolina';
-        return name;
-      }
-      else if (state === 'ND') {
-        const name = 'North Dakota';
-        return name;
+      else if (state === 'OR') {
+        const name = 'Oregon';
+        fullStates.push(name);
       }
     }
 
-    // 'O' states
-    else if (state[0] === 'O') {
-    if (state === 'OH') {
-      const name = 'Ohio';
-      return name;
-    }
-    else if (state === 'OK') {
-      const name = 'Oklahoma';
-      return name;
-    }
-    else if (state === 'OR') {
-      const name = 'Oregon';
-      return name;
-    }
+    // 'P' state & territory
+    else if (state[0] === 'P') {
+      if (state === 'PA') {
+        const name = 'Pennsylvania';
+        fullStates.push(name);
+      }
+      else if (state === 'PR') {
+        const name = 'Puerto Rico';
+        fullStates.push(name);
+      }
   }
 
-  // Pennsylvania
-  else if (state === 'PA') {
-    const name = 'Pennsylvania';
-    return name;
-  }
+    // Rhode Island
+    else if (state === 'RI') {
+      const name = 'Rhode Island';
+      fullStates.push(name);
+    }
 
-  // Rhode Island
-  else if (state === 'RI') {
-    const name = 'Rhode Island';
-    return name;
-  }
+    // 'S' states
+    else if (state[0] === 'S') {
+      if (state === 'SC') {
+        const name = 'South Carolina';
+        fullStates.push(name);
+      }
+      else if (state === 'SD') {
+        const name = 'South Dakota';
+        fullStates.push(name);
+      }
+    }
 
-  // 'S' states
-  else if (state[0] === 'S') {
-    if (state === 'SC') {
-      const name = 'South Carolina';
-      return name;
+    // 'T' states
+    else if (state[0] === 'T') {
+      if (state === 'TN') {
+        const name = 'Tennessee';
+        fullStates.push(name);
+      }
+      else if (state === 'TX') {
+        const name = 'Texas';
+        fullStates.push(name);
+      }
+      else if (state === 'TT') {
+        const name = 'Trust Territories';
+        fullStates.push(name);
+      }
     }
-    else if (state === 'SD') {
-      const name = 'South Dakota';
-      return name;
-    }
-  }
 
-  // 'T' states
-  else if (state[0] === 'T') {
-    if (state === 'TN') {
-      const name = 'Tennessee';
-      return name;
+    // Utah
+    else if (state === 'UT') {
+      const name = 'Utah';
+      fullStates.push(name);
     }
-    else if (state === 'TX') {
-      const name = 'Texas';
-      return name;
-    }
-  }
 
-  // Utah
-  else if (state === 'UT') {
-    const name = 'Utah';
-    return name;
-  }
+    // 'V' states
+    else if (state[0] === 'V') {
+      if (state === 'VT') {
+        const name = 'Vermont';
+        fullStates.push(name);
+      }
+      else if (state === 'VA') {
+        const name = 'Virginia';
+        fullStates.push(name);
+      }
+      else if (state === 'VI') {
+        const name = 'Virgin Islands';
+        fullStates.push(name);
+      }
+    }
 
-  // 'V' states
-  else if (state[0] === 'V') {
-    if (state === 'VT') {
-      const name = 'Vermont';
-      return name;
+    // 'W' states
+    else if (state[0] === 'W') {
+      if (state === 'WA') {
+        const name = 'Washington';
+        fullStates.push(name);
+      }
+      else if (state === 'WV') {
+        const name = 'West Virginia';
+        fullStates.push(name);
+      }
+      else if (state === 'WI') {
+        const name = 'Wisconsin';
+        fullStates.push(name);
+      }
+      else if (state === 'WY') {
+        const name = 'Wyoming';
+        fullStates.push(name);
+      }
     }
-    else if (state === 'VA') {
-      const name = 'Virginia';
-      return name;
-    }
-  }
 
-  // 'W' states
-  else if (state[0] === 'W') {
-    if (state === 'WA') {
-      const name = 'Washington';
-      return name;
+    // No Name
+    else {
+      console.log("ERROR: No name found for " + state);
+      const name = state;
+      fullStates.push(name);
     }
-    else if (state === 'WV') {
-      const name = 'West Virginia';
-      return name;
-    }
-    else if (state === 'WI') {
-      const name = 'Wisconsin';
-      return name;
-    }
-    else if (state === 'WY') {
-      const name = 'Wyoming';
-      return name;
-    }
-  }
 
-  // No Name
-  else {
-    console.log("ERROR: No name found for " + state);
-    const name = state;
-    return name;
-  }
+  })
+  return fullStates;
 }
