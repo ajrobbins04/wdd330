@@ -50,21 +50,29 @@ function parkResultTemplate(data) {
     const fullStates = convertStateAbbr(data.states);
    
     console.log(fullStates);
-  
+    
     // make sure an image is included before trying to place
     // it in the html
     if (data.images.length > 0) {
         return `<li class="park-result">
-        <div class="park-result-img">
-            <img src="${data.images[0].url}" alt="${data.images[0].altText}">
+        <div class="hover overlay">
+            <picture class="park-result-img">
+                <img src="${data.images[0].url}" alt="${data.images[0].altText}">
+            </picture>
+            <div class="overlay-description">
+                <p>${data.description}</p>
+            </div>
         </div>
         <p class="park-result-name">${data.fullName}</p>
-        <p class="park-result-state">${fullStates}</p>`;
+        <p class="park-result-state">${fullStates}</p>
+        </li>`;
     }
     else {
         return `<li class="park-result">
         <p class="park-result-noImg">[No Image Provided]</p>
+        <p>${data.description}</p>
         <p class="park-result-name">${data.fullName}</p>
-        <p class="park-result-state">${fullStates}</p>`;
+        <p class="park-result-state">${fullStates}</p>
+        </li>`;
     }
 }
