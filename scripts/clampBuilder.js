@@ -3,8 +3,8 @@
 
 const minWidthPx = 380;
 const maxWidthPx = 900;
-minFontSize = 1.2;
-maxFontSize = 1.6;
+const minFontSize = 1.1;
+const maxFontSize = 1.5;
 
 function clampBuilder( minWidthPx, maxWidthPx, minFontSize, maxFontSize ) {
     const root = document.querySelector( "html" );

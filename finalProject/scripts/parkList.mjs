@@ -54,25 +54,27 @@ function parkResultTemplate(data) {
     // make sure an image is included before trying to place
     // it in the html
     if (data.images.length > 0) {
-        return `<li class="park-result">
+        return `<li class="parkResult">
+        <h2 class="name parkResult-name">${data.fullName}</h2>
         <div class="hover overlay">
-            <picture class="park-result-img">
+            <picture class="parkResult-img">
                 <img src="${data.images[0].url}" alt="${data.images[0].altText}">
             </picture>
             <div class="overlay-description">
-                <p>${data.description}</p>
+                <p class="description parkResult-description">${data.description}</p>
             </div>
         </div>
-        <p class="park-result-name">${data.fullName}</p>
-        <p class="park-result-state">${fullStates}</p>
+        <p class="location parkResult-location">Location: ${fullStates}</p>
         </li>`;
     }
+
+    // for parks without an image
     else {
-        return `<li class="park-result">
-        <p class="park-result-noImg">[No Image Provided]</p>
-        <p>${data.description}</p>
-        <p class="park-result-name">${data.fullName}</p>
-        <p class="park-result-state">${fullStates}</p>
+        return `<li class="parkResult">
+        <h2 class="name parkResult-name">${data.fullName}</h2>
+        <p class="parkResult-noImg">[No Image Provided]</p>
+        <p class="location parkResult-state">Location: ${fullStates}</p>
+        <p class="description parkResult-description">${data.description}</p>
         </li>`;
     }
 }
