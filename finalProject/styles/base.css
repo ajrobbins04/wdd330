@@ -16,7 +16,7 @@
     --primary-color: #FFEDD9;
     --secondary-color: #4F7E51;
     --tertiary-color: #845A4B;
-    --accent-color: #AC372B; 
+    --accent-color: #5e0202; 
     --font-color: #303030;
     --hover-color: rgba(79, 126, 81, 1);
 }
@@ -83,7 +83,7 @@ h1,
 
 h2 {
     font-size: var(--large-font);
-    color: var(--tertiary-color);
+    color: var(--accent-color);
 }
 
 header,
