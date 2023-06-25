@@ -106,6 +106,10 @@ a,
     background-color: var(--font-color);
 }
  
+.parkList * {
+    transition: all .35s ease;
+}
+
 li:hover {
     background-color: var(--tertiary-color);
 }
@@ -124,7 +128,7 @@ a {
     padding: 1rem;
 }
 
-/* applies to top banner and footer */
+/** applies to top banner and footer **/
 .banner-green,
 .sortResultsBar {
     width: 100%;
@@ -137,8 +141,15 @@ a {
     margin-bottom: 1.5rem;
 }
 
+/** main **/
 .sortResultsBar {
     padding: 0.75rem 0.15rem;
     text-align: center;
+}
+
+.locationSelect {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0.5rem;
 }
 
