@@ -150,6 +150,12 @@ a {
 .locationSelect {
     display: flex;
     flex-wrap: wrap;
-    margin: 0.5rem;
+    justify-content: start;
+    text-align: start;
 }
 
+
+.locationSelectOption {
+    padding: 0.75rem;
+ 
+}
