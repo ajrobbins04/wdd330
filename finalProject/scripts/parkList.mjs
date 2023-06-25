@@ -31,8 +31,8 @@ function parkResultTemplate(data) {
         </a>
         <div class="hover overlay">
             <a href="parkDetails.html">
-                <picture class="parkResult-img">
-                    <img src="${data.images[0].url}" alt="${data.images[0].altText}">
+                <picture class="div-img">
+                    <img class="parkResult-img" src="${data.images[0].url}" alt="${data.images[0].altText}">
                 </picture>
             </a>
             <div class="overlay-description">

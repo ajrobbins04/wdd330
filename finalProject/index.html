@@ -21,8 +21,8 @@
     <header id="template-header">
     </header>
     <main>
+      <h1>Sort Results By</h1>
         <section class="searchOptions">
-          <h1>Sort Results By</h1>
           <form name="parkForm">
             <label for="parkSearch">
               <select name="parkSearch" class="sortResultsBar" id="selectPark">
@@ -31,74 +31,241 @@
                 <option value="region">Region</option>
               </select>
             </label>
-            <label for="locationSelect">
-              <select name="locationSelect" class="locationSelectOptions" id="locationSelect">
-                <option value="a-z" standard selected>Locations</option>
-                <option value="alabama">Alabama</option>
-                <option value="alaska">Alaska</option>
-                <option value="arizona">Arizona</option>
-                <option value="arkansas">Arkansas</option>
-                <option value="americanSamoa">American Samoa</option>
-                <option value="california">California</option>
-                <option value="colorado">Colorado</option>
-                <option value="connecticut">Connecticut</option>
-                <option value="delaware">Delaware</option>
-                <option value="dc">District of Columbia</option>
-                <option value="florida">Florida</option>
-                <option value="georgia">Georgia</option>
-                <option value="guam">Guam</option>
-                <option value="hawaii">Hawaii</option>
-                <option value="idaho">Idaho</option>
-                <option value="illinois">Illinois</option>
-                <option value="indiana">Indiana</option>
-                <option value="iowa">Iowa</option>
-                <option value="kansas">Kansas</option>
-                <option value="kentucky">Kentucky</option>
-                <option value="louisiana">Louisiana</option>
-                <option value="maine">Maine</option>
-                <option value="maryland">Maryland</option>
-                <option value="massachussetts">Massachusetts</option>
-                <option value="michigan">Michigan</option>
-                <option value="minnesota">Minnesota</option>
-                <option value="mississippi">Mississippi</option>
-                <option value="missouri">Missouri</option>
-                <option value="montana">Montana</option>
-                <option value="nebraska">Nebraska</option>
-                <option value="nevada">Nevada</option>
-                <option value="newHampshire">New Hampshire</option>
-                <option value="newJersey">New Jersey</option>
-                <option value="newMexico">New Mexico</option>
-                <option value="newYork">New York</option>
-                <option value="northCarolina">North Carolina</option>         
-                <option value="northDakota">North Dakota</option>
-                <option value="northernMarianaIslands">Northern Mariana Islands</option>
-                <option value="ohio">Ohio</option>
-                <option value="oklahoma">Oklahoma</option>
-                <option value="oregon">Oregon</option>
-                <option value="pennsylvania">Pennsylvania</option>
-                <option value="puertoRico">Puerto Rico</option>
-                <option value="rhodeIsland">Rhode Island</option>
-                <option value="southCarolina">South Carolina</option>
-                <option value="southDakota">South Dakota</option>
-                <option value="tennessee">Tennessee</option>
-                <option value="trustTerritories">Trust Territories</option>
-                <option value="utah">Utah</option>
-                <option value="vermont">Vermont</option>
-                <option value="virginia">Virginia</option>
-                <option value="virginIslands">Virgin Islands</option>
-                <option value="washington">Washington</option>
-                <option value="westVirginia">West Virginia</option>
-                <option value="wisconsin">Wisconsin</option>
-                <option value="wyoming">Wyoming</option>
-              
-              </select>
+            <div class="locationFilter">
+              <div class="locationFilterOption"> 
+                <input type="checkbox" name="locationBox" value="alabama">
+                <label for="alabama">Alabama</label>
+              </div>
+              <div class="locationFilterOption"> 
+                <input type="checkbox" name="locationBox" value="alaska">
+                <label for="alaska">Alaska</label>
+              </div>
+              <div class="locationFilterOption"> 
+                <input type="checkbox" name="locationBox" value="arizona">
+                <label for="arizona">Arizona</label>
+              </div>
+              <div class="locationFilterOption"> 
+                <input type="checkbox" name="locationBox" value="arkansas">
+                <label for="arkansas">Arkansas</label>
+              </div>
+              <div class="locationFilterOption"> 
+                <input type="checkbox" name="locationBox" value="americanSamoa">
+                <label for="americanSamoa">American Samoa</label>
+              </div>
+              <div class="locationFilterOption"> 
+                <input type="checkbox" name="locationBox" value="california">
+                <label for="california">California</label>
+              </div>
+              <div class="locationFilterOption"> 
+                <input type="checkbox" name="locationBox" value="colorado">
+                <label for="colorado">Colorado</label>
+              </div>
+              <div class="locationFilterOption"> 
+                <input type="checkbox" name="locationBox" value="connecticut">
+                <label for="connecticut">Connecticut</label>
+              </div>
+              <div class="locationFilterOption"> 
+                <input type="checkbox" name="locationBox" value="delaware">
+                <label for="delaware">Delaware</label>
+              </div>
+              <div class="locationFilterOption"> 
+                <input type="checkbox" name="locationBox" value="dc">
+                <label for="dc">District of Columbia</label>
+              </div>
+              <div class="locationFilterOption"> 
+                <input type="checkbox" name="locationBox" value="florida">
+                <label for="florida">Florida</label>
+              </div>
+              <div class="locationFilterOption"> 
+                <input type="checkbox" name="locationBox" value="georgia">
+                <label for="georgia">Georgia</label>
+              </div>
+              <div class="locationFilterOption"> 
+                <input type="checkbox" name="locationBox" value="guam">
+                <label for="guam">Guam</label>
+              </div>
+              <div class="locationFilterOption"> 
+                <input type="checkbox" name="locationBox" value="hawaii">
+                <label for="hawaii">Hawaii</label>
+              </div>
+              <div class="locationFilterOption"> 
+                <input type="checkbox" name="locationBox" value="idaho">
+                <label for="idaho">Idaho</label>
+              </div>
+              <div class="locationFilterOption"> 
+                <input type="checkbox" name="locationBox" value="illinois">
+                <label for="illinois">Illinois</label>
+              </div>
+              <div class="locationFilterOption"> 
+                <input type="checkbox" name="locationBox" value="indiana">
+                <label for="indiana">Indiana</label>
+              </div>
+              <div class="locationFilterOption"> 
+                <input type="checkbox" name="locationBox" value="iowa">
+                <label for="iowa">Iowa</label>
+              </div>
+              <div class="locationFilterOption"> 
+                <input type="checkbox" name="locationBox" value="kansas">
+                <label for="kansas">Kansas</label>
+              </div>
+              <div class="locationFilterOption"> 
+                <input type="checkbox" name="locationBox" value="kentucky">
+                <label for="kentucky">Kentucky</label>
+              </div>
+              <div class="locationFilterOption"> 
+                <input type="checkbox" name="locationBox" value="louisiana">
+                <label for="louisiana">Louisiana</label>
+              </div>
+              <div class="locationFilterOption"> 
+                <input type="checkbox" name="locationBox" value="maine">
+                <label for="maine">Maine</label>
+              </div>
+              <div class="locationFilterOption"> 
+                <input type="checkbox" name="locationBox" value="maryland">
+                <label for="maryland">Maryland</label>
+              </div>
+              <div class="locationFilterOption"> 
+                <input type="checkbox" name="locationBox" value="massachussetts">
+                <label for="massachussetts">Massachusetts</label>
+              </div>
+              <div class="locationFilterOption"> 
+                <input type="checkbox" name="locationBox" value="michigan">
+                <label for="michigan">Michigan</label>
+              </div>
+              <div class="locationFilterOption"> 
+                <input type="checkbox" name="locationBox" value="minnesota">
+                <label for="minnesota">Minnesota</label>
+              </div>
+              <div class="locationFilterOption"> 
+                <input type="checkbox" name="locationBox" value="mississippi">
+                <label for="mississippi">Mississippi</label>
+              </div>
+              <div class="locationFilterOption"> 
+                <input type="checkbox" name="locationBox" value="missouri">
+                <label for="missouri">Missouri</label>
+              </div>
+              <div class="locationFilterOption"> 
+                <input type="checkbox" name="locationBox" value="montana">
+                <label for="montana">Montana</label>
+              </div>
+              <div class="locationFilterOption"> 
+                <input type="checkbox" name="locationBox" value="nebraska">
+                <label for="nebraska">Nebraska</label>
+              </div>
+              <div class="locationFilterOption"> 
+                <input type="checkbox" name="locationBox" value="nevada">
+                <label for="nevada">Nevada</label>
+              </div>
+              <div class="locationFilterOption"> 
+                <input type="checkbox" name="locationBox" value="newHampshire">
+                <label for="newHampshire">New Hampshire</label>
+              </div>
+              <div class="locationFilterOption"> 
+                <input type="checkbox" name="locationBox" value="newJersey">
+                <label for="newJersey">New Jersey</label>
+              </div>
+              <div class="locationFilterOption"> 
+                <input type="checkbox" name="locationBox" value="newMexico">
+                <label for="newMexico">New Mexico</label>
+              </div>
+              <div class="locationFilterOption"> 
+                <input type="checkbox" name="locationBox" value="newYork">
+                <label for="newYork">New York</label>
+              </div>
+              <div class="locationFilterOption"> 
+                <input type="checkbox" name="locationBox" value="northCarolina">
+                <label for="northCarolina">North Carolina</label>
+              </div>
+              <div class="locationFilterOption"> 
+                <input type="checkbox" name="locationBox" value="northDakota">
+                <label for="northDakota">North Dakota</label>
+              </div>
+              <div class="locationFilterOption"> 
+                <input type="checkbox" name="locationBox" value="northernMarianaIslands">
+                <label for="northernMarianaIslands">Northern Mariana Islands</label>
+              </div>
+              <div class="locationFilterOption"> 
+                <input type="checkbox" name="locationBox" value="ohio">
+                <label for="ohio">Ohio</label>
+              </div>
+              <div class="locationFilterOption"> 
+                <input type="checkbox" name="locationBox" value="oklahoma">
+                <label for="oklahoma">Oklahoma</label>
+              </div>
+              <div class="locationFilterOption"> 
+                <input type="checkbox" name="locationBox" value="oregon">
+                <label for="oregon">Oregon</label>
+              </div>
+              <div class="locationFilterOption"> 
+                <input type="checkbox" name="locationBox" value="pennsylvania">
+                <label for="pennsylvania">Pennsylvania</label>
+              </div>
+              <div class="locationFilterOption"> 
+                <input type="checkbox" name="locationBox" value="puertoRico">
+                <label for="puertoRico">Puerto Rico</label>
+              </div>
+              <div class="locationFilterOption"> 
+                <input type="checkbox" name="locationBox" value="rhodeIsland">
+                <label for="rhodeIsland">Rhode Island</label>
+              </div>
+              <div class="locationFilterOption"> 
+                <input type="checkbox" name="locationBox" value="southCarolina">
+                <label for="southCarolina">South Carolina</label>
+              </div>
+              <div class="locationFilterOption"> 
+                <input type="checkbox" name="locationBox" value="southDakota">
+                <label for="southDakota">South Dakota</label>
+              </div>
+              <div class="locationFilterOption"> 
+                <input type="checkbox" name="locationBox" value="tennessee">
+                <label for="tennessee">Tennessee</label>
+              </div>
+              <div class="locationFilterOption"> 
+                <input type="checkbox" name="locationBox" value="texas">
+                <label for="texas">Texas</label>
+              </div>
+              <div class="locationFilterOption"> 
+                <input type="checkbox" name="locationBox" value="trustTerritories">
+                <label for="trustTerritories">Trust Territories</label>
+              </div>
+              <div class="locationFilterOption"> 
+                <input type="checkbox" name="locationBox" value="utah">
+                <label for="utah">Utah</label>
+              </div>
+              <div class="locationFilterOption"> 
+                <input type="checkbox" name="locationBox" value="vermont">
+                <label for="vermont">Vermont</label>
+              </div>
+              <div class="locationFilterOption"> 
+                <input type="checkbox" name="locationBox" value="virginia">
+                <label for="virginia">Virginia</label>
+              </div>
+              <div class="locationFilterOption"> 
+                <input type="checkbox" name="locationBox" value="virginIslands">
+                <label for="virginIslands">Virgin Islands</label>
+              </div>
+              <div class="locationFilterOption"> 
+                <input type="checkbox" name="locationBox" value="washington">
+                <label for="washington">Washington</label>
+              </div>
+              <div class="locationFilterOption"> 
+                <input type="checkbox" name="locationBox" value="westVirginia">
+                <label for="westVirginia">West Virginia</label>
+              </div>
+              <div class="locationFilterOption"> 
+                <input type="checkbox" name="locationBox" value="wisconsin">
+                <label for="wisconsin">Wisconsin</label>
+              </div>
+              <div class="locationFilterOption"> 
+                <input type="checkbox" name="locationBox" value="wyoming">
+                <label for="wyoming">Wyoming</label>
+              </div>
+            </div>
             </label>
             <!--<button id="parkSearchSubmit" type="submit">Search</button>-->
           </form>
         </section>
-        <section class="parkResults">
-          <ul class="parkList"></ul>
-        </section>
+        <ul class="parkResults"></ul>
     </main>
     <footer id="template-footer" class="banner-green">
     </footer>

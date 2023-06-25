@@ -34,9 +34,11 @@ img {
     display: block;
 }
 
-.header-img {
+header .div-img {
     width: min(25vw, 250px);
 }
+
+ 
 
 /** basic elements **/
 body {
@@ -55,6 +57,29 @@ header {
     flex-wrap: wrap;
     justify-content: center;
     align-items: center;
+}
+
+main h1 {
+    grid-area: title;
+}
+
+main .searchOptions {
+    grid-area: searchOptions;
+}
+
+main .parkResults {
+    grid-area: results;
+}
+
+main {
+    padding: 2rem;
+    display: grid;
+    gap: 2rem;
+    grid-template-areas:
+    "title"
+    "searchOptions"
+    "results";
+ 
 }
 
 ul {
@@ -106,7 +131,7 @@ a,
     background-color: var(--font-color);
 }
  
-.parkList * {
+.parkResults * {
     transition: all .35s ease;
 }
 
@@ -117,14 +142,13 @@ li:hover {
 /** margin and padding **/
 h1,
 h2,
-header > picture,
-main > section {
-    margin: 1rem 0.75rem;
+header > picture {
+    margin: 1rem;
 }
 
 p,
-li,
-a {
+a,
+li {
     padding: 1rem;
 }
 
@@ -147,15 +171,9 @@ a {
     text-align: center;
 }
 
-.locationSelect {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: start;
-    text-align: start;
+.locationFilter{
+ overflow-y: scroll;
+ height: 25vh;
+ text-align: start;
 }
 
-
-.locationSelectOption {
-    padding: 0.75rem;
- 
-}

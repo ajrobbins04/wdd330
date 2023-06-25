@@ -6,7 +6,7 @@ import parkList from './parkList.mjs';
 loadHeaderFooter();
 
 
-parkList('.parkList');
+parkList('.parkResults');
 //const year = getCurrentYear();
 //document.querySelector('#copyright-year').textContent = ` ${year}`; 
  
