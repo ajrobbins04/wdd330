@@ -43,14 +43,16 @@ h1,
 
 h2 {
     font-size: var(--large-font);
-    color: var(--font-color);
 }
 
 header,
 select,
-.locationFilterOption {
+.locationFilterOption,
+.parkResult-location,
+.parkResult-learnMore {
     font-size: var(--medium-font);
 }
+ 
 
 /** assign color properties **/
 
@@ -59,9 +61,11 @@ select,
     color: var(--primary-color);
 }
 
+h2,
 a {
-    color: var(--font-color);
+    color: var(--accent-color);
 }
+
 
 .banner-green {
     background-color: var(--secondary-color);   
@@ -140,7 +144,6 @@ main {
     "results";
     margin: 0 auto;
     gap: 2rem;
-  
 }
 
 main,
@@ -160,7 +163,6 @@ header > picture {
     margin: 1rem;
 }
  
-h2,
 p,
 a,
 .banner-green li {
@@ -177,16 +179,22 @@ a,
     margin: 2.5rem 0;
 }
  
-.parResult a {
-    color: var(--font-color);
+.parkResult-name {
+    margin-top: 5rem;
+}
+
+.parkResult-location {
+    margin-bottom: 1.5rem;
+}
+
+.parkResult-description {
+    margin-top: 1.5rem;
 }
 
 .parkResult:hover {
     transform: scale(1.05);
-    color: var(--accent-color);
 }
- 
- 
+
 .locationFilter {
  overflow-y: scroll;
  height: 25vh;
