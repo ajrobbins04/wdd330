@@ -4,15 +4,32 @@ import { apiFetch,
 
 export default async function parkList(selector) {
     const parks = await apiFetch();
- 
-
     const element = document.querySelector(selector);
 
     renderListWithTemplate(parkResultTemplate, element, Array.from(parks.data));
+
     console.log(parks);
+  
+    // organizes results based on the current sort option
+    const option = document.getElementById('sortOptions');
+    option.addEventListener('change', sortResults);
+
+    const locationCheckboxes = document.querySelectorAll('.locationBox');
+    locationCheckboxes.forEach((box) => {
+        box.addEventListener('click', includeInSearch);
+    })
 }
 
-function sortByState(data) {
+function sortResults () {
+    console.log(data);
+ 
+}
+
+
+function includeInSearch() {
+    
+}
+function sortByLocation(data) {
 
 }
 
@@ -31,7 +48,7 @@ function parkResultTemplate(data) {
         </a>
         <div class="hover overlay">
             <a href="parkDetails.html">
-                <picture class="div-img">
+                <picture>
                     <img class="parkResult-img" src="${data.images[0].url}" alt="${data.images[0].altText}">
                 </picture>
             </a>

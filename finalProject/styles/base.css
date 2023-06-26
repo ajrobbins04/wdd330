@@ -33,11 +33,6 @@ img {
     height: auto;
     display: block;
 }
-
-header .div-img {
-    width: min(25vw, 250px);
-}
-
  
 
 /** basic elements **/
@@ -58,13 +53,13 @@ header {
     justify-content: center;
     align-items: center;
 }
-
+ 
 main h1 {
     grid-area: title;
 }
 
-main .searchOptions {
-    grid-area: searchOptions;
+main .sortResults {
+    grid-area: sortResults;
 }
 
 main .parkResults {
@@ -77,9 +72,13 @@ main {
     gap: 2rem;
     grid-template-areas:
     "title"
-    "searchOptions"
+    "sortResults"
     "results";
  
+}
+
+.hide {
+    display: none;
 }
 
 ul {
@@ -112,14 +111,15 @@ h2 {
 }
 
 header,
-select {
+select,
+.locationFilterOption {
     font-size: var(--medium-font);
 }
 
 /** assign color properties **/
 a,
 .banner-green,
-.sortResultsBar {
+.sortBar {
     color: var(--primary-color);
 }
 
@@ -127,7 +127,7 @@ a,
     background-color: var(--secondary-color);   
 }
 
-.sortResultsBar {
+.sortBar {
     background-color: var(--font-color);
 }
  
@@ -154,7 +154,7 @@ li {
 
 /** applies to top banner and footer **/
 .banner-green,
-.sortResultsBar {
+.sortBar {
     width: 100%;
     padding: 0.5rem;
 }
@@ -166,14 +166,17 @@ li {
 }
 
 /** main **/
-.sortResultsBar {
+.sortBar {
     padding: 0.75rem 0.15rem;
     text-align: center;
 }
 
-.locationFilter{
+.locationFilter {
  overflow-y: scroll;
  height: 25vh;
  text-align: start;
 }
 
+.locationFilterOption {
+    margin: 0.75rem 0;
+}

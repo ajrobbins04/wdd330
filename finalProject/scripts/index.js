@@ -7,6 +7,7 @@ loadHeaderFooter();
 
 
 parkList('.parkResults');
+ 
 //const year = getCurrentYear();
 //document.querySelector('#copyright-year').textContent = ` ${year}`; 
  
