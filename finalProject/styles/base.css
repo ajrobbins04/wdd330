@@ -74,9 +74,13 @@ main {
     "title"
     "sortResults"
     "results";
- 
 }
 
+main,
+.parkResults,
+.parkResult-img {
+    width: max(85vw, 300px);
+}
 .hide {
     display: none;
 }
@@ -145,10 +149,10 @@ h2,
 header > picture {
     margin: 1rem;
 }
-
+ 
 p,
 a,
-li {
+.banner-green li {
     padding: 1rem;
 }
 
