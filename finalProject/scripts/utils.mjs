@@ -1,4 +1,4 @@
-const baseURL = `https://developer.nps.gov/api/v1/parks?`;
+const baseURL = `https://developer.nps.gov/api/v1/`;
 const apiKey = 'dofSYJEmYCOaEjAr8dNzn9MdUkwJFbSHenA3X9Bv';
 
 export async function apiFetch() {
@@ -42,10 +42,11 @@ export async function apiFetch() {
     return urlParams.get(param);
   }
 
-  export async function findByParkCode(code) {
+  export async function findByParkCode(code, getRequest) {
 
     try {
-      const response = await fetch(baseURL + `parkCode=${code}`, {
+      const response = 
+      await fetch(baseURL + `${getRequest}parkCode=${code}`, {
         method: 'GET',
         headers: {'X-Api-Key': apiKey}
     });
@@ -61,7 +62,6 @@ export async function apiFetch() {
     console.log(error);
 }
 }
-
 
 
     /*const response = await fetch(baseURL + `parkCode=${code}`);
