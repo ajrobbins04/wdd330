@@ -11,11 +11,11 @@ export default async function parkList(selector) {
     renderListWithTemplate(parkResultTemplate, element, Array.from(parks.data));
 
 
-   // sortByLocation(parks.data);
+    // sortByLocation(parks.data);
   
     // organizes results based on the current sort option
-    //const option = document.getElementById('sortOptions');
-    //option.addEventListener('change', sortResults);
+    const option = document.getElementById('sortOptions');
+    option.addEventListener('change', sortResults);
 
     //const locationCheckboxes = document.querySelectorAll('.locationBox');
     //locationCheckboxes.forEach((box) => {
@@ -24,6 +24,15 @@ export default async function parkList(selector) {
 
 }
 
+function sortResults() {
+    console.log(this.value);
+
+    if (this.value === 'location') {
+        const filterOptions = document.getElementById('locationFilter');
+        filterOptions.classList.remove('hide');
+    }
+
+}
 function sortByLocation (parks) {
 
 }
@@ -52,7 +61,7 @@ function parkResultTemplate(data) {
                 <p class="description parkResult-description">${data.description}</p>
             </div>
         </div>
-        <a class="parkResult-learnMore" href="./parkDetails.html?park=${data.id}">Learn More</a>
+        <a class="parkResult-learnMore" href="./parkDetails.html?parks=${data.id}">Learn More</a>
         </li>`;
     }
 
@@ -63,7 +72,7 @@ function parkResultTemplate(data) {
         <p class="location parkResult-location">Located in ${fullStates}</p>
         <p class="parkResult-noImg">[No Image Provided]</p>
         <p class="description parkResult-description">${data.description}</p>
-        <a class="parkResult-learnMore" href="./parkDetails.html?park=${data.id}">Learn More</a>
+        <a class="parkResult-learnMore" href="./parkDetails.html?parks=${data.id}">Learn More</a>
         </li>`;
     }
 }

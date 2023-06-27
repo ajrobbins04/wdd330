@@ -1,4 +1,4 @@
-const baseURL = `./parkDetails.html`;
+const baseURL = `https://developer.nps.gov/api/v1/parks?limit=50`;
 
 export async function apiFetch() {
     const apiKey = 'dofSYJEmYCOaEjAr8dNzn9MdUkwJFbSHenA3X9Bv';
@@ -43,7 +43,7 @@ export async function apiFetch() {
 
   export async function findParkById(id) {
 
-    const response = await fetch(baseURL + `?park=${id}`);
+    const response = await fetch(baseURL + `?parks=${id}`);
     const park = await convertToJson(response);
     return park.Result;
   }
