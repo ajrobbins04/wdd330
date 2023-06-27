@@ -1,17 +1,19 @@
-import { findParkById } from "./utils.mjs";
+import { findByParkCode } from "./utils.mjs";
 
 let park = {};
 
-export default async function parkDetails(parkId) {
+export default async function parkDetails(parkCode) {
 
-    park = await findParkById(parkId);
+    park = await findByParkCode(parkCode);
     console.log(park);
+    console.log(park.data[0].fullName);
+    renderParkDetails(park);
 
 }
 
-function renderParkDetails() {
+function renderParkDetails(park) {
  
-    document.getElementById('parkDetails-name').textContent = park.name;
+    document.getElementById('parkDetails-name').textContent = park.data[0].fullName;
     const description = document.getElementById('parkDetails-description');
     const location = document.getElementById('parkDetails-location');
 }

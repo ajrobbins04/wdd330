@@ -3,5 +3,5 @@ import { getParam, loadHeaderFooter } from './utils.mjs';
 
 loadHeaderFooter();
 
-const parkId = getParam('park');
-parkDetails(parkId);
+const parkCode = getParam('parkCode');
+parkDetails(parkCode);

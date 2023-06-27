@@ -1,7 +1,8 @@
-const baseURL = `https://developer.nps.gov/api/v1/parks?limit=50`;
+const baseURL = `https://developer.nps.gov/api/v1/parks?`;
+const apiKey = 'dofSYJEmYCOaEjAr8dNzn9MdUkwJFbSHenA3X9Bv';
 
 export async function apiFetch() {
-    const apiKey = 'dofSYJEmYCOaEjAr8dNzn9MdUkwJFbSHenA3X9Bv';
+  
     const url = `https://developer.nps.gov/api/v1/parks?limit=50`;
 
     try {
@@ -41,12 +42,33 @@ export async function apiFetch() {
     return urlParams.get(param);
   }
 
-  export async function findParkById(id) {
+  export async function findByParkCode(code) {
 
-    const response = await fetch(baseURL + `?parks=${id}`);
+    try {
+      const response = await fetch(baseURL + `parkCode=${code}`, {
+        method: 'GET',
+        headers: {'X-Api-Key': apiKey}
+    });
+
+    if (response.ok) {
+      const park = await response.json();
+      return park;
+    } else {
+      throw Error(await response.text());
+    } 
+
+  } catch (error) {
+    console.log(error);
+}
+}
+
+
+
+    /*const response = await fetch(baseURL + `parkCode=${code}`);
     const park = await convertToJson(response);
-    return park.Result;
-  }
+    return park.Result;*/
+
+  
 
   export async function renderListWithTemplate(templateFn,
     parentElement,

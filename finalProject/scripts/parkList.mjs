@@ -10,7 +10,7 @@ export default async function parkList(selector) {
 
     renderListWithTemplate(parkResultTemplate, element, Array.from(parks.data));
 
-
+    console.log(parks);
     // sortByLocation(parks.data);
   
     // organizes results based on the current sort option
@@ -46,7 +46,7 @@ function parkResultTemplate(data) {
  
     const fullStates = convertStateAbbr(data.states);
     const imageIndex = selectRandomImage(data);
-   
+ 
     // make sure an image is included before trying to place
     // it in the html
     if (data.images.length > 0) {
@@ -61,7 +61,7 @@ function parkResultTemplate(data) {
                 <p class="description parkResult-description">${data.description}</p>
             </div>
         </div>
-        <a class="parkResult-learnMore" href="./parkDetails.html?parks=${data.id}">Learn More</a>
+        <a class="parkResult-learnMore" href="./parkDetails.html?parkCode=${data.parkCode}">Learn More</a>
         </li>`;
     }
 
@@ -72,7 +72,7 @@ function parkResultTemplate(data) {
         <p class="location parkResult-location">Located in ${fullStates}</p>
         <p class="parkResult-noImg">[No Image Provided]</p>
         <p class="description parkResult-description">${data.description}</p>
-        <a class="parkResult-learnMore" href="./parkDetails.html?parks=${data.id}">Learn More</a>
+        <a class="parkResult-learnMore" href="./parkDetails.html?parkCode=${data.parkCode}">Learn More</a>
         </li>`;
     }
 }
