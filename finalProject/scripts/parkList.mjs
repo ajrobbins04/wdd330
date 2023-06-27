@@ -10,29 +10,41 @@ export default async function parkList(selector) {
     renderListWithTemplate(parkResultTemplate, element, Array.from(parks.data));
 
     console.log(parks);
+
+   // sortByLocation(parks.data);
   
     // organizes results based on the current sort option
-    const option = document.getElementById('sortOptions');
-    option.addEventListener('change', sortResults);
+    //const option = document.getElementById('sortOptions');
+    //option.addEventListener('change', sortResults);
 
-    const locationCheckboxes = document.querySelectorAll('.locationBox');
-    locationCheckboxes.forEach((box) => {
-        box.addEventListener('click', includeInSearch);
-    })
+    //const locationCheckboxes = document.querySelectorAll('.locationBox');
+    //locationCheckboxes.forEach((box) => {
+        //box.addEventListener('click', includeInSearch);
+    //})
+
+    const learnMoreLinks = document.querySelectorAll('[data-id]');
+   
+    learnMoreLinks.forEach((link) => {
+      
+        link.addEventListener('click', switchPages);
+})
 }
 
-function sortResults () {
-    console.log(data);
- 
+function switchPages() {
+    const id = this.dataset.id;
+    console.log(id);
+   
+    location.assign('/parkDetails.html?id=${id}');
 }
 
+function sortByLocation (parks) {
 
-function includeInSearch() {
+}
+
+function includeInLocationSort() {
     
 }
-function sortByLocation(data) {
 
-}
 
 function parkResultTemplate(data) {
  
@@ -53,7 +65,7 @@ function parkResultTemplate(data) {
                 <p class="description parkResult-description">${data.description}</p>
             </div>
         </div>
-        <a class="parkResult-learnMore" href="parkDetails.html">Learn More</a>
+        <a data-id="${data.id}" class="parkResult-learnMore" href="parkDetails.html">Learn More</a>
         </li>`;
     }
 
@@ -64,7 +76,7 @@ function parkResultTemplate(data) {
         <p class="location parkResult-location">Located in ${fullStates}</p>
         <p class="parkResult-noImg">[No Image Provided]</p>
         <p class="description parkResult-description">${data.description}</p>
-        <a class="parkResult-learnMore" href="parkDetails.html">Learn More</a>
+        <a data-id="${data.id}" class="parkResult-learnMore" href="parkDetails.html">Learn More</a>
         </li>`;
     }
 }

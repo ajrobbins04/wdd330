@@ -97,6 +97,7 @@ export async function apiFetch() {
 
     renderWithTemplate(headerTemplateFn, header);
     renderWithTemplate(footerTemplateFn, footer);
+    
   }
 
   export function convertStateAbbr(states){
