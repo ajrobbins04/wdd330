@@ -1,3 +1,20 @@
-@media screen and (min-width: 1100px) {
+@media screen and (min-width: 1200px) {
     
+    main,
+    .parkResults {
+        width: min(95vw, 1300px);
+    }
+    .parkResult,
+    .parkResult-img {
+        width: clamp(350px, 40vw, 550px);
+    }
+
+    .parkResults {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        align-items: start;
+    }
+ 
+ 
+
 }

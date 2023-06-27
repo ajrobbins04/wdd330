@@ -1,6 +1,7 @@
 import { apiFetch, 
         convertStateAbbr,
-        renderListWithTemplate } from './utils.mjs';
+        renderListWithTemplate,
+        selectRandomImage } from './utils.mjs';
 
 export default async function parkList(selector) {
     const parks = await apiFetch();
@@ -36,9 +37,8 @@ function sortByLocation(data) {
 function parkResultTemplate(data) {
  
     const fullStates = convertStateAbbr(data.states);
+    const imageIndex = selectRandomImage(data);
    
-    console.log(fullStates);
-    
     // make sure an image is included before trying to place
     // it in the html
     if (data.images.length > 0) {
@@ -47,7 +47,7 @@ function parkResultTemplate(data) {
         <p class="location parkResult-location">Located in ${fullStates}</p>
         <div class="hover overlay">
            <picture>
-                <img class="parkResult-img" src="${data.images[0].url}" alt="${data.images[0].altText}">
+                <img class="parkResult-img" src="${data.images[imageIndex].url}" alt="${data.images[0].altText}">
             </picture>
             <div class="overlay-description">
                 <p class="description parkResult-description">${data.description}</p>

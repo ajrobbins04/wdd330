@@ -71,6 +71,12 @@ export async function apiFetch() {
     }
   }
   
+  export function selectRandomImage(park)
+  {
+    const numImages = park.images.length;
+    return (Math.floor(Math.random() * (numImages - 1)));
+  }
+
   // year will be placed in footer, next to copyright
   export function getCurrentYear() {
     const date = new Date();
