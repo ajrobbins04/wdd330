@@ -64,12 +64,6 @@ export async function apiFetch() {
 }
 
 
-    /*const response = await fetch(baseURL + `parkCode=${code}`);
-    const park = await convertToJson(response);
-    return park.Result;*/
-
-  
-
   export async function renderListWithTemplate(templateFn,
     parentElement,
     list,

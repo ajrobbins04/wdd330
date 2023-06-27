@@ -17,6 +17,28 @@ export default async function parkDetails(parkCode) {
     renderParkDetails(park, parkActivities);
 }
 
+function renderImageCarousel(park) {
+
+    const numImages = park.data[0].images.length;
+    const carousel = document.getElementById('carousel-container');
+
+    // only add carousel if there are at least 3 images
+    if (numImages > 2) {
+
+        // Skip the first image. It is already displayed
+        // higher up on the page
+        for (let i = 1; i < numImages; i++) {
+            const html = `<li class="slide">
+            <picture>
+                <img class="slide-img" src="${park.data[0].images[i].url}" 
+                alt="${park.data[0].images[i].altText}">
+            </picture>
+            </li>`;
+            carousel.insertAdjacentHTML('afterend', html);
+        }
+    }
+}
+
 function renderParkDetails(park, parkActivities) {
  
     // park name and description
@@ -42,4 +64,6 @@ function renderParkDetails(park, parkActivities) {
     document.getElementById('standardSaturdayHours').textContent = ` ${park.data[0].operatingHours[0].standardHours.saturday}`;
     document.getElementById('standardSundayHours').textContent = ` ${park.data[0].operatingHours[0].standardHours.sunday}`;
 
+    // image carousel
+    renderImageCarousel(park);
 }
