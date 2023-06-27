@@ -1,3 +1,5 @@
+const baseURL = `./parkDetails.html`;
+
 export async function apiFetch() {
     const apiKey = 'dofSYJEmYCOaEjAr8dNzn9MdUkwJFbSHenA3X9Bv';
     const url = `https://developer.nps.gov/api/v1/parks?limit=50`;
@@ -22,7 +24,29 @@ export async function apiFetch() {
 
   export function setLocalStorage(key, data) {}
   export function getLocalStorage(key) {}
-  export function getParam(param) {}
+
+  async function convertToJson(res) {
+    const data = await res.json();
+    if (res.ok) {
+      return data;
+    } else {
+      throw { name: "servicesError", message: data };
+    }
+  }
+
+  export function getParam(param) {
+
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+    return urlParams.get(param);
+  }
+
+  export async function findParkById(id) {
+
+    const response = await fetch(baseURL + `?park=${id}`);
+    const park = await convertToJson(response);
+    return park.Result;
+  }
 
   export async function renderListWithTemplate(templateFn,
     parentElement,
@@ -55,7 +79,6 @@ export async function apiFetch() {
       }
     
     }
-
 
   function loadTemplate(path) {
     return async function() {

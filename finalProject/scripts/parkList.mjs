@@ -4,12 +4,12 @@ import { apiFetch,
         selectRandomImage } from './utils.mjs';
 
 export default async function parkList(selector) {
+
     const parks = await apiFetch();
     const element = document.querySelector(selector);
 
     renderListWithTemplate(parkResultTemplate, element, Array.from(parks.data));
 
-    console.log(parks);
 
    // sortByLocation(parks.data);
   
@@ -22,19 +22,6 @@ export default async function parkList(selector) {
         //box.addEventListener('click', includeInSearch);
     //})
 
-    const learnMoreLinks = document.querySelectorAll('[data-id]');
-   
-    learnMoreLinks.forEach((link) => {
-      
-        link.addEventListener('click', switchPages);
-})
-}
-
-function switchPages() {
-    const id = this.dataset.id;
-    console.log(id);
-   
-    location.assign('/parkDetails.html?id=${id}');
 }
 
 function sortByLocation (parks) {
@@ -65,7 +52,7 @@ function parkResultTemplate(data) {
                 <p class="description parkResult-description">${data.description}</p>
             </div>
         </div>
-        <a data-id="${data.id}" class="parkResult-learnMore" href="parkDetails.html">Learn More</a>
+        <a class="parkResult-learnMore" href="./parkDetails.html?park=${data.id}">Learn More</a>
         </li>`;
     }
 
@@ -76,7 +63,7 @@ function parkResultTemplate(data) {
         <p class="location parkResult-location">Located in ${fullStates}</p>
         <p class="parkResult-noImg">[No Image Provided]</p>
         <p class="description parkResult-description">${data.description}</p>
-        <a data-id="${data.id}" class="parkResult-learnMore" href="parkDetails.html">Learn More</a>
+        <a class="parkResult-learnMore" href="./parkDetails.html?park=${data.id}">Learn More</a>
         </li>`;
     }
 }
