@@ -87,6 +87,10 @@ body {
     background-color: var(--primary-color);
 }
 
+main {
+    margin: 0 auto;
+}
+
 img {
     width: 100%;
     height: auto;
@@ -116,7 +120,23 @@ h2,
 header > picture {
     margin: 1rem;
 }
- 
+
+.primaryNav {
+    margin: 3rem auto;
+}
+
+.locationFilterOption {
+    margin: 0.75rem 0;
+}
+
+.parkResults {
+    margin: 2rem auto;
+}
+
+.parkResults li {
+    margin: 6rem auto;
+}
+
 p,
 a,
 .banner-green li {
@@ -134,33 +154,63 @@ a,
 .primaryNav {
     display: flex;
     justify-content: space-evenly;
-    margin-bottom: 1.5rem;
 }
 
-/** everything inside main at index.html **/
-main h1 {
+/** index.html content **/
+.homePage h1 {
     grid-area: title;
 }
 
-main .sortResults {
+.homePage .sortResults {
     grid-area: sortResults;
 }
 
-main .parkResults {
+.homePage .parkResults {
     grid-area: results;
 }
 
-main {
+.homePage {
     display: grid;
+    margin: 3rem auto;
+    gap: 3rem;
     grid-template-areas:
     "title"
     "sortResults"
     "results";
-    margin: 0 auto;
-    gap: 2rem;
+}
+ 
+#parkDetails-name {
+    grid-area: pTitle;
 }
 
-main,
+#parkDetails-description {
+    grid-area: pDescription;
+}
+
+#parkDetails-location {
+    grid-area: pLocation;
+}
+
+.parkDetails picture {
+    grid-area: pImage;
+}
+
+.parkDetails .operatingInfo {
+    grid-area: pHours;
+}
+.parkDetails {
+    display: grid;
+    margin: 3rem auto;
+    gap: 3rem;
+    grid-template-areas:
+    "pTitle"
+    "pDescription"
+    "pLocation"
+    "pImage"
+    "pHours";
+}
+
+.homePage,
 .parkResults,
 .park-img {
     width: max(85vw, 300px);
@@ -180,27 +230,13 @@ main,
     height: 25vh;
     text-align: start;
 }
-   
-.locationFilterOption {
-    margin: 0.75rem 0;
-}
 
-.parkResult {
+.parkResults {
     transition: all .35s ease;
-    margin: 2.5rem 0;
 }
  
 .name {
-    margin-top: 5rem;
     height: 5vh;
-}
-
-.location {
-    margin-bottom: 1.5rem;
-}
-
-.description {
-    margin-top: 1.5rem;
 }
 
 .parkResult:hover {
