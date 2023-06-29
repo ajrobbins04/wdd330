@@ -1,7 +1,9 @@
 import { convertStateAbbr,
          renderListWithTemplate,
-         selectRandomImage } from './utils.mjs';
-import { apiFetch } from './externalServices.mjs';
+         selectRandomImage,
+         locations } from './utils.mjs';
+import { apiFetch,
+         findByStateCode } from './externalServices.mjs';
 
 export default async function parkList(selector) {
 
@@ -11,7 +13,6 @@ export default async function parkList(selector) {
     renderListWithTemplate(parkResultTemplate, element, Array.from(parks.data));
 
     console.log(parks);
-    // sortByLocation(parks.data);
   
     // organizes results based on the current sort option
     const option = document.getElementById('sortOptions');
@@ -24,18 +25,22 @@ export default async function parkList(selector) {
 
 }
 
-function sortResults() {
-    console.log(this.value);
+async function sortResults(element) {
 
     if (this.value === 'location') {
         const filterOptions = document.getElementById('locationFilter');
         filterOptions.classList.remove('hide');
+        let parks = {};
+        const locationsArray = Object.entries(locations);
+        locationsArray.forEach((location) => {
+            parks = await findByStateCode('parks?', location[0]);
+            renderListWithTemplate(parkResultTemplate, element, Array.from(parks.data));
+        });
+    
     }
 
 }
-function sortByLocation (parks) {
 
-}
 
 function includeInLocationSort() {
     

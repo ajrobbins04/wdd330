@@ -1,19 +1,18 @@
 import { convertStateAbbr } from './utils.mjs';
-import { findByParkCode, 
-         findByStateCode } from './externalServices.mjs';
+import { findByParkCode } from './externalServices.mjs';
 
 let park = {};
 let parkActivities = {};
 
 export default async function parkDetails(parkCode) {
 
-    const getParks = 'parks?';
-    park = await findByParkCode(parkCode, getParks);
+    const parksPath = 'parks?';
+    park = await findByParkCode(parksPath, parkCode);
     console.log(park);
     
-    const getActivities = 'thingstodo?'
-    parkActivities = await findByParkCode(parkCode, getActivities);
-    console.log(parkActivities);
+    const activitiesPath = 'thingstodo?'
+    parkActivities = await findByParkCode(activitiesPath, parkCode);
+  
     renderParkDetails(park, parkActivities);
 
 }

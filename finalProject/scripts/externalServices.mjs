@@ -32,11 +32,11 @@ export async function apiFetch() {
     }
 }
 
-export async function findByParkCode(code, getRequest) {
+export async function findByParkCode(path, value) {
 
     try {
       const response = 
-      await fetch(baseURL + `${getRequest}parkCode=${code}`, {
+      await fetch(baseURL + `${path}parkCode=${value}`, {
         method: 'GET',
         headers: {'X-Api-Key': apiKey}
     });
@@ -53,18 +53,18 @@ export async function findByParkCode(code, getRequest) {
 }
 }
 
-export async function findByStateCode(code, getRequest) {
+export async function findByStateCode(path, value) {
 
   try {
     const response = 
-    await fetch(baseURL + `${getRequest}stateCode=${code}`, {
+    await fetch(baseURL + `${path}stateCode=${value}`, {
       method: 'GET',
       headers: {'X-Api-Key': apiKey}
   });
 
   if (response.ok) {
-    const park = await response.json();
-    return park;
+    const parks = await response.json();
+    return parks;
   } else {
     throw Error(await response.text());
   } 
