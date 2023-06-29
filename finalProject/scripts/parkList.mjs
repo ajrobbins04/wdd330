@@ -55,7 +55,7 @@ function parkResultTemplate(data) {
         <p class="location parkResult-location">Located in ${fullStates}</p>
         <div class="hover overlay">
            <picture>
-                <img class="parkResult-img" src="${data.images[imageIndex].url}" alt="${data.images[0].altText}">
+                <img class="park-img parkResult-img" src="${data.images[imageIndex].url}" alt="${data.images[0].altText}">
             </picture>
             <div class="overlay-description">
                 <p class="description parkResult-description">${data.description}</p>

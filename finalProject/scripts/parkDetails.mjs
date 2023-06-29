@@ -17,10 +17,13 @@ export default async function parkDetails(parkCode) {
     renderParkDetails(park, parkActivities);
 }
 
-function renderImageCarousel(park) {
+function renderCarousel(park) {
 
     const numImages = park.data[0].images.length;
-    const carousel = document.getElementById('carousel-container');
+    const carousel = document.getElementById('slides-container');
+    const slide = document.getElementsByClassName('slide');
+    const prevButton = document.getElementById('slide-arrow-prev');
+    const nextButton = document.getElementById('slide-arrow-next');
 
     // only add carousel if there are at least 3 images
     if (numImages > 2) {
@@ -28,14 +31,18 @@ function renderImageCarousel(park) {
         // Skip the first image. It is already displayed
         // higher up on the page
         for (let i = 1; i < numImages; i++) {
-            const html = `<li class="slide">
-            <picture>
-                <img class="slide-img" src="${park.data[0].images[i].url}" 
+            const html = 
+            `<div class="slide">
+                <img class="park-img slide-img" src="${park.data[0].images[i].url}" 
                 alt="${park.data[0].images[i].altText}">
-            </picture>
-            </li>`;
+            </div>`;
             carousel.insertAdjacentHTML('afterend', html);
         }
+
+        nextButton.addEventListener('click', (event) => {
+            const slideWidth = slide.clientWidth;
+            carousel.scrollLeft += slideWidth;
+        })
     }
 }
 
@@ -65,5 +72,5 @@ function renderParkDetails(park, parkActivities) {
     document.getElementById('standardSundayHours').textContent = ` ${park.data[0].operatingHours[0].standardHours.sunday}`;
 
     // image carousel
-    renderImageCarousel(park);
+  
 }

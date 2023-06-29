@@ -48,7 +48,7 @@ h2 {
 header,
 select,
 .locationFilterOption,
-.parkResult-location,
+.location,
 .parkResult-learnMore {
     font-size: var(--medium-font);
 }
@@ -62,7 +62,8 @@ select,
 }
 
 h2,
-a {
+a,
+#parkDetails-name {
     color: var(--accent-color);
 }
 
@@ -161,7 +162,7 @@ main {
 
 main,
 .parkResults,
-.parkResult-img {
+.park-img {
     width: max(85vw, 300px);
 }
 
@@ -189,15 +190,16 @@ main,
     margin: 2.5rem 0;
 }
  
-.parkResult-name {
+.name {
     margin-top: 5rem;
+    height: 5vh;
 }
 
-.parkResult-location {
+.location {
     margin-bottom: 1.5rem;
 }
 
-.parkResult-description {
+.description {
     margin-top: 1.5rem;
 }
 
@@ -206,25 +208,3 @@ main,
 }
 
 /** everything inside main at parkDetails.html **/
-
-.image-carousel {
-    margin: 1rem;
-    position: relative;
-    overflow: hidden;
-}
-
-#carousel-container {
-    display: flex;
-    overflow: scroll;
-    scroll-behavior: smooth;
-    width: 100%;
-    height: calc(100vh - 2rem);
-    margin: 0;
-    padding: 0;
-}
-
-.slide {
-    width: 100%;
-    height: 100%;
-    flex: 1 0 100%;
-}
