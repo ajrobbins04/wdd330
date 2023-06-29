@@ -129,16 +129,15 @@ header > picture {
     margin: 0.75rem 0;
 }
 
-.parkResults {
+.parkResults,
+.parkResults li * {
     margin: 2rem auto;
 }
 
 .parkResults li {
-    margin: 6rem auto;
+    margin: 5rem auto;
 }
 
-p,
-a,
 .banner-green li {
     padding: 1rem;
 }

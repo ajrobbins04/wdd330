@@ -2,7 +2,7 @@
     
     .homePage,
     .parkResults {
-        width: min(95vw, 1300px);
+        width: min(95vw, 1400px);
     }
     .parkResult,
     .parkResult-img {
@@ -13,7 +13,7 @@
         display: grid;
         grid-template-columns: 1fr 1fr;
         align-items: start; 
-        gap: 4rem;
+        column-gap: 5rem;
     }
  
 }
