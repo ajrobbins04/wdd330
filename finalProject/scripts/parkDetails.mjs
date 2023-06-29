@@ -1,6 +1,7 @@
+import { convertStateAbbr,
+         selectRandomImage} from './utils.mjs';
 import { findByParkCode, 
-         convertStateAbbr,
-         selectRandomImage} from "./utils.mjs";
+         findByStateCode } from './externalServices.mjs';
 
 let park = {};
 let parkActivities = {};
@@ -15,6 +16,7 @@ export default async function parkDetails(parkCode) {
     parkActivities = await findByParkCode(parkCode, getActivities);
     console.log(parkActivities);
     renderParkDetails(park, parkActivities);
+
 }
 
 function renderCarousel(park) {

@@ -1,7 +1,7 @@
-import { apiFetch, 
-        convertStateAbbr,
-        renderListWithTemplate,
-        selectRandomImage } from './utils.mjs';
+import { convertStateAbbr,
+         renderListWithTemplate,
+         selectRandomImage } from './utils.mjs';
+import { apiFetch } from './externalServices.mjs';
 
 export default async function parkList(selector) {
 
@@ -10,7 +10,7 @@ export default async function parkList(selector) {
 
     renderListWithTemplate(parkResultTemplate, element, Array.from(parks.data));
 
-    console.log(parks);
+    console.log(parks.data);
     // sortByLocation(parks.data);
   
     // organizes results based on the current sort option
