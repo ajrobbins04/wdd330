@@ -87,10 +87,6 @@ body {
     background-color: var(--primary-color);
 }
 
-main {
-    margin: 0 auto;
-}
-
 img {
     width: 100%;
     height: auto;
@@ -114,7 +110,7 @@ header {
     align-items: center;
 }
 
-/** margin and padding **/
+/** margins and padding **/
 h1,
 h2,
 header > picture {
@@ -155,7 +151,7 @@ header > picture {
     justify-content: space-evenly;
 }
 
-/** index.html content **/
+/** index.html content layout **/
 .homePage h1 {
     grid-area: title;
 }
@@ -177,38 +173,8 @@ header > picture {
     "sortResults"
     "results";
 }
- 
-#parkDetails-name {
-    grid-area: pTitle;
-}
 
-#parkDetails-description {
-    grid-area: pDescription;
-}
-
-#parkDetails-location {
-    grid-area: pLocation;
-}
-
-.parkDetails picture {
-    grid-area: pImage;
-}
-
-.parkDetails .operatingInfo {
-    grid-area: pHours;
-}
-.parkDetails {
-    display: grid;
-    margin: 3rem auto;
-    gap: 3rem;
-    grid-template-areas:
-    "pTitle"
-    "pDescription"
-    "pLocation"
-    "pImage"
-    "pHours";
-}
-
+/** index.html content **/
 .homePage,
 .parkResults,
 .park-img {
@@ -241,5 +207,38 @@ header > picture {
 .parkResult:hover {
     transform: scale(1.05);
 }
+ 
+/** parkDetails.html content layout **/
+#parkDetails-name {
+    grid-area: pTitle;
+}
 
-/** everything inside main at parkDetails.html **/
+#parkDetails-description {
+    grid-area: pDescription;
+}
+
+#parkDetails-location {
+    grid-area: pLocation;
+}
+
+.parkDetails picture {
+    grid-area: pImage;
+}
+
+.parkDetails .operatingInfo {
+    grid-area: pHours;
+}
+
+.parkDetails {
+    display: grid;
+    margin: 3rem auto;
+    gap: 3rem;
+    grid-template-areas:
+    "pTitle"
+    "pDescription"
+    "pLocation"
+    "pImage"
+    "pHours";
+}
+
+/** parkDetails.html content **/
