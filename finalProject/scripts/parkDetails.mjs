@@ -1,5 +1,4 @@
-import { convertStateAbbr,
-         selectRandomImage} from './utils.mjs';
+import { convertStateAbbr } from './utils.mjs';
 import { findByParkCode, 
          findByStateCode } from './externalServices.mjs';
 

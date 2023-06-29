@@ -196,6 +196,11 @@ header > picture {
     text-align: center;
 }
 
+.sortBar,
+.locationBox {
+    cursor: pointer;
+}
+
 .locationFilter {
     overflow-y: scroll;
     height: 25vh;

@@ -10,7 +10,7 @@ export default async function parkList(selector) {
 
     renderListWithTemplate(parkResultTemplate, element, Array.from(parks.data));
 
-    console.log(parks.data);
+    console.log(parks);
     // sortByLocation(parks.data);
   
     // organizes results based on the current sort option
