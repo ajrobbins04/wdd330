@@ -25,20 +25,42 @@ export default async function parkList(selector) {
 
 }
 
-async function sortResults(element) {
+function sortResults(element) {
 
     if (this.value === 'location') {
         const filterOptions = document.getElementById('locationFilter');
         filterOptions.classList.remove('hide');
-        let parks = {};
-        const locationsArray = Object.entries(locations);
-        locationsArray.forEach((location) => {
-            parks = await findByStateCode('parks?', location[0]);
-            renderListWithTemplate(parkResultTemplate, element, Array.from(parks.data));
-        });
-    
+        sortByLocation(element);
     }
 
+}
+
+function sortByLocation(element) {
+    const locationsArray = Object.entries(locations);
+ 
+    let parksByLocation = {};
+    locationsArray.forEach(async function (location) {
+        let parks = await findByStateCode('parks?', location[0]);
+        let locationKey = location[0];
+        let parksArray = Array.from(parks.data);
+        parksByLocation[locationKey] = parksArray;
+});
+console.log(parksByLocation);
+
+   /*
+    let allParks = [];
+    const locationsArray = Object.entries(locations);
+    locationsArray.forEach(async function (location) {
+            let parks = await findByStateCode('parks?', location[0]);
+            let parkData = Array.from(parks.data);
+            parkData.forEach((park) => {
+                allParks.push(park);
+            })    
+    });
+    console.log(allParks);
+    renderListWithTemplate(parkResultTemplate, element, allParks);*/
+
+    
 }
 
 
