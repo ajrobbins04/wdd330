@@ -16,7 +16,7 @@ export default async function parkList(selector) {
   
     // organizes results based on the current sort option
     const option = document.getElementById('sortOptions');
-    option.addEventListener('change', sortResults);
+    option.addEventListener('change', switchResultDisplay);
 
     //const locationCheckboxes = document.querySelectorAll('.locationBox');
     //locationCheckboxes.forEach((box) => {
@@ -25,42 +25,32 @@ export default async function parkList(selector) {
 
 }
 
-function sortResults(element) {
+function switchResultDisplay(element) {
+
+    let parks = {};
 
     if (this.value === 'location') {
         const filterOptions = document.getElementById('locationFilter');
         filterOptions.classList.remove('hide');
-        sortByLocation(element);
-  
+        parks = sortByLocation();
+        console.log(parks);
     }
 
 }
 
-function sortByLocation(element) {
+function sortByLocation() {
 
     let parksByLocation = {};
     let parksInLocation = {};
     locations.forEach(async function (location) {
         let parks = await findByStateCode('parks?', location);
         let parksArray = Array.from(parks.data);
-        parksInLocation = { stateCode: parksArray};
-        console.log(parksInLocation);
-        parksByLocation[`location-${location}`] = parksInLocation;
-         
+        parksInLocation = {parks: parksArray};
+        parksByLocation[`${location}`] = parksInLocation; 
     });
  
   
-
-    /*let parksByLocation = {};
-    locations.forEach(async function (location) {
-        let parks = await findByStateCode('parks?', location);
-        let locationKey = location;
-        let parksArray = Array.from(parks.data);
-        parksByLocation[locationKey] = parksArray;  
-        console.log(parksByLocation);
-    });
-    console.log(parksByLocation);
-    console.log(Object.keys(parksByLocation));*/
+    return parksByLocation;
 }
 
  
