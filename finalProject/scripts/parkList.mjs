@@ -31,38 +31,39 @@ function sortResults(element) {
         const filterOptions = document.getElementById('locationFilter');
         filterOptions.classList.remove('hide');
         sortByLocation(element);
+  
     }
 
 }
 
 function sortByLocation(element) {
-    const locationsArray = Object.entries(locations);
- 
+
     let parksByLocation = {};
-    locationsArray.forEach(async function (location) {
-        let parks = await findByStateCode('parks?', location[0]);
-        let locationKey = location[0];
+    let parksInLocation = {};
+    locations.forEach(async function (location) {
+        let parks = await findByStateCode('parks?', location);
         let parksArray = Array.from(parks.data);
-        parksByLocation[locationKey] = parksArray;
-});
-console.log(parksByLocation);
-
-   /*
-    let allParks = [];
-    const locationsArray = Object.entries(locations);
-    locationsArray.forEach(async function (location) {
-            let parks = await findByStateCode('parks?', location[0]);
-            let parkData = Array.from(parks.data);
-            parkData.forEach((park) => {
-                allParks.push(park);
-            })    
+        parksInLocation = { stateCode: parksArray};
+        console.log(parksInLocation);
+        parksByLocation[`location-${location}`] = parksInLocation;
+         
     });
-    console.log(allParks);
-    renderListWithTemplate(parkResultTemplate, element, allParks);*/
+ 
+  
 
-    
+    /*let parksByLocation = {};
+    locations.forEach(async function (location) {
+        let parks = await findByStateCode('parks?', location);
+        let locationKey = location;
+        let parksArray = Array.from(parks.data);
+        parksByLocation[locationKey] = parksArray;  
+        console.log(parksByLocation);
+    });
+    console.log(parksByLocation);
+    console.log(Object.keys(parksByLocation));*/
 }
 
+ 
 
 function includeInLocationSort() {
     
