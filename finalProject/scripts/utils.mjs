@@ -133,7 +133,6 @@
     "SD",
     "TN",
     "TX",
-    "TT",
     "UT",
     "VT",
     "VI",
@@ -144,7 +143,42 @@
     "WY"
   ];
  
-/*export const locations = {
+
+  export const regions = {
+      'Northeast': {
+        'New England': ['CT', 'ME', 'MA', 'NH', 'RI', 'VT'],
+        'Middle Atlantic': ['NJ', 'NY', 'PA']
+    },
+    'Midwest': {
+      'East North Central': ['IN', 'IL', 'MI', 'OH', 'WI'],
+      'West North Central': ['IA', 'KS', 'MN', 'MO', 'NE', 'ND', 'SD'] 
+    },
+    'South': {
+    'South Atlantic': ['DE', 'DC', 'FL', 'GA', 'MD', 'NC', 'SC', 'VA', 'WV'],
+    'East South Central': ['AL', 'KY', 'MS', 'TN'],
+    'West South Central': ['AR', 'LA', 'OK', 'TX']
+    },
+    'West': {
+      'Mountatin': ['AZ', 'CO', 'ID', 'MT', 'NV', 'NM', 'UT', 'WY'],
+      'Pacific': ['AK', 'CA', 'HI', 'WA', 'OR']
+    },
+    'Atlantic': ['AS', 'GU', 'NP', 'PR', 'VI']
+}
+  
+   
+ 
+/*  export const regions = {
+      'Northeast': ['ME', 'NH', 'VT', 'MA', 'RI', 'CT',
+      'NJ', 'NY', 'PA'],
+
+      'Midwest': ['ND', 'SD', 'NE', 'KS', 'MN', 'IA', 'MO',
+      'WI', 'IL', 'IN', 'MI', 'OH'],
+
+      'South': ['MD', 'DE', 'DC', 'WV', 'VA', 'NC', 'SC', 'KY', 
+      'TN', 'GA', 'FL', 'AL', 'MS', 'AR', 'LA', 'OK', 'TX'],
+    }
+
+export const locations = {
     "AL": "Alabama",
     "AK": "Alaska",
     "AS": "American Samoa",
