@@ -1,7 +1,8 @@
 import { convertStateAbbr,
          renderListWithTemplate,
          selectRandomImage,
-         locations } from './utils.mjs';
+         locations,
+         regions } from './utils.mjs';
 import { apiFetch,
          findByStateCode } from './externalServices.mjs';
 
@@ -18,6 +19,7 @@ export default async function parkList(selector) {
     const option = document.getElementById('sortOptions');
     option.addEventListener('change', switchResultDisplay);
 
+    sortByRegion();
     //const locationCheckboxes = document.querySelectorAll('.locationBox');
     //locationCheckboxes.forEach((box) => {
         //box.addEventListener('click', includeInSearch);
@@ -25,16 +27,35 @@ export default async function parkList(selector) {
 
 }
 
-function switchResultDisplay(element) {
+function switchResultDisplay(element, parks) {
 
-    let parks = {};
+    const locationFilterOptions = document.getElementById('locationFilter');
+    const regionFilterOptions = document.getElementById('regionFilter');
+    let parkSort = {};
 
+    // sort by location
     if (this.value === 'location') {
-        const filterOptions = document.getElementById('locationFilter');
-        filterOptions.classList.remove('hide');
-        parks = sortByLocation();
-        console.log(parks);
+
+        /*if (!regionFilterOptions.hasAttribute('hide')) {
+            regionFilterOptions.setAttribute('hide');
+        }*/
+        locationFilterOptions.classList.remove('hide');
+        parkSort = sortByLocation();
+   
+ 
+    // sort by region
+    } else if (this.value === 'region') {
+
+        if (!locationFilterOptions.hasAttribute('hide')) {
+            locationFilterOptions.setAttribute('hide');
+        }
+        regionFilterOptions.classList.remove('hide');
+ 
+    // sort A - Z
+    } else {
+        renderListWithTemplate(parkResultTemplate, element, Array.from(parks.data));
     }
+    
 
 }
 
@@ -42,6 +63,7 @@ function sortByLocation() {
 
     let parksByLocation = {};
     let parksInLocation = {};
+
     locations.forEach(async function (location) {
         let parks = await findByStateCode('parks?', location);
         let parksArray = Array.from(parks.data);
@@ -53,6 +75,54 @@ function sortByLocation() {
     return parksByLocation;
 }
 
+function sortByRegion() {
+
+    // each major region has 2-3 subregions except
+    // for the atlantic territories
+    const northEastRegions = regions.northEastSubRegions;
+    const midWestRegions = regions.midWestSubRegions;
+    const southRegions = regions.southSubRegions;
+    const west = regions.westSubRegions;
+
+    // doesn't need to go through subregions to access
+    // this region's state codes
+    const atlanticStateCodes = regions.atlantic_stateCodes;
+  
+    // will hold the stateCodes contained in each subRegion
+    let subRegionLocations = [];
+
+    allRegions.forEach((region) => {
+
+        console.log(region);
+        // get number of subregions per major region
+        let length = Object.keys(region[1]).length;
+       
+        // Atlantic territories not included b/c doesn't
+        // have any subregions
+        if (length != 5) {
+            for (let i = 0; i < length; i++) {
+               
+                // contains all the subRegion arrays
+                // for each major region
+                let majorRegion = Object.values(region[1]);
+
+                // access each subRegion array
+                majorRegion.forEach((subRegion) => {
+                     for (let i = 0; i < subRegion.length; i++) {
+
+                        // will be a stateCode value
+                        let location = subRegion[i];
+                     }
+                });
+            }
+        }
+
+        else {
+            let territories = region.atlanticTerritories;
+            console.log(territories);
+        }
+    });
+}
  
 
 function includeInLocationSort() {

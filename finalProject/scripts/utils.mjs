@@ -145,24 +145,38 @@
  
 
   export const regions = {
-      'Northeast': {
-        'New England': ['CT', 'ME', 'MA', 'NH', 'RI', 'VT'],
-        'Middle Atlantic': ['NJ', 'NY', 'PA']
+    northEast: 'Northeast', 
+    northEastSubRegions: {
+      subRegion1: 'New England',
+      subRegion1_stateCodes: ['CT', 'ME', 'MA', 'NH', 'RI', 'VT'],
+      subRegion2: 'Middle Atlantic',
+      subRegion2_stateCodes: ['NJ', 'NY', 'PA']
     },
-    'Midwest': {
-      'East North Central': ['IN', 'IL', 'MI', 'OH', 'WI'],
-      'West North Central': ['IA', 'KS', 'MN', 'MO', 'NE', 'ND', 'SD'] 
+    midWest: 'Midwest',
+    midWestSubRegions: {
+      subRegion1: 'East North Central',
+      subRegion1_stateCodes: ['IN', 'IL', 'MI', 'OH', 'WI'],
+      subRegion2: 'West North Central',
+      subRegion2_stateCodes: ['IA', 'KS', 'MN', 'MO', 'NE', 'ND', 'SD'] 
     },
-    'South': {
-    'South Atlantic': ['DE', 'DC', 'FL', 'GA', 'MD', 'NC', 'SC', 'VA', 'WV'],
-    'East South Central': ['AL', 'KY', 'MS', 'TN'],
-    'West South Central': ['AR', 'LA', 'OK', 'TX']
+    south: 'South',
+    southSubRegions: {
+      subRegion1: 'South Atlantic',
+      subRegion1_stateCodes: ['DE', 'DC', 'FL', 'GA', 'MD', 'NC', 'SC', 'VA', 'WV'],
+      subRegion2: 'East South Central',
+      subRegion2_stateCodes: ['AL', 'KY', 'MS', 'TN'],
+      subRegion3: 'West South Central',
+      subRegion3_stateCodes: ['AR', 'LA', 'OK', 'TX']
     },
-    'West': {
-      'Mountatin': ['AZ', 'CO', 'ID', 'MT', 'NV', 'NM', 'UT', 'WY'],
-      'Pacific': ['AK', 'CA', 'HI', 'WA', 'OR']
+    west: 'West', 
+    westSubRegions: {
+      subRegion1: 'Mountatin',
+      subRegion1_stateCodes: ['AZ', 'CO', 'ID', 'MT', 'NV', 'NM', 'UT', 'WY'],
+      subRegion2: 'Pacific',
+      subRegion2_stateCodes: ['AK', 'CA', 'HI', 'WA', 'OR']
     },
-    'Atlantic': ['AS', 'GU', 'NP', 'PR', 'VI']
+    atlanticTerritories: 'Atlantic Territories',
+    atlantic_stateCodes: ['AS', 'GU', 'NP', 'PR', 'VI'] 
 }
   
    
