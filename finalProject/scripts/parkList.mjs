@@ -75,36 +75,61 @@ function getParksByState() {
 }
 
 function getParksByRegion() {
-
-    // will store all parks sorted by
-    // each major region, and further sorted
-    // by each region's sub-regions
+ 
     let parksByRegion = {};
 
-    // the only region w/o sub-regions is
-    // the atlantic territories 
+    // most regions contain 2 - 3 sub-regions
     const northEastRegion = regions.northEastSubRegions;
     const midWestRegion = regions.midWestSubRegions;
     const southRegion = regions.southSubRegions;
     const westRegion = regions.westSubRegions;
 
-    // is accessed via regions, not a property of regions
+    // its properties can be found in regions. there are
+    // no sub-regions for the atlantic territories
     const atlanticRegion = regions;
 
-    let allRegions = [northEastRegion, midWestRegion,
+    let majorRegions = [northEastRegion, midWestRegion,
     southRegion, westRegion, atlanticRegion];
-   
-    // gets an object with each subregion, and an array 
-    // of states corresponding to each subRegion
-    let allSubRegions = getSubRegions(allRegions);
 
-    // get parks from each region
-    allRegions.forEach((majorRegion) => {
-  
-        //let subRegions = allSubRegions`.${majorRegion}`;
-      
-        let parks_majorRegion = {};
- 
+    // get sub-region information for each region
+    majorRegions.forEach((region) => {
+
+        let subRegions = [];
+
+        // each sub-region obj will be nested
+        // inside the subRegions
+        let subRegion = {};
+
+        let subRegionArrays = Object.values(region);
+
+        if (region !== atlanticRegion) {
+            
+            for (let i = 0; i < subRegionArrays.length; i+= 2) {
+
+                let subRegionName = subRegionArrays[i];
+                let subRegionStates = subRegionArrays[i + 1];
+
+                subRegion[`${subRegionName}`] = {states: subRegionStates};
+                subRegions.push(subRegion);
+            }
+            
+        } else {
+            let subRegionName = subRegionArrays[8];
+            let subRegionStates = subRegionArrays[9];
+
+            subRegion[`${subRegionName}`] = {states: subRegionStates};
+            subRegions.push(subRegion);
+        }
+
+        subRegions.forEach((subRegion) => {
+            let parks_subRegion = getSubRegionParks(subRegion);
+        });
+        
+        console.log(subRegions);
+        
+    });
+
+
         // get parks from each region's sub-region
         allSubRegions.forEach((subRegion) => {
 
@@ -113,8 +138,7 @@ function getParksByRegion() {
             // nest the sub-region's parks inside its major region
             parks_majorRegion[`${subRegion}`] = parks_subRegion;
             console.log(parks_majorRegion);
-        });
-    });       
+        });      
 }
  
 async function getSubRegionParks(subRegion) {
@@ -137,10 +161,9 @@ async function getSubRegionParks(subRegion) {
     return parks_subRegion; 
 }
 
-function getSubRegions(allRegions) {
-
-    let allSubRegions = [];
+/*function getSubRegions(allRegions) {
   
+    let allMajorRegions = [];
     allRegions.forEach((majorRegion) => {
    
         if (majorRegion.length > 1 ) {
@@ -151,6 +174,8 @@ function getSubRegions(allRegions) {
        
             // northEast, midWest, and west regions
             if (length === 2) {
+                let allSubRegions = [];
+
                 let subRegion1 = {name: majorRegion.subRegion1, 
                     states: majorRegion.subRegion1_stateCodes};
                 let subRegion2 = {name: majorRegion.subRegion2, 
@@ -158,12 +183,26 @@ function getSubRegions(allRegions) {
       
                 allSubRegions.push(subRegion1);
                 allSubRegions.push(subRegion2);
- 
-                console.log(allSubRegions);
+                    
+                if (subRegion1.name === 'New England') {
+                    let majorRegion = {name: 'Northeast', 
+                    subRegions: allSubRegions};
+                }
+                else if (subRegion1.name === 'Mountain') {
+                    let majorRegion = {name: 'West', 
+                    subRegions: allSubRegions};
+                } else {
+                    let majorRegion = {name: 'Midwest', 
+                    subRegions:  allSubRegions};
+                }
+                allMajorRegions.push(allSubRegions);
             }
 
             // only south region
             else if (length === 3) {
+
+                let allSubRegions = [];
+
                 let subRegion1 = {name: majorRegion.subRegion1, 
                                 states: majorRegion.subRegion1_stateCodes};
                 let subRegion2 = {name: majorRegion.subRegion2, 
@@ -174,19 +213,32 @@ function getSubRegions(allRegions) {
                 allSubRegions.push(subRegion1);
                 allSubRegions.push(subRegion2);
                 allSubRegions.push(subRegion3);
-                console.log(allSubRegions);
+
+                let majorRegion = {name: 'South', 
+                    subRegions: allSubRegions};
+
+                allMajorRegions.push(allSubRegions);
+                console.log(allMajorRegions);
             }  
         } else {
+            let allSubRegions = [];
+
             // add stateCodes from the atlatic territories region
             let subRegion1 = {name: majorRegion.atlanticTerritories, 
                 states: majorRegion.atlantic_stateCodes};
 
-            allSubRegions['atlanticRegion'] = subRegion1;
+            allSubRegions.push(subRegion1);
+            let majorRegion = {name: 'Atlantic Territories', 
+            subRegions: allSubRegions};
+
+            allMajorRegions.push(allSubRegions);
         }
+      
     });
         
+   
     return allSubRegions;
-}
+}*/
 
 function includeInLocationSort() {
     
