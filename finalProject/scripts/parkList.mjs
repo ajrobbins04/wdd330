@@ -1,7 +1,7 @@
 import { convertStateAbbr,
          renderListWithTemplate,
          selectRandomImage,
-         locations,
+         states,
          regions } from './utils.mjs';
 import { apiFetch,
          findByStateCode } from './externalServices.mjs';
@@ -19,7 +19,7 @@ export default async function parkList(selector) {
     const option = document.getElementById('sortOptions');
     option.addEventListener('change', switchResultDisplay);
 
-    sortByRegion();
+    getParksByRegion();
     //const locationCheckboxes = document.querySelectorAll('.locationBox');
     //locationCheckboxes.forEach((box) => {
         //box.addEventListener('click', includeInSearch);
@@ -40,7 +40,7 @@ function switchResultDisplay(element, parks) {
             regionFilterOptions.setAttribute('hide');
         }*/
         locationFilterOptions.classList.remove('hide');
-        parkSort = sortByLocation();
+        parkSort = getParksByState();
    
  
     // sort by region
@@ -59,69 +59,89 @@ function switchResultDisplay(element, parks) {
 
 }
 
-function sortByLocation() {
+function getParksByState() {
 
-    let parksByLocation = {};
-    let parksInLocation = {};
+    let parksByState = {};
+    let parks_oneState = {};
 
-    locations.forEach(async function (location) {
-        let parks = await findByStateCode('parks?', location);
+    states.forEach(async function (state) {
+        let parks = await findByStateCode('parks?', state);
         let parksArray = Array.from(parks.data);
-        parksInLocation = {parks: parksArray};
-        parksByLocation[`${location}`] = parksInLocation; 
+        parks_oneState = {parks: parksArray};
+        parksByState[`${state}`] = parksInState; 
     });
- 
   
-    return parksByLocation;
+    return parksByState;
 }
 
-function sortByRegion() {
+function getParksByRegion() {
 
-    // each major region has 2-3 subregions except
-    // for the atlantic territories
+    // will store all parks sorted by
+    // each major region, and further sorted
+    // by each region's sub-regions
+    let parksByRegion = {};
+
+    // the only region w/o sub-regions is
+    // the atlantic territories 
     const northEastRegions = regions.northEastSubRegions;
     const midWestRegions = regions.midWestSubRegions;
     const southRegions = regions.southSubRegions;
     const west = regions.westSubRegions;
 
-    // doesn't need to go through subregions to access
-    // this region's state codes
-    const atlanticStateCodes = regions.atlantic_stateCodes;
-  
-    // will hold the stateCodes contained in each subRegion
-    let subRegionLocations = [];
 
-    allRegions.forEach((region) => {
+    let allRegions = [northEastRegions, midWestRegions,
+    southRegions, west];
+   
 
-        console.log(region);
-        // get number of subregions per major region
-        let length = Object.keys(region[1]).length;
+    allRegions.forEach((majorRegion) => {
+ 
+        let subRegions = [];
+        let parks_oneRegion = {};
+
+        // get number of subregions per major region.
+        // divide b/c there are two subRegion obj. properties
+        // for each subRegion
+        let numSubRegions = (Object.keys(majorRegion).length) / 2;
        
-        // Atlantic territories not included b/c doesn't
-        // have any subregions
-        if (length != 5) {
-            for (let i = 0; i < length; i++) {
-               
-                // contains all the subRegion arrays
-                // for each major region
-                let majorRegion = Object.values(region[1]);
-
-                // access each subRegion array
-                majorRegion.forEach((subRegion) => {
-                     for (let i = 0; i < subRegion.length; i++) {
-
-                        // will be a stateCode value
-                        let location = subRegion[i];
-                     }
-                });
+            if (length === 2) {
+                let subRegion1_states = majorRegion.subRegion1_stateCodes;
+                let subRegion2_states = majorRegion.subRegion2_stateCodes;
+                subRegions.push(subRegion1_states);
+                subRegions.push(subRegion2_states);
             }
-        }
 
-        else {
-            let territories = region.atlanticTerritories;
-            console.log(territories);
-        }
+            // only south region
+            else if (length === 3) {
+                let subRegion1_states = majorRegion.subRegion1_stateCodes;
+                let subRegion2_states = majorRegion.subRegion2_stateCodes;
+                let subRegion3_states = majorRegion.subRegion3_stateCodes;
+                subRegions.push(subRegion1_states);
+                subRegions.push(subRegion2_states);
+                subRegions.push(subRegion3_states);
+            }    
+            else {
+                // doesn't need to go through subregions to access
+                // the atlantic territories' state codes 
+                subRegions.push(regions.atlantic_stateCodes);
+            }
+
+            let parks_oneSubRegion = {};
+            let parks_oneState = {};
+
+            // generate array
+            subRegions.forEach(async function (subRegion) {
+
+                for (let i = 0; i < subRegion.length; i++) {
+                        let state = subRegion[i];
+                        let parks = await findByStateCode('parks?', state);
+                        let parksArray = Array.from(parks.data);
+                        parks_oneState = {parks: parksArray};
+                        parks_oneSubRegion[`${state}`] = parks_oneState; 
+                     }
+                     parks_oneRegion[`${subRegion}`] = parks_oneSubRegion;
+                });
     });
+         
 }
  
 

@@ -84,7 +84,7 @@
     
   }
 
-  export const locations = [
+  export const states = [
     'AL',
     'AK',
     'AS',
