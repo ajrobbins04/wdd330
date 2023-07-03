@@ -64,24 +64,13 @@ function switchResultDisplay(element, parks) {
 
 function getParksByState() {
 
-    /*let parksByState = {};
-    let parks_oneState = {};
-
-    states.forEach(async function (state) {
-        let parks = await findByStateCode('parks?', state);
-        let parksArray = Array.from(parks.data);
-        parks_oneState = {parks: parksArray};
-        parksByState[`${state}`] = parks_oneState; 
-    });*/
-
     let parksByState = {};
-    let parks_oneState = {};
+    let parksArray = [];
 
     states.forEach(async function (state) {
         let parks = await findByStateCode('parks?', state);
-        let parksArray = Array.from(parks.data);
-        parks_oneState = {parks: parksArray};
-        parksByState[`${state}`] = parks_oneState; 
+        parksArray = Array.from(parks.data);
+        parksByState[`${state}`] = parksArray; 
     });
   
     return parksByState;
@@ -154,12 +143,6 @@ async function getSubRegionParks(subRegion) {
         subRegionParks[`${subRegion}`] = {state: parksInState}; 
     }
     return subRegionParks; 
-}
-
- 
-
-function includeInLocationSort() {
-    
 }
 
 
