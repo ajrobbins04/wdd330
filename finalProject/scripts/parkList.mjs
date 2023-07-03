@@ -19,10 +19,7 @@ export default async function parkList(selector) {
     const option = document.getElementById('sortOptions');
     option.addEventListener('change', switchResultDisplay);
 
-    let parkSort = {};
-    parkSort = getParksByState();
-    console.log(parkSort);
-    //getParksByRegion();
+    getParksByRegion();
     //const locationCheckboxes = document.querySelectorAll('.locationBox');
     //locationCheckboxes.forEach((box) => {
         //box.addEventListener('click', includeInSearch);
@@ -119,18 +116,20 @@ function getParksByRegion() {
             subRegions[`${subRegionName}`] = subRegionStates;
         }
 
+        let subRegionParks = {};
+
         
         Object.values(subRegions).forEach((subRegion) => {
-            
-            let subRegionParks = getSubRegionParks(subRegion);
+            console.log(subRegion);
+            subRegionParks = getSubRegionParks(subRegion);
         });
     });
 }
-async function getSubRegionParks(subRegion) {
+
+function getSubRegionParks(subRegion) {
    
-    let subRegionParks = subRegion.map(getParksByState);
- 
-    for (let i = 0; i < Object.entries(subRegion).length; i++) {
+
+    /*for (let i = 0; i < Object.entries(subRegion).length; i++) {
         let parksInState = {};
         let state = subRegion[i];
         let parks = await findByStateCode('parks?', state);
@@ -141,10 +140,22 @@ async function getSubRegionParks(subRegion) {
 
         // add state to sub-region
         subRegionParks[`${subRegion}`] = {state: parksInState}; 
-    }
-    return subRegionParks; 
+    }*/
+    
 }
 
+function getParks() {
+
+    let parksByState = {};
+
+    states.forEach(async function (state) {
+        let parks = await findByStateCode('parks?', state);
+        parksArray = Array.from(parks.data);
+        parksByState[`${state}`] = parksArray; 
+    });
+  
+    return parksByState;
+}
 
 function parkResultTemplate(data) {
  
