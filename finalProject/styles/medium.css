@@ -3,9 +3,9 @@
     header {
         justify-content: start;
     }
-    header .div-img,
-    header .exploreParks {
-        margin-top: 2.75rem;
+  
+    header {
+        margin: 2.75rem 0;
     }
 
     header .div-img {
