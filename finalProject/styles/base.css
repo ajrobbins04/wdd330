@@ -255,7 +255,7 @@ header > picture {
     "pLocation"
     "pImage"
     "pHours";
-    padding: 1.75rem;
+    width: max(85vw, 300px);
 }
 
 /** parkDetails.html content **/

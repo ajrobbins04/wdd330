@@ -22,4 +22,8 @@
     .locationFilter {
         width: min(80vw, 650px);
     }
+
+    .parkDetails {
+        width: min(80vw, 900px);
+    }
 }
