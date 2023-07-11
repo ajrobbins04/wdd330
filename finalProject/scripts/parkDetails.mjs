@@ -15,6 +15,9 @@ export default async function parkDetails(parkCode) {
   
     renderParkDetails(park, parkActivities);
 
+    // add listener for "add to visit list" button
+    document.getElementById('addToVisitList')
+    .addEventListener('click', addToVisitList);
 }
 
 function renderCarousel(park) {
@@ -73,4 +76,8 @@ function renderParkDetails(park, parkActivities) {
 
     // image carousel
   
+}
+
+function addToVisitList() {
+    console.log("works");
 }

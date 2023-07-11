@@ -1,219 +1,171 @@
-
-  export function setLocalStorage(key, data) {}
-  export function getLocalStorage(key) {}
-
-  export function getParam(param) {
-
-    const queryString = window.location.search;
-    const urlParams = new URLSearchParams(queryString);
-    return urlParams.get(param);
-  }
-
-  export async function renderListWithTemplate(templateFn,
-    parentElement,
-    list,
-    position = 'afterbegin',
-    clear = true) {
-      if (clear) {
-        parentElement.innerHTML = '';   
-      }
-      const htmlString = list.map(templateFn);
-      parentElement.insertAdjacentHTML(position, htmlString.join(''));
-    }
-
-  export async function renderWithTemplate(templateFn,
-    parentElement,
-    data, 
-    callback,
-    position = 'afterbegin',
-    clear = true) {
-      if (clear) {
-        parentElement.innerHTML = '';   
-      }
-    
-      const htmlString = await templateFn(data);
-      parentElement.insertAdjacentHTML(position, htmlString);
-    
-      // callback function isn't always included
-      if (callback) {
-        callback(data);
-      }
-    
-    }
-
-  function loadTemplate(path) {
-    return async function() {
-
-       // make fetch request to provided filepath
-      const response = await fetch(path);
-      if (response.ok) {
-
-        // must process as text - not JSON
-        const html = await response.text();
-        return html;
-      }
-    }
-  }
-  
-  export function selectRandomImage(park)
-  {
-    const numImages = park.images.length;
-    return (Math.floor(Math.random() * (numImages - 1)));
-  }
-
-  // year will be placed in footer, next to copyright
-  export function getCurrentYear() {
-    const date = new Date();
-    const year = date.getFullYear();
-    return year;
-  }
-
-  export function loadHeaderFooter() {
-  
-    const headerTemplateFn = loadTemplate('./partials/header.html');
-    const footerTemplateFn = loadTemplate('./partials/footer.html');
-
-    const header = document.querySelector('#template-header');
-    const footer = document.querySelector('#template-footer');
-  
-   // const year = getCurrentYear();
-   // document.querySelector('#copyright-year').textContent = ` ${year}`; 
-
-    renderWithTemplate(headerTemplateFn, header);
-    renderWithTemplate(footerTemplateFn, footer);
-    
-  }
-
-  export let parksByState = {
-    'AL': '',
-    'AK': '',
-    'AS': '',
-    'AZ': '',
-    'AR': '',
-    'CA': '',
-    'CO': '',
-    'CT': '',
-    'DE': '',
-    'DC': '',
-    'FL': '',
-    'GA': '',
-    'GU': '',
-    'HI': '',
-    'ID': '',
-    'IL': '',
-    'IN': '',
-    'IA': '',
-    'KS': '',
-    'KY': '',
-    'LA': '',
-    'ME': '',
-    'MD': '',
-    'MA': '',
-    'MI': '',
-    'MN': '',
-    'MS': '',
-    'MO': '',
-    'MT': '',
-    'NE': '',
-    'NV': '',
-    'NH': '',
-    'NJ': '',
-    'NM': '',
-    'NY': '',
-    'NC': '',
-    'ND': '',
-    'MP': '',
-    'OH': '',
-    'OK': '',
-    'OR': '',
-    'PA': '',
-    'PR': '',
-    'RI': '',
-    'SC': '',
-    'SD': '',
-    'TN': '',
-    'TX': '',
-    'UT': '',
-    'VT': '',
-    'VI': '',
-    'VA': '',
-    'WA': '',
-    'WV': '',
-    'WI': '',
-    'WY': ''
+ 
+// save data to local storage
+export function setLocalStorage(key, data) {
+  localStorage.setItem(key, JSON.stringify(data));
 }
 
-  export const states = [
-    'AL',
-    'AK',
-    'AS',
-    'AZ',
-    'AR',
-    'CA',
-    'CO',
-    'CT',
-    'DE',
-    'DC',
-    'FL',
-    'GA',
-    'GU',
-    'HI',
-    'ID',
-    'IL',
-    'IN',
-    'IA',
-    'KS',
-    'KY',
-    'LA',
-    'ME',
-    'MD',
-    'MA',
-    'MI',
-    'MN',
-    'MS',
-    'MO',
-    'MT',
-    'NE',
-    'NV',
-    'NH',
-    'NJ',
-    'NM',
-    'NY',
-    'NC',
-    'ND',
-    'MP',
-    'OH',
-    'OK',
-    'OR',
-    'PA',
-    'PR',
-    'RI',
-    'SC',
-    'SD',
-    'TN',
-    'TX',
-    'UT',
-    'VT',
-    'VI',
-    'VA',
-    'WA',
-    'WV',
-    'WI',
-    'WY'
-  ];
- 
-  export const states_short = [
-    'AL',
-    'AK',
-    'AS',
-    'AZ',
-    'AR',
-    'CA',
-    'CO',
-    'CT',
-    'DE',
-    'DC',
-  ];
+// retrieve data from localstorage
+export function getLocalStorage(key) {
+
+  // JSON.parse parses a JSON string to create
+  // an object
+  return JSON.parse(localStorage.getItem(key));
+}
+
+export function getParam(param) {
+
+  const queryString = window.location.search;
+  const urlParams = new URLSearchParams(queryString);
+  return urlParams.get(param);
+}
+
+export async function renderListWithTemplate(templateFn,
+  parentElement,
+  list,
+  position = 'afterbegin',
+  clear = true) {
+    if (clear) {
+      parentElement.innerHTML = '';   
+    }
+    const htmlString = list.map(templateFn);
+    parentElement.insertAdjacentHTML(position, htmlString.join(''));
+  }
+
+export async function renderWithTemplate(templateFn,
+  parentElement,
+  data, 
+  callback,
+  position = 'afterbegin',
+  clear = true) {
+    if (clear) {
+      parentElement.innerHTML = '';   
+    }
+  
+    const htmlString = await templateFn(data);
+    parentElement.insertAdjacentHTML(position, htmlString);
+  
+    // callback function isn't always included
+    if (callback) {
+      callback(data);
+    }
+  
+  }
+
+function loadTemplate(path) {
+  return async function() {
+
+      // make fetch request to provided filepath
+    const response = await fetch(path);
+    if (response.ok) {
+
+      // must process as text - not JSON
+      const html = await response.text();
+      return html;
+    }
+  }
+}
+
+export function selectRandomImage(park)
+{
+  const numImages = park.images.length;
+  return (Math.floor(Math.random() * (numImages - 1)));
+}
+
+// year will be placed in footer, next to copyright
+export function getCurrentYear() {
+  const date = new Date();
+  const year = date.getFullYear();
+  return year;
+}
+
+export function loadHeaderFooter() {
+
+  const headerTemplateFn = loadTemplate('./partials/header.html');
+  const footerTemplateFn = loadTemplate('./partials/footer.html');
+
+  const header = document.querySelector('#template-header');
+  const footer = document.querySelector('#template-footer');
+
+  // const year = getCurrentYear();
+  // document.querySelector('#copyright-year').textContent = ` ${year}`; 
+
+  renderWithTemplate(headerTemplateFn, header);
+  renderWithTemplate(footerTemplateFn, footer);
+  
+}
+
+
+export const states = [
+  'AL',
+  'AK',
+  'AS',
+  'AZ',
+  'AR',
+  'CA',
+  'CO',
+  'CT',
+  'DE',
+  'DC',
+  'FL',
+  'GA',
+  'GU',
+  'HI',
+  'ID',
+  'IL',
+  'IN',
+  'IA',
+  'KS',
+  'KY',
+  'LA',
+  'ME',
+  'MD',
+  'MA',
+  'MI',
+  'MN',
+  'MS',
+  'MO',
+  'MT',
+  'NE',
+  'NV',
+  'NH',
+  'NJ',
+  'NM',
+  'NY',
+  'NC',
+  'ND',
+  'MP',
+  'OH',
+  'OK',
+  'OR',
+  'PA',
+  'PR',
+  'RI',
+  'SC',
+  'SD',
+  'TN',
+  'TX',
+  'UT',
+  'VT',
+  'VI',
+  'VA',
+  'WA',
+  'WV',
+  'WI',
+  'WY'
+];
+
+export const states_short = [
+  'AL',
+  'AK',
+  'AS',
+  'AZ',
+  'AR',
+  'CA',
+  'CO',
+  'CT',
+  'DE',
+  'DC',
+];
 
 
   export const regions = {
@@ -251,19 +203,7 @@
     atlantic_stateCodes: ['AS', 'GU', 'NP', 'PR', 'VI'] 
 }
   
-   
- 
-/*  export const regions = {
-      'Northeast': ['ME', 'NH', 'VT', 'MA', 'RI', 'CT',
-      'NJ', 'NY', 'PA'],
-
-      'Midwest': ['ND', 'SD', 'NE', 'KS', 'MN', 'IA', 'MO',
-      'WI', 'IL', 'IN', 'MI', 'OH'],
-
-      'South': ['MD', 'DE', 'DC', 'WV', 'VA', 'NC', 'SC', 'KY', 
-      'TN', 'GA', 'FL', 'AL', 'MS', 'AR', 'LA', 'OK', 'TX'],
-    }
-
+/*
 export const locations = {
     "AL": "Alabama",
     "AK": "Alaska",
