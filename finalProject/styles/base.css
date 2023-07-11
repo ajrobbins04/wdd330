@@ -166,6 +166,10 @@ header > picture {
     align-items: center;
 }
 
+.sortResults form {
+    width: 100%;
+}
+
 .homePage .parkResults {
     grid-area: results;
 }
@@ -234,6 +238,7 @@ header > picture {
 
 .parkDetails picture {
     grid-area: pImage;
+    margin: 0 auto;
 }
 
 .parkDetails .operatingInfo {
@@ -250,6 +255,20 @@ header > picture {
     "pLocation"
     "pImage"
     "pHours";
+    padding: 1.75rem;
 }
 
 /** parkDetails.html content **/
+
+.parkDetails-standardHours {
+    display: grid;
+    margin: 1.5rem auto;
+    gap: 0.45rem;
+    grid-template-columns: 45% 55%;
+    width: min(80vw, 500px);
+}
+
+.parkDetails-standardHours .day {
+    justify-self: start;
+}
+

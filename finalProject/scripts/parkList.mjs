@@ -2,6 +2,7 @@ import { convertStateAbbr,
          renderListWithTemplate,
          selectRandomImage,
          states,
+         states_short,
          regions } from './utils.mjs';
 import { apiFetch,
          findByStateCode } from './externalServices.mjs';
@@ -31,7 +32,7 @@ function switchResultDisplay(element, parks) {
 
     const locationFilterOptions = document.getElementById('locationFilter');
     const regionFilterOptions = document.getElementById('regionFilter');
-    let parkSort = {};
+ 
 
     // sort by location
     if (this.value === 'location') {
@@ -40,7 +41,8 @@ function switchResultDisplay(element, parks) {
             regionFilterOptions.setAttribute('hide');
         }*/
         locationFilterOptions.classList.remove('hide');
-        parkSort = getParksByState();
+        let parkSort = getParksByState();
+        console.log(parkSort);
    
  
     // sort by region
@@ -62,14 +64,13 @@ function switchResultDisplay(element, parks) {
 function getParksByState() {
 
     let parksByState = {};
-    let parksArray = [];
-
-    states.forEach(async function (state) {
+    
+    states_short.forEach(async function (state) {
         let parks = await findByStateCode('parks?', state);
-        parksArray = Array.from(parks.data);
+        let parksArray = Array.from(parks.data);
         parksByState[`${state}`] = parksArray; 
     });
-  
+    
     return parksByState;
 }
 
@@ -80,15 +81,17 @@ function getParksByRegion() {
     // most regions contain 2 - 3 sub-regions
     const northEastRegion = regions.northEastSubRegions;
     const midWestRegion = regions.midWestSubRegions;
-    const southRegion = regions.southSubRegions;
-    const westRegion = regions.westSubRegions;
+   /// const southRegion = regions.southSubRegions;
+   // const westRegion = regions.westSubRegions;
 
     // its properties can be found in regions. there are
     // no sub-regions for the atlantic territories
-    const atlanticRegion = regions;
+    //const atlanticRegion = regions;
 
-    let majorRegions = [northEastRegion, midWestRegion,
-    southRegion, westRegion, atlanticRegion];
+    //let majorRegions = [northEastRegion, midWestRegion,
+    //southRegion, westRegion, atlanticRegion];
+
+    let majorRegions = [northEastRegion, midWestRegion];
 
     // get sub-region information for each region
         majorRegions.forEach((region) => {

@@ -62,7 +62,7 @@ function renderParkDetails(park, parkActivities) {
     document.getElementById('parkDetails-img').alt = park.data[0].images[0].altText;
  
     // standard operating hours
-    document.getElementById('operatingInfo-description').textContent = ` ${park.data[0].operatingHours[0].description}`;
+    // document.getElementById('operatingInfo-description').textContent = ` ${park.data[0].operatingHours[0].description}`;
     document.getElementById('standardMondayHours').textContent = ` ${park.data[0].operatingHours[0].standardHours.monday}`;
     document.getElementById('standardTuesdayHours').textContent = ` ${park.data[0].operatingHours[0].standardHours.tuesday}`;
     document.getElementById('standardWednesdayHours').textContent = ` ${park.data[0].operatingHours[0].standardHours.wednesday}`;
