@@ -49,7 +49,8 @@ header,
 select,
 .locationFilterOption,
 .location,
-.parkResult-learnMore {
+.parkResult-learnMore,
+.btn {
     font-size: var(--medium-font);
 }
  
@@ -57,7 +58,8 @@ select,
 /** assign color properties **/
 
 .banner-green li a,
-.sortBar {
+.sortBar,
+.btn {
     color: var(--primary-color);
 }
 
@@ -71,8 +73,13 @@ a,
     background-color: var(--secondary-color);   
 }
 
-.sortBar {
+.sortBar,
+.btn {
     background-color: var(--font-color);
+}
+
+.btn:hover {
+    background-color: var(--accent-color);
 }
 
 /** primary elements **/
@@ -211,7 +218,8 @@ header > picture {
     text-align: start;
 }
 
-.parkResults * {
+.parkResults *,
+.parkDetails * {
     transition: all .35s ease;
 }
  
@@ -219,7 +227,8 @@ header > picture {
     height: 5vh;
 }
 
-.parkResult:hover {
+.parkResult:hover,
+.btn:hover {
     transform: scale(1.05);
 }
  
@@ -270,5 +279,12 @@ header > picture {
 
 .parkDetails-standardHours .day {
     justify-self: start;
+}
+
+.btn {
+    padding: 1.25rem 1.5rem;
+    border-radius: 45%;
+    margin: 0 auto;
+    cursor: pointer;
 }
 
