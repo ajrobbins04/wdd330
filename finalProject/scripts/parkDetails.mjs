@@ -1,4 +1,6 @@
-import { convertStateAbbr } from './utils.mjs';
+import { convertStateAbbr,
+         setLocalStorage,
+         getLocalStorage } from './utils.mjs';
 import { findByParkCode } from './externalServices.mjs';
 
 let park = {};
@@ -79,5 +81,19 @@ function renderParkDetails(park, parkActivities) {
 }
 
 function addToVisitList() {
-    console.log("works");
+    
+    let parksToVisit = getLocalStorage('visit-list');
+
+    // check to see if it is currently empty
+    if (!parksToVisit) {
+        parksToVisit = [];
+        console.log(parksToVisit);
+    }
+
+    // add the current park to the array
+    parksToVisit.push(park);
+    setLocalStorage('visit-list', parksToVisit);
+
+    document.getElementById('addToVisitList').textContent = "Added!"
+    document.getElementById('addToVisitList').classList.add('added');
 }

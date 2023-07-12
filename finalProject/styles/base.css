@@ -79,7 +79,8 @@ a,
     background-color: var(--font-color);
 }
 
-.btn:hover {
+.btn:hover,
+.added {
     background-color: var(--accent-color);
 }
 
