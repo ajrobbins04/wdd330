@@ -1,14 +1,17 @@
 import { getLocalStorage, 
          renderListWithTemplate,
-         convertStateAbbr } from "./utils.mjs";
+         convertStateAbbr,
+         selectRandomImage } from "./utils.mjs";
 
 export default function visitList() {
 
     const parksToVisit = getLocalStorage('visit-list');
-    console.log(parksToVisit);
     
     const outputElement = document.getElementsByClassName('parksVisitList');
-    renderListWithTemplate(parkToVisitTemplate, outputElement, parksToVisit);
+
+    for (let i = 0; i < parksToVisit.length; i++) {
+        renderListWithTemplate(parkToVisitTemplate, outputElement, Array.from(parksToVisit[i]));
+    }
 }
 
 function removePark() {
@@ -17,6 +20,7 @@ function removePark() {
 
 function parkToVisitTemplate(data) {
  
+    console.log(data.fullName);
     const fullStates = convertStateAbbr(data.states);
     const imageIndex = selectRandomImage(data);
  

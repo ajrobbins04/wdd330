@@ -4,8 +4,10 @@ import { convertStateAbbr,
          states,
          states_short,
          regions } from './utils.mjs';
+
 import { apiFetch,
          findByStateCode } from './externalServices.mjs';
+
 
 export default async function parkList(selector) {
 
@@ -20,10 +22,10 @@ export default async function parkList(selector) {
     const option = document.getElementById('sortOptions');
     option.addEventListener('change', switchResultDisplay);
 
-    //let parkSort = getParksByState();
-    //console.log(parkSort);
-
-    getParksByRegion_short();
+    let parkSort = getParksByState();
+    console.log(parkSort);
+    console.log(Object.entries(parkSort));
+    //getParksByRegion_short();
 
     //const locationCheckboxes = document.querySelectorAll('.locationBox');
     //locationCheckboxes.forEach((box) => {
@@ -105,6 +107,7 @@ function getParksByRegion_short() {
         Object.values(subRegions).forEach((subRegion) => {
             let subRegionParks = getSubRegionParks(subRegion);
             console.log(subRegionParks);
+            console.log(Object.entries(subRegionParks));
         });
     });
 }
