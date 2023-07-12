@@ -87,13 +87,14 @@ function addToVisitList() {
     // check to see if it is currently empty
     if (!parksToVisit) {
         parksToVisit = [];
-        console.log(parksToVisit);
     }
 
     // add the current park to the array
-    parksToVisit.push(park);
+    parksToVisit.push(park.data);
     setLocalStorage('visit-list', parksToVisit);
 
     document.getElementById('addToVisitList').textContent = "Added!"
     document.getElementById('addToVisitList').classList.add('added');
+
+    console.log(parksToVisit);
 }
