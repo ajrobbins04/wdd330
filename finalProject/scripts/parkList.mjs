@@ -11,24 +11,26 @@ import { apiFetch,
 
 export default async function parkList(selector) {
 
-    const parks = await apiFetch();
+    //const parks = await apiFetch();
     const element = document.querySelector(selector);
 
-    renderListWithTemplate(parkResultTemplate, element, Array.from(parks.data));
+    //renderListWithTemplate(parkResultTemplate, element, Array.from(parks.data));
   
     // organizes results based on the current sort option
     const option = document.getElementById('sortOptions');
     option.addEventListener('change', switchResultDisplay);
 
     let parkSort = await getParksByState();
-    console.log(parkSort);
 
-    for (let [state,sParks] of Object.entries(parkSort)) {
-        console.log(state);
-        for (let park of sParks) {
+    let allParksByState = [];
+    for (let [state, stateParks] of Object.entries(parkSort)) {
+        allParksByState.push(stateParks);
+        renderListWithTemplate(parkResultTemplate, element, Array.from(stateParks));
+       /* for (let park of parks) {
             console.log("    " + park.name);
-        }
+        }*/
     }
+   // renderListWithTemplate(parkResultTemplate, element, Array.from(stateParks));
     
     //getParksByRegion_short();
 
@@ -197,6 +199,7 @@ function getParks() {
 
 function parkResultTemplate(data) {
  
+    console.log(data);
     const fullStates = convertStateAbbr(data.states);
     const imageIndex = selectRandomImage(data);
  
