@@ -25,19 +25,12 @@ export default async function parkList(selector) {
     let allParksByState = [];
     for (let [state, stateParks] of Object.entries(parkSort)) {
         allParksByState.push(stateParks);
-        //renderListWithTemplate(parkResultTemplate, element, Array.from(stateParks));
-       /* for (let park of parks) {
-            console.log("    " + park.name);
-        }*/
     }
 
     allParksByState.reverse().forEach(stateParks => {
         let stateParksArray = Array.from(stateParks);
         renderListWithTemplate(parkResultTemplate, element, Array.from(stateParks));
     })
-   // renderListWithTemplate(parkResultTemplate, element, Array.from(stateParks));
-    
-    //getParksByRegion_short();
 
     //const locationCheckboxes = document.querySelectorAll('.locationBox');
     //locationCheckboxes.forEach((box) => {
