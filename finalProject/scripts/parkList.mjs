@@ -8,7 +8,6 @@ import { convertStateAbbr,
 import { apiFetch,
          findByStateCode } from './externalServices.mjs';
 
-let parkSort = {};
 
 export default async function parkList(selector) {
 
@@ -21,7 +20,7 @@ export default async function parkList(selector) {
     const option = document.getElementById('sortOptions');
     option.addEventListener('change', switchResultDisplay);
 
-    parkSort = getParksByState();
+    let parkSort = await getParksByState();
     console.log(parkSort);
 
     for (let [state,sParks] of Object.entries(parkSort)) {
@@ -53,7 +52,6 @@ function switchResultDisplay(element, parks) {
             regionFilterOptions.setAttribute('hide');
         }*/
         locationFilterOptions.classList.remove('hide');
-       // let parkSort = getParksByState();
  
     // sort by region
     } else if (this.value === 'region') {
@@ -68,18 +66,17 @@ function switchResultDisplay(element, parks) {
         renderListWithTemplate(parkResultTemplate, element, Array.from(parks.data));
     }
     
-
 }
 
-function getParksByState() {
+async function getParksByState() {
     
-    let parksByState = {};
-    states_short.forEach(async function (state) {
+    let parksByState = {}; 
+    for (const state of states_short) {
         let parks = await findByStateCode('parks?', state);
         let parksArray = Array.from(parks.data);
         parksByState[`${state}`] = parksArray; 
-    });
-    
+    }
+ 
     return parksByState;
 }
 
