@@ -167,42 +167,50 @@ export const states_short = [
   'DC',
 ];
 
+export const regions =
+[
+  {northEast: [{newEngland: ['CT', 'ME', 'MA', 'NH', 'RI', 'VT']}, 
+               {middleAtlantic: ['NJ', 'NY', 'PA']}]
+  }, 
+  {midWest: [{eastNorthCentral: ['IN', 'IL', 'MI', 'OH', 'WI']},
+             {westNorthCentral: ['IA', 'KS', 'MN', 'MO', 'NE', 'ND', 'SD']}]
+  }, 
+  {south: [{southAtlantic: ['DE', 'DC', 'FL', 'GA', 'MD', 'NC', 'SC', 'VA', 'WV']}, 
+           {eastSouthCentral: ['AL', 'KY', 'MS', 'TN']}, 
+           {westSouthCentral: ['AR', 'LA', 'OK', 'TX']}]
+  }, 
+  {west: [{mountain: ['AZ', 'CO', 'ID', 'MT', 'NV', 'NM', 'UT', 'WY']}, 
+          {pacific: ['AK', 'CA', 'HI', 'WA', 'OR']}]
+  }, 
+  {atlanticTerritories: [{atlanticTerritories: ['AS', 'GU', 'NP', 'PR', 'VI']}]}
+];
 
-  export const regions = {
-    northEast: 'Northeast', 
-    northEastSubRegions: {
-      subRegion1: 'New England',
-      subRegion1_stateCodes: ['CT', 'ME', 'MA', 'NH', 'RI', 'VT'],
-      subRegion2: 'Middle Atlantic',
-      subRegion2_stateCodes: ['NJ', 'NY', 'PA']
-    },
-    midWest: 'Midwest',
-    midWestSubRegions: {
-      subRegion1: 'East North Central',
-      subRegion1_stateCodes: ['IN', 'IL', 'MI', 'OH', 'WI'],
-      subRegion2: 'West North Central',
-      subRegion2_stateCodes: ['IA', 'KS', 'MN', 'MO', 'NE', 'ND', 'SD'] 
-    },
-    south: 'South',
-    southSubRegions: {
-      subRegion1: 'South Atlantic',
-      subRegion1_stateCodes: ['DE', 'DC', 'FL', 'GA', 'MD', 'NC', 'SC', 'VA', 'WV'],
-      subRegion2: 'East South Central',
-      subRegion2_stateCodes: ['AL', 'KY', 'MS', 'TN'],
-      subRegion3: 'West South Central',
-      subRegion3_stateCodes: ['AR', 'LA', 'OK', 'TX']
-    },
-    west: 'West', 
-    westSubRegions: {
-      subRegion1: 'Mountatin',
-      subRegion1_stateCodes: ['AZ', 'CO', 'ID', 'MT', 'NV', 'NM', 'UT', 'WY'],
-      subRegion2: 'Pacific',
-      subRegion2_stateCodes: ['AK', 'CA', 'HI', 'WA', 'OR']
-    },
-    atlanticTerritories: 'Atlantic Territories',
-    atlantic_stateCodes: ['AS', 'GU', 'NP', 'PR', 'VI'] 
-}
-  
+export const regions_short =
+[
+  {northEast: [{newEngland: ['CT', 'ME', 'MA', 'NH', 'RI', 'VT']}, 
+               {middleAtlantic: ['NJ', 'NY', 'PA']}]
+  }, 
+  {midWest: [{eastNorthCentral: ['IN', 'IL', 'MI', 'OH', 'WI']},
+             {westNorthCentral: ['IA', 'KS', 'MN', 'MO', 'NE', 'ND', 'SD']}]}
+];
+
+export const regionNames = {
+  northEast: 'NorthEast',
+  newEngland: 'New England',
+  middleAtlantic: 'Middle Atlantic',
+  midWest: 'MidWest',
+  eastNorthCentral: 'East North Central',
+  westNorthCentral: 'West North Central',
+  south: 'South',
+  southAtlantic: 'South Atlantic',
+  eastSouthCentral: 'East South Central',
+  westSouthCentral: 'West South Central',
+  west: 'West',
+  mountain: 'Mountain',
+  pacific: 'Pacific',
+  atlanticTerritories: 'Atlantic Territories'
+};
+
 /*
 export const locations = {
     "AL": "Alabama",

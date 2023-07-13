@@ -26,7 +26,7 @@ export default async function parkList(selector) {
     //locationCheckboxes.forEach((box) => {
         //box.addEventListener('click', includeInSearch);
     //})
-
+    getParksByRegion_short();
 }
 
 async function switchResultDisplay(parks, element) {
@@ -87,12 +87,12 @@ function getParksByRegion_short() {
 
     const northEastRegion = regions.northEastSubRegions;
     const midWestRegion = regions.midWestSubRegions;
-
+   
     let majorRegions = [northEastRegion, midWestRegion];
 
     // get sub-region information for each region
-        majorRegions.forEach((region) => {
-
+    majorRegions.forEach((region) => {
+        console.log(region);
         // each sub-region obj will be nested
         // inside the subRegions
         let subRegions = {};
