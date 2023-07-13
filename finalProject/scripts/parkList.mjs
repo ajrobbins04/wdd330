@@ -11,26 +11,16 @@ import { apiFetch,
 
 export default async function parkList(selector) {
 
-    //const parks = await apiFetch();
+    const parks = await apiFetch();
     const element = document.querySelector(selector);
 
-    //renderListWithTemplate(parkResultTemplate, element, Array.from(parks.data));
+    renderListWithTemplate(parkResultTemplate, element, Array.from(parks.data));
   
     // organizes results based on the current sort option
     const option = document.getElementById('sortOptions');
-    option.addEventListener('change', switchResultDisplay);
-
-    let parkSort = await getParksByState();
-
-    let allParksByState = [];
-    for (let [state, stateParks] of Object.entries(parkSort)) {
-        allParksByState.push(stateParks);
-    }
-
-    allParksByState.reverse().forEach(stateParks => {
-        let stateParksArray = Array.from(stateParks);
-        renderListWithTemplate(parkResultTemplate, element, Array.from(stateParks));
-    })
+    option.addEventListener('change', function() {
+        switchResultDisplay(parks, element)
+    });
 
     //const locationCheckboxes = document.querySelectorAll('.locationBox');
     //locationCheckboxes.forEach((box) => {
@@ -39,22 +29,33 @@ export default async function parkList(selector) {
 
 }
 
-function switchResultDisplay(element, parks) {
+async function switchResultDisplay(parks, element) {
 
+    const options = document.getElementById('sortOptions');
     const locationFilterOptions = document.getElementById('locationFilter');
     const regionFilterOptions = document.getElementById('regionFilter');
- 
 
     // sort by location
-    if (this.value === 'location') {
+    if (options.value === 'location') {
 
         /*if (!regionFilterOptions.hasAttribute('hide')) {
             regionFilterOptions.setAttribute('hide');
         }*/
         locationFilterOptions.classList.remove('hide');
+
+        let parkSort = await getParksByState();
+
+        let allParksByState = [];
+        for (let [state, stateParks] of Object.entries(parkSort)) {
+            allParksByState.push(stateParks);
+        }
+    
+        allParksByState.reverse().forEach(stateParks => {
+            renderListWithTemplate(parkResultTemplate, element, Array.from(stateParks));
+        })
  
     // sort by region
-    } else if (this.value === 'region') {
+    } else if (options.value === 'region') {
 
         if (!locationFilterOptions.hasAttribute('hide')) {
             locationFilterOptions.setAttribute('hide');
@@ -196,8 +197,7 @@ function getParks() {
 }
 
 function parkResultTemplate(data) {
- 
-    console.log(data);
+
     const fullStates = convertStateAbbr(data.states);
     const imageIndex = selectRandomImage(data);
  
