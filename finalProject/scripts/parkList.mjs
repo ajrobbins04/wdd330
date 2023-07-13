@@ -3,7 +3,8 @@ import { convertStateAbbr,
          selectRandomImage,
          states,
          states_short,
-         regions } from './utils.mjs';
+         regions,
+         regions_short } from './utils.mjs';
 
 import { apiFetch,
          findByStateCode } from './externalServices.mjs';
@@ -26,7 +27,7 @@ export default async function parkList(selector) {
     //locationCheckboxes.forEach((box) => {
         //box.addEventListener('click', includeInSearch);
     //})
-    getParksByRegion_short();
+    getParksByRegion();
 }
 
 async function switchResultDisplay(parks, element) {
@@ -81,119 +82,38 @@ async function getParksByState() {
     return parksByState;
 }
 
-function getParksByRegion_short() {
+async function getParksByRegion() {
  
-    let parksByRegion = {};
-
-    const northEastRegion = regions.northEastSubRegions;
-    const midWestRegion = regions.midWestSubRegions;
-   
-    let majorRegions = [northEastRegion, midWestRegion];
+    let allParksByRegion = {};
 
     // get sub-region information for each region
-    majorRegions.forEach((region) => {
-        console.log(region);
-        // each sub-region obj will be nested
-        // inside the subRegions
-        let subRegions = {};
+    for (let i in regions_short) {
 
-        let subRegionArrays = Object.values(region);
+        // will hold array of all parks w/in the
+        // subregion
+        let parksInRegion = {};
 
-        for (let i = 0; i < subRegionArrays.length; i+= 2) {
-
-            let subRegionName= subRegionArrays[i];
-            let subRegionStates = subRegionArrays[i + 1];
-
-            subRegions[`${subRegionName}`] = subRegionStates;
+        console.log(typeof regions_short[i]);
+        for (let [region, subRegions] of Object.entries(regions_short[i])) {
+            
+            for (let [subRegion, subRegionStates] of Object.entries(subRegions)) {
+                let parksInSubRegion = await getParksBySubRegion(Array.from(subRegionStates));
+            } 
         }
-        
-        Object.values(subRegions).forEach((subRegion) => {
-            let subRegionParks = getSubRegionParks(subRegion);
-            console.log(subRegionParks);
-            console.log(Object.entries(subRegionParks));
-        });
-    });
+    };
 }
 
-function getParksByRegion() {
- 
-    let parksByRegion = {};
-
-    // most regions contain 2 - 3 sub-regions
-    const northEastRegion = regions.northEastSubRegions;
-    const midWestRegion = regions.midWestSubRegions;
-    const southRegion = regions.southSubRegions;
-    const westRegion = regions.westSubRegions;
-
-    // its properties can be found in regions. there are
-    // no sub-regions for the atlantic territories
-    const atlanticRegion = regions;
-
-    let majorRegions = [northEastRegion, midWestRegion,
-    southRegion, westRegion, atlanticRegion];
-
-    // get sub-region information for each region
-        majorRegions.forEach((region) => {
-
-        // each sub-region obj will be nested
-        // inside the subRegions
-        let subRegions = {};
-
-        let subRegionArrays = Object.values(region);
-
-        if (region !== atlanticRegion) {
-            
-            for (let i = 0; i < subRegionArrays.length; i+= 2) {
-
-                let subRegionName= subRegionArrays[i];
-                let subRegionStates = subRegionArrays[i + 1];
-
-                subRegions[`${subRegionName}`] = subRegionStates;
-            }
-            
-        } else {
-            let subRegionName = subRegionArrays[8];
-            let subRegionStates = subRegionArrays[9];
-
-            subRegions[`${subRegionName}`] = subRegionStates;
-        }
-
-        Object.values(subRegions).forEach((subRegion) => {
-            let subRegionParks = getSubRegionParks(subRegion);
-        });
-    });
-}
-
-function getSubRegionParks(subRegion) {
+async function getParksBySubRegion(subRegionStates) {
    
     let subRegionParks = {};
 
-    subRegion.forEach(async function (state) {
-        let parksInState = [];
+    for (let state of subRegionStates) {
         let parks = await findByStateCode('parks?', state);
         let parksArray = Array.from(parks.data);
-
-        // add parks to state
-        parksInState.push(parksArray);
-
-        // add state to sub-region
-        subRegionParks[`${state}`] = parksInState; 
-    });
-
+        subRegionParks[`${state}`] = parksArray; 
+    }
+ 
     return subRegionParks;
-}
-
-function getParks() {
-
-    let parksByState = {};
-
-    states.forEach(async function (state) {
-        let parks = await findByStateCode('parks?', state);
-        parksArray = Array.from(parks.data);
-        parksByState[`${state}`] = parksArray; 
-    });
-  
-    return parksByState;
 }
 
 function parkResultTemplate(data) {
