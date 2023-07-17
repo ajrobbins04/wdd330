@@ -71,10 +71,19 @@ async function switchResultDisplay(parks, element) {
             stateFilterOptions.setAttribute('hide');
         }
         regionFilterOptions.classList.remove('hide');*/
-
+  
         let allParksByRegion = await getParksByRegion();
-        console.log(allParksByRegion);
+      
+        for (let [regionName, subRegions] of Object.entries(allParksByRegion)) {
  
+            for (let subRegion of subRegions) {
+            
+                let subRegionParks = Object.values(subRegion);
+                console.log(subRegionParks);
+                renderListWithTemplate(parkResultTemplate, element, Array.from(subRegionParks[0]));
+            }
+        }
+
     // sort A - Z
     } else {
         renderListWithTemplate(parkResultTemplate, element, Array.from(parks.data));
@@ -140,6 +149,7 @@ async function getParksBySubRegion(subRegion) {
 
 function parkResultTemplate(data) {
 
+    console.log(data);
     const fullStates = convertStateAbbr(data.states);
     const imageIndex = selectRandomImage(data);
  
