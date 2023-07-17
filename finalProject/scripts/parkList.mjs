@@ -27,7 +27,6 @@ export default async function parkList(selector) {
     //locationCheckboxes.forEach((box) => {
         //box.addEventListener('click', includeInSearch);
     //})
-    getParksByRegion();
 }
 
 async function switchResultDisplay(parks, element) {
@@ -68,10 +67,13 @@ async function switchResultDisplay(parks, element) {
     // sort by region
     } else if (options.value === 'region') {
 
-        if (!stateFilterOptions.hasAttribute('hide')) {
+      /*  if (!stateFilterOptions.hasAttribute('hide')) {
             stateFilterOptions.setAttribute('hide');
         }
-        regionFilterOptions.classList.remove('hide');
+        regionFilterOptions.classList.remove('hide');*/
+
+        let allParksByRegion = await getParksByRegion();
+        console.log(allParksByRegion);
  
     // sort A - Z
     } else {
@@ -97,22 +99,23 @@ async function getParksByState() {
 
 async function getParksByRegion() {
  
-    let allParksByRegion = [];
+    let allParksByRegion = {};
    
-    // get sub-region information for each region
+    // get sub-region information for each major region
     for (let i in regions_short) {
- 
-        // will hold array of all parks w/in the
-        // subregion
-        let parksInRegion = {};
 
         for (let [region, subRegions] of Object.entries(regions_short[i])) {
+
+            let subRegionParks = [];
             for (let subRegion of subRegions) {
                 let parksInSubRegion = await getParksBySubRegion(subRegion);
-                console.log(parksInSubRegion);
+                subRegionParks.push(parksInSubRegion);
             } 
-        }
+            allParksByRegion[`${region}`] = subRegionParks; 
+        }  
     };
+
+    return allParksByRegion;
 }
 
 async function getParksBySubRegion(subRegion) {
@@ -122,9 +125,13 @@ async function getParksBySubRegion(subRegion) {
     const subRegionName = Object.keys(subRegion);
     const states = Object.values(subRegion);
  
+    // get the parks for each state in the subregion
     for (let state of states) {
         let parks = await findByStateCode('parks?', state);
         let parksArray = Array.from(parks.data);
+
+        // add the array of parks as a subRegionParks 
+        // object value w/the subRegion name as its key
         subRegionParks[`${subRegionName}`] = parksArray; 
     }
  
