@@ -47,8 +47,8 @@ h2 {
 
 header,
 select,
-.locationFilterOption,
-.location,
+.stateFilterOption,
+.state,
 .parkResult-learnMore,
 .btn {
     font-size: var(--medium-font);
@@ -133,11 +133,11 @@ header {
     margin: 3rem auto;
 }
 
-.locationFilter,
+.stateFilter,
 #template-footer {
     padding: 1.25rem .25rem;
 }
-.locationFilterOption {
+.stateFilterOption {
     margin: 0.75rem 0;
 }
 
@@ -214,11 +214,11 @@ header {
 }
 
 .sortBar,
-.locationBox {
+.stateBox {
     cursor: pointer;
 }
 
-.locationFilter {
+.stateFilter {
     overflow-y: scroll;
     height: 25vh;
     text-align: start;
@@ -247,8 +247,8 @@ header {
     grid-area: pDescription;
 }
 
-#parkDetails-location {
-    grid-area: pLocation;
+#parkDetails-state {
+    grid-area: pState;
 }
 
 .parkDetails picture {
@@ -267,7 +267,7 @@ header {
     grid-template-areas:
     "pTitle"
     "pDescription"
-    "pLocation"
+    "pState"
     "pImage"
     "pHours";
     width: max(85vw, 300px);

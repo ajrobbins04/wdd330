@@ -57,10 +57,10 @@ function renderParkDetails(park, parkActivities) {
     document.getElementById('parkDetails-name').textContent = park.data[0].fullName;
     document.getElementById('parkDetails-description').textContent = park.data[0].description;
     
-    // park location
-    const locationAbbr = park.data[0].states;
-    const locationFull = convertStateAbbr(locationAbbr);
-    document.getElementById('parkDetails-location').textContent = ` Located in ${locationFull}`;
+    // park state
+    const stateAbbr = park.data[0].states;
+    const stateFull = convertStateAbbr(stateAbbr);
+    document.getElementById('parkDetails-state').textContent = ` Located in ${stateFull}`;
 
     // park image
     document.getElementById('parkDetails-img').src = park.data[0].images[0].url;
