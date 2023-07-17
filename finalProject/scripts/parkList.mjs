@@ -16,7 +16,7 @@ export default async function parkList(selector) {
     const element = document.querySelector(selector);
 
     renderListWithTemplate(parkResultTemplate, element, Array.from(parks.data));
-  
+
     // organizes results based on the current sort option
     const option = document.getElementById('sortOptions');
     option.addEventListener('change', function() {
@@ -97,33 +97,35 @@ async function getParksByState() {
 
 async function getParksByRegion() {
  
-    let allParksByRegion = {};
-
+    let allParksByRegion = [];
+   
     // get sub-region information for each region
     for (let i in regions_short) {
-
+ 
         // will hold array of all parks w/in the
         // subregion
         let parksInRegion = {};
 
-        console.log(typeof regions_short[i]);
         for (let [region, subRegions] of Object.entries(regions_short[i])) {
-            
-            for (let [subRegion, subRegionStates] of Object.entries(subRegions)) {
-                let parksInSubRegion = await getParksBySubRegion(Array.from(subRegionStates));
+            for (let subRegion of subRegions) {
+                let parksInSubRegion = await getParksBySubRegion(subRegion);
+                console.log(parksInSubRegion);
             } 
         }
     };
 }
 
-async function getParksBySubRegion(subRegionStates) {
+async function getParksBySubRegion(subRegion) {
    
     let subRegionParks = {};
 
-    for (let state of subRegionStates) {
+    const subRegionName = Object.keys(subRegion);
+    const states = Object.values(subRegion);
+ 
+    for (let state of states) {
         let parks = await findByStateCode('parks?', state);
         let parksArray = Array.from(parks.data);
-        subRegionParks[`${state}`] = parksArray; 
+        subRegionParks[`${subRegionName}`] = parksArray; 
     }
  
     return subRegionParks;
