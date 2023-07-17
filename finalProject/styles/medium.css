@@ -12,6 +12,13 @@
         margin-left: 2rem;
     }
 
+    form {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+    
     .homePage,
     .parkResults,
     .park-img {

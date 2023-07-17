@@ -38,9 +38,9 @@ async function switchResultDisplay(parks, element) {
     // sort by state
     if (options.value === 'state') {
 
-        /*if (!regionFilterOptions.hasAttribute('hide')) {
-            regionFilterOptions.setAttribute('hide');
-        }*/
+        if (!regionFilterOptions.classList.contains('hide')) {
+            regionFilterOptions.classList.add('hide');
+        }
 
         // display list of states to optionally select from
         stateFilterOptions.classList.remove('hide');
@@ -67,25 +67,37 @@ async function switchResultDisplay(parks, element) {
     // sort by region
     } else if (options.value === 'region') {
 
-      /*  if (!stateFilterOptions.hasAttribute('hide')) {
-            stateFilterOptions.setAttribute('hide');
+        if (!stateFilterOptions.classList.contains('hide')) {
+            stateFilterOptions.classList.add('hide');
         }
-        regionFilterOptions.classList.remove('hide');*/
+
+        regionFilterOptions.classList.remove('hide');
   
         let allParksByRegion = await getParksByRegion();
       
         for (let [regionName, subRegions] of Object.entries(allParksByRegion)) {
  
             for (let subRegion of subRegions) {
-            
+              
+                let subRegionName = Object.keys(subRegion);
                 let subRegionParks = Object.values(subRegion);
-                console.log(subRegionParks);
+           
                 renderListWithTemplate(parkResultTemplate, element, Array.from(subRegionParks[0]));
             }
         }
 
-    // sort A - Z
+    // sort park names from A - Z
     } else {
+
+        if (!stateFilterOptions.classList.contains('hide')) {
+            stateFilterOptions.classList.add('hide');
+        }
+
+        if (!regionFilterOptions.classList.contains('hide')) {
+            regionFilterOptions.classList.add('hide');
+        }
+   
+
         renderListWithTemplate(parkResultTemplate, element, Array.from(parks.data));
     }
     
@@ -149,7 +161,6 @@ async function getParksBySubRegion(subRegion) {
 
 function parkResultTemplate(data) {
 
-    console.log(data);
     const fullStates = convertStateAbbr(data.states);
     const imageIndex = selectRandomImage(data);
  
@@ -178,7 +189,7 @@ function parkResultTemplate(data) {
         <p class="state parkResult-state">Located in ${fullStates}</p>
         <p class="parkResult-noImg">[No Image Provided]</p>
         <p class="description parkResult-description">${data.description}</p>
-        <a class="parkResult-learnMore" href="./parkDetails.html?parkCode=${data.parkCode}">Learn More</a>
+        <a class="parkResult-learnMore" href="./parkDetails.html?parkCode=${park.parkCode}">Learn More</a>
         </li>`;
     }
 }
