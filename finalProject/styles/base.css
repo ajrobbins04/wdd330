@@ -80,7 +80,8 @@ a,
 }
 
 .btn:hover,
-.added {
+.added,
+.inList {
     background-color: var(--accent-color);
 }
 
@@ -303,7 +304,7 @@ header {
     grid-area: parkVisit;
 }
 
-.parksVisitList {
+.parkVisitList {
     display: grid;
     margin: 3rem auto;
     gap: 3rem;

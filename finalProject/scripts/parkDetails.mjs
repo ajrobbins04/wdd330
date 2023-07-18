@@ -3,24 +3,40 @@ import { convertStateAbbr,
          getLocalStorage } from './utils.mjs';
 import { findByParkCode } from './externalServices.mjs';
 
-let park = {};
-let parkActivities = {};
-
 export default async function parkDetails(parkCode) {
 
     const parksPath = 'parks?';
-    park = await findByParkCode(parksPath, parkCode);
+    let park = await findByParkCode(parksPath, parkCode);
     
     const activitiesPath = 'thingstodo?'
-    parkActivities = await findByParkCode(activitiesPath, parkCode);
+    let parkActivities = await findByParkCode(activitiesPath, parkCode);
   
     renderParkDetails(park, parkActivities);
+
+    checkInLocalStorage(park);
 
     // add listener for "add to visit list" button
     document.getElementById('addToVisitList')
     .addEventListener('click', addToVisitList);
 }
 
+function checkInLocalStorage(park) {
+    let visitList = getLocalStorage('visit-list');
+    console.log(visitList);
+    // check to see if it is currently empty
+    if (visitList) {
+        const property = 'parkCode';
+        const value = park.data[0].parkCode;
+
+        const inList = visitList.some(p => p[property] === value);
+
+        if (inList) {
+            document.getElementById('addToVisitList').classList.add('inList');
+            document.getElementById('addToVisitList').textContent = "Remove from Visit List"
+        }
+      
+    }
+}
 function renderCarousel(park) {
 
     const numImages = park.data[0].images.length;
@@ -81,16 +97,16 @@ function renderParkDetails(park, parkActivities) {
 
 function addToVisitList() {
     
-    let parksToVisit = getLocalStorage('visit-list');
+    let visitList = getLocalStorage('visit-list');
 
     // check to see if it is currently empty
-    if (!parksToVisit) {
-        parksToVisit = [];
+    if (!visitList) {
+        visitList = [];
     }
  
     // add the current park to the array
-    parksToVisit.push(park.data);
-    setLocalStorage('visit-list', parksToVisit);
+    visitList.push(park.data);
+    setLocalStorage('visit-list', visitList);
 
     document.getElementById('addToVisitList').textContent = "Added!"
     document.getElementById('addToVisitList').classList.add('added');

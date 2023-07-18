@@ -18,7 +18,7 @@
         justify-content: center;
         align-items: center;
     }
-    
+
     .homePage,
     .parkResults,
     .park-img {
@@ -30,7 +30,8 @@
         width: min(80vw, 650px);
     }
 
-    .parkDetails {
+    .parkDetails,
+    .parkVisitList {
         width: min(80vw, 900px);
     }
 }

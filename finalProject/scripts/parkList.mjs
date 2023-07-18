@@ -63,10 +63,10 @@ async function switchResultDisplay(parks, element) {
             renderListWithTemplate(parkResultTemplate, element, Array.from(stateParks));
         })
 
-       /* const stateCheckboxes = document.querySelectorAll('.stateBox');
+        const stateCheckboxes = document.querySelectorAll('.stateBox');
         stateCheckboxes.forEach((box) => {
             box.addEventListener('click', includeInSearch);
-        })*/
+        })
  
     // sort by region
     } else if (options.value === 'region') {
