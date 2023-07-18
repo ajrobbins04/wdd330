@@ -6,12 +6,19 @@ import { getLocalStorage,
 
 export default function visitList() {
 
-    const parksToVisit = getLocalStorage('visit-list');
+    localStorage.clear();
+    const visitList = getLocalStorage('visit-list');
     const outputElement = document.getElementById('visitList');
 
-    let parksVisit = Object.values(parksToVisit);
-
-    renderListWithTemplate(parkToVisitTemplate, outputElement, parksToVisit);
+    if (!visitList) {
+        document.getElementsByClassName('visitListHeader')
+        .textContent = 'List is currently empty.'
+    }
+    else {
+        let visitParks = Object.values(visitList);
+        renderListWithTemplate(parkToVisitTemplate, outputElement, visitParks);
+    }
+  
 
 }
 
