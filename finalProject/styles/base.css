@@ -119,6 +119,10 @@ header {
     align-items: center;
 }
 
+.hide {
+    display: none;
+}
+
 /** margins and padding **/
 h1,
 h2 {
@@ -142,18 +146,20 @@ header {
 }
 
 .parkResults,
-.parkResults li * {
+.parkResults li *,
+#visitList,
+#visitList li * {
     margin: 2rem auto;
 }
 
-.parkResults li {
+.parkResults li,
+#visitList li {
     margin: 5rem auto;
 }
 
 .banner-green li {
     padding: 1rem;
 }
-
  
 /** green banner in header and footer **/
 .banner-green,
@@ -197,17 +203,13 @@ header {
     "results";
 }
 
-/** index.html content **/
 .homePage,
 .parkResults,
 .park-img {
     width: max(85vw, 300px);
 }
 
-.hide {
-    display: none;
-}
- 
+ /** index.html content **/
 .sortBar {
     padding: 0.75rem 0.15rem;
     text-align: center;
@@ -295,4 +297,17 @@ header {
     cursor: pointer;
 }
 
- 
+/** planParkVisits.html content layout **/
+
+#visitList {
+    grid-area: parkVisit;
+}
+
+.parksVisitList {
+    display: grid;
+    margin: 3rem auto;
+    gap: 3rem;
+    grid-template-areas:
+    "parkVisit";
+    width: max(85vw, 300px);
+}
