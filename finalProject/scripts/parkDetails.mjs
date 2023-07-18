@@ -3,54 +3,45 @@ import { convertStateAbbr,
     getLocalStorage } from './utils.mjs';
 import { findByParkCode } from './externalServices.mjs';
 
+let park = {};
+let parkActivities = {};
+
 export default async function parkDetails(parkCode) {
 
     const parksPath = 'parks?';
-    let park = await findByParkCode(parksPath, parkCode);
+    park = await findByParkCode(parksPath, parkCode);
 
-    const activitiesPath = 'thingstodo?'
-    let parkActivities = await findByParkCode(activitiesPath, parkCode);
+    const activitiesPath = 'thingstodo?';
+    parkActivities = await findByParkCode(activitiesPath, parkCode);
 
-    renderParkDetails(park, parkActivities);
+    renderParkDetails();
 
-    checkInLocalStorage(park);
+    checkInLocalStorage();
 
-    // listener for add to (or remove from) visit list button
+    // add listener for "add to visit list" button
     document.getElementById('addToVisitList')
-    .addEventListener('click', function(event) {
-    buttonClickOptions(event, park);
-    });
+    .addEventListener('click', addToVisitList);
+
 }
 
-function buttonClickOptions(event, park) {
+function checkInLocalStorage() {
 
-    const button = event.target;
-    if (!button.classList.contains('inList')) {
-        addToVisitList(park);
-    }
-    else {
-        removeFromVisitList(park);
-    }
-}
-
-function checkInLocalStorage(park) {
     let visitList = getLocalStorage('visit-list');
     console.log(visitList);
     // check to see if it is currently empty
-    if (visitList) {
+    if (visitList !== null) {
         const property = 'parkCode';
         const value = park.data[0].parkCode;
 
         const inList = visitList.some(p => p[property] === value);
-    
+
         if (inList) {
             document.getElementById('addToVisitList').classList.add('inList');
-            document.getElementById('addToVisitList').textContent = "Remove from Visit List"
+            document.getElementById('addToVisitList').textContent = "Remove from Visit List";
         }
     }
 }
 
- 
 function renderCarousel(park) {
 
     const numImages = park.data[0].images.length;
@@ -78,9 +69,9 @@ function renderCarousel(park) {
             carousel.scrollLeft += slideWidth;
         })
     }
-}
+}   
 
-function renderParkDetails(park, parkActivities) {
+function renderParkDetails() {
 
     // park name and description
     document.getElementById('parkDetails-name').textContent = park.data[0].fullName;
@@ -106,10 +97,9 @@ function renderParkDetails(park, parkActivities) {
     document.getElementById('standardSundayHours').textContent = ` ${park.data[0].operatingHours[0].standardHours.sunday}`;
 
     // image carousel
-
 }
 
-function addToVisitList(park) {
+function addToVisitList() {
 
     let visitList = getLocalStorage('visit-list');
 
@@ -119,20 +109,9 @@ function addToVisitList(park) {
     }
 
     // add the current park to the array
-    visitList.push(park.data);
+    visitList.push(park.data[0]);
     setLocalStorage('visit-list', visitList);
 
     document.getElementById('addToVisitList').textContent = "Added!"
     document.getElementById('addToVisitList').classList.add('added');
-}
-
-function removeFromVisitList(park) {
-
-    const visitList = getLocalStorage('visit-list');
-    const remove = park.data[0].parkCode;
-    const newVisitList = visitList.filter(p => p.parkCode !== remove);
-
-    setLocalStorage('visit-list', newVisitList);
-    document.getElementById('addToVisitList').classList.remove('inList'); 
-    document.getElementById('addToVisitList').textContent = "Removed!"  
 }
