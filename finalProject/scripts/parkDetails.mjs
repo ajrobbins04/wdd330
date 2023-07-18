@@ -16,20 +16,32 @@ export default async function parkDetails(parkCode) {
 
     renderParkDetails();
 
-    checkInLocalStorage();
-
-    // add listener for "add to visit list" button
+    // listener for add to (or remove from) visit list button
     document.getElementById('addToVisitList')
-    .addEventListener('click', addToVisitList);
+    .addEventListener('click', function(event) {
+        buttonClickOptions(event, park);
+    });
 
 }
+
+function buttonClickOptions(event) {
+
+    const button = event.target;
+    if (!button.classList.contains('inList')) {
+        addToVisitList();
+    }
+    else {
+        removeFromVisitList();
+    }
+}
+
 
 function checkInLocalStorage() {
 
     let visitList = getLocalStorage('visit-list');
-    console.log(visitList);
+    
     // check to see if it is currently empty
-    if (visitList !== null) {
+    if (visitList) {
         const property = 'parkCode';
         const value = park.data[0].parkCode;
 
@@ -41,35 +53,6 @@ function checkInLocalStorage() {
         }
     }
 }
-
-function renderCarousel(park) {
-
-    const numImages = park.data[0].images.length;
-    const carousel = document.getElementById('slides-container');
-    const slide = document.getElementsByClassName('slide');
-    const prevButton = document.getElementById('slide-arrow-prev');
-    const nextButton = document.getElementById('slide-arrow-next');
-
-    // only add carousel if there are at least 3 images
-    if (numImages > 2) {
-
-        // Skip the first image. It is already displayed
-        // higher up on the page
-        for (let i = 1; i < numImages; i++) {
-            const html = 
-            `<div class="slide">
-            <img class="park-img slide-img" src="${park.data[0].images[i].url}" 
-            alt="${park.data[0].images[i].altText}">
-            </div>`;
-            carousel.insertAdjacentHTML('afterend', html);
-        }
-
-        nextButton.addEventListener('click', (event) => {
-            const slideWidth = slide.clientWidth;
-            carousel.scrollLeft += slideWidth;
-        })
-    }
-}   
 
 function renderParkDetails() {
 
@@ -115,3 +98,43 @@ function addToVisitList() {
     document.getElementById('addToVisitList').textContent = "Added!"
     document.getElementById('addToVisitList').classList.add('added');
 }
+
+function removeFromVisitList() {
+
+    const visitList = getLocalStorage('visit-list');
+    const remove = park.data[0].parkCode;
+    const newVisitList = visitList.filter(p => p.parkCode !== remove);
+    
+    setLocalStorage('visit-list', newVisitList);
+    document.getElementById('addToVisitList').classList.remove('inList'); 
+    document.getElementById('addToVisitList').textContent = "Removed!"  
+}
+
+function renderCarousel() {
+
+    const numImages = park.data[0].images.length;
+    const carousel = document.getElementById('slides-container');
+    const slide = document.getElementsByClassName('slide');
+    const prevButton = document.getElementById('slide-arrow-prev');
+    const nextButton = document.getElementById('slide-arrow-next');
+
+    // only add carousel if there are at least 3 images
+    if (numImages > 2) {
+
+        // Skip the first image. It is already displayed
+        // higher up on the page
+        for (let i = 1; i < numImages; i++) {
+            const html = 
+            `<div class="slide">
+            <img class="park-img slide-img" src="${park.data[0].images[i].url}" 
+            alt="${park.data[0].images[i].altText}">
+            </div>`;
+            carousel.insertAdjacentHTML('afterend', html);
+        }
+
+        nextButton.addEventListener('click', (event) => {
+            const slideWidth = slide.clientWidth;
+            carousel.scrollLeft += slideWidth;
+        })
+    }
+}   
