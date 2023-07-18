@@ -15,9 +15,22 @@ export default async function parkDetails(parkCode) {
 
     checkInLocalStorage(park);
 
-    // add listener for "add to visit list" button
+    // listener for add to (or remove from) visit list button
     document.getElementById('addToVisitList')
-    .addEventListener('click', addToVisitList);
+    .addEventListener('click', function(event) {
+        buttonClickOptions(event, park);
+    });
+}
+
+function buttonClickOptions(event, park) {
+
+    const button = event.target;
+    if (!button.classList.contains('inList')) {
+        addToVisitList(park);
+    }
+    else {
+        removeFromVisitList(park);
+    }
 }
 
 function checkInLocalStorage(park) {
@@ -37,6 +50,7 @@ function checkInLocalStorage(park) {
       
     }
 }
+      
 function renderCarousel(park) {
 
     const numImages = park.data[0].images.length;
@@ -95,7 +109,7 @@ function renderParkDetails(park, parkActivities) {
   
 }
 
-function addToVisitList() {
+function addToVisitList(park) {
     
     let visitList = getLocalStorage('visit-list');
 
@@ -110,4 +124,15 @@ function addToVisitList() {
 
     document.getElementById('addToVisitList').textContent = "Added!"
     document.getElementById('addToVisitList').classList.add('added');
+}
+
+function removeFromVisitList(park) {
+
+    const visitList = getLocalStorage('visit-list');
+    const remove = park.data[0].parkCode;
+    const newVisitList = visitList.filter(p => p.parkCode !== remove);
+    
+    setLocalStorage('visit-list', newVisitList);
+    document.getElementById('addToVisitList').classList.remove('inList'); 
+    document.getElementById('addToVisitList').textContent = "Removed!"  
 }
