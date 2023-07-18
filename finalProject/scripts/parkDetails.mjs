@@ -10,7 +10,6 @@ export default async function parkDetails(parkCode) {
 
     const parksPath = 'parks?';
     park = await findByParkCode(parksPath, parkCode);
-    console.log(park);
     
     const activitiesPath = 'thingstodo?'
     parkActivities = await findByParkCode(activitiesPath, parkCode);
@@ -88,13 +87,11 @@ function addToVisitList() {
     if (!parksToVisit) {
         parksToVisit = [];
     }
-
+ 
     // add the current park to the array
     parksToVisit.push(park.data);
     setLocalStorage('visit-list', parksToVisit);
 
     document.getElementById('addToVisitList').textContent = "Added!"
     document.getElementById('addToVisitList').classList.add('added');
-
-    console.log(parksToVisit);
 }

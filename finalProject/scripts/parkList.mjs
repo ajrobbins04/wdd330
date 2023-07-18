@@ -23,10 +23,6 @@ export default async function parkList(selector) {
         switchResultDisplay(parks, element)
     });
 
-    //const locationCheckboxes = document.querySelectorAll('.locationBox');
-    //locationCheckboxes.forEach((box) => {
-        //box.addEventListener('click', includeInSearch);
-    //})
 }
 
 async function switchResultDisplay(parks, element) {
@@ -38,11 +34,12 @@ async function switchResultDisplay(parks, element) {
     // sort by state
     if (options.value === 'state') {
 
+        // remove selection table of region names if present
         if (!regionFilterOptions.classList.contains('hide')) {
             regionFilterOptions.classList.add('hide');
         }
 
-        // display list of states to optionally select from
+        // add selection table of states
         stateFilterOptions.classList.remove('hide');
 
         // gets an object containing each state as a key
@@ -61,16 +58,25 @@ async function switchResultDisplay(parks, element) {
         // must iterate backwards for parks to be rendered
         // in A-Z order instead of Z-A
         allParksByState.reverse().forEach(stateParks => {
+
+            // display park results by state
             renderListWithTemplate(parkResultTemplate, element, Array.from(stateParks));
         })
+
+       /* const stateCheckboxes = document.querySelectorAll('.stateBox');
+        stateCheckboxes.forEach((box) => {
+            box.addEventListener('click', includeInSearch);
+        })*/
  
     // sort by region
     } else if (options.value === 'region') {
 
+        // remove selection table of state names if present
         if (!stateFilterOptions.classList.contains('hide')) {
             stateFilterOptions.classList.add('hide');
         }
 
+        // add selection table of regions
         regionFilterOptions.classList.remove('hide');
   
         let allParksByRegion = await getParksByRegion();
@@ -82,6 +88,7 @@ async function switchResultDisplay(parks, element) {
                 let subRegionName = Object.keys(subRegion);
                 let subRegionParks = Object.values(subRegion);
            
+                // display park results by region
                 renderListWithTemplate(parkResultTemplate, element, Array.from(subRegionParks[0]));
             }
         }
@@ -89,15 +96,17 @@ async function switchResultDisplay(parks, element) {
     // sort park names from A - Z
     } else {
 
+        // remove unnecessary filter table used by the
+        // previous filter option (state or region) selected
         if (!stateFilterOptions.classList.contains('hide')) {
             stateFilterOptions.classList.add('hide');
         }
 
-        if (!regionFilterOptions.classList.contains('hide')) {
+        else if (!regionFilterOptions.classList.contains('hide')) {
             regionFilterOptions.classList.add('hide');
         }
-   
-
+        
+        // display park results by name from A - Z
         renderListWithTemplate(parkResultTemplate, element, Array.from(parks.data));
     }
     
@@ -129,8 +138,8 @@ async function getParksByRegion() {
 
             let subRegionParks = [];
             for (let subRegion of subRegions) {
-                let parksInSubRegion = await getParksBySubRegion(subRegion);
-                subRegionParks.push(parksInSubRegion);
+                let parks = await getParksBySubRegion(subRegion);
+                subRegionParks.push(parks);
             } 
             allParksByRegion[`${region}`] = subRegionParks; 
         }  
