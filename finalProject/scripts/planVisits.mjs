@@ -1,8 +1,8 @@
 import { getLocalStorage, 
-         renderListWithTemplate,
-         renderWithTemplate,
-         convertStateAbbr,
-         selectRandomImage } from "./utils.mjs";
+    renderListWithTemplate,
+    renderWithTemplate,
+    convertStateAbbr,
+    selectRandomImage } from "./utils.mjs";
 
 export default function visitList() {
 
@@ -10,18 +10,18 @@ export default function visitList() {
     const outputElement = document.getElementById('visitList');
 
     let parksVisit = Object.values(parksToVisit);
-   
+
     renderListWithTemplate(parkToVisitTemplate, outputElement, parksToVisit);
- 
+
 }
 
 
 function removePark() {
-    
+
 }
 
 function parkToVisitTemplate(data) {
- 
+
     console.log(data.fullName);
     const fullStates = convertStateAbbr(data.states);
     const imageIndex = selectRandomImage(data);
@@ -33,7 +33,7 @@ function parkToVisitTemplate(data) {
         <h2 class="name parkToVisit-name">${data.fullName}</h2>
         <p class="state parkToVisit-state">Located in ${fullStates}</p>
         <div class="hover overlay">
-           <picture>
+            <picture>
                 <img class="park-img parkToVisit-img" src="${data.images[imageIndex].url}" alt="${data.images[0].altText}">
             </picture>
             <div class="overlay-description">

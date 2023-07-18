@@ -1,16 +1,16 @@
 import { convertStateAbbr,
-         setLocalStorage,
-         getLocalStorage } from './utils.mjs';
+    setLocalStorage,
+    getLocalStorage } from './utils.mjs';
 import { findByParkCode } from './externalServices.mjs';
 
 export default async function parkDetails(parkCode) {
 
     const parksPath = 'parks?';
     let park = await findByParkCode(parksPath, parkCode);
-    
+
     const activitiesPath = 'thingstodo?'
     let parkActivities = await findByParkCode(activitiesPath, parkCode);
-  
+
     renderParkDetails(park, parkActivities);
 
     checkInLocalStorage(park);
@@ -18,7 +18,7 @@ export default async function parkDetails(parkCode) {
     // listener for add to (or remove from) visit list button
     document.getElementById('addToVisitList')
     .addEventListener('click', function(event) {
-        buttonClickOptions(event, park);
+    buttonClickOptions(event, park);
     });
 }
 
@@ -42,15 +42,15 @@ function checkInLocalStorage(park) {
         const value = park.data[0].parkCode;
 
         const inList = visitList.some(p => p[property] === value);
-
+    
         if (inList) {
             document.getElementById('addToVisitList').classList.add('inList');
             document.getElementById('addToVisitList').textContent = "Remove from Visit List"
         }
-      
     }
 }
-      
+
+ 
 function renderCarousel(park) {
 
     const numImages = park.data[0].images.length;
@@ -67,8 +67,8 @@ function renderCarousel(park) {
         for (let i = 1; i < numImages; i++) {
             const html = 
             `<div class="slide">
-                <img class="park-img slide-img" src="${park.data[0].images[i].url}" 
-                alt="${park.data[0].images[i].altText}">
+            <img class="park-img slide-img" src="${park.data[0].images[i].url}" 
+            alt="${park.data[0].images[i].altText}">
             </div>`;
             carousel.insertAdjacentHTML('afterend', html);
         }
@@ -81,11 +81,11 @@ function renderCarousel(park) {
 }
 
 function renderParkDetails(park, parkActivities) {
- 
+
     // park name and description
     document.getElementById('parkDetails-name').textContent = park.data[0].fullName;
     document.getElementById('parkDetails-description').textContent = park.data[0].description;
-    
+
     // park state
     const stateAbbr = park.data[0].states;
     const stateFull = convertStateAbbr(stateAbbr);
@@ -94,7 +94,7 @@ function renderParkDetails(park, parkActivities) {
     // park image
     document.getElementById('parkDetails-img').src = park.data[0].images[0].url;
     document.getElementById('parkDetails-img').alt = park.data[0].images[0].altText;
- 
+
     // standard operating hours
     // document.getElementById('operatingInfo-description').textContent = ` ${park.data[0].operatingHours[0].description}`;
     document.getElementById('standardMondayHours').textContent = ` ${park.data[0].operatingHours[0].standardHours.monday}`;
@@ -106,18 +106,18 @@ function renderParkDetails(park, parkActivities) {
     document.getElementById('standardSundayHours').textContent = ` ${park.data[0].operatingHours[0].standardHours.sunday}`;
 
     // image carousel
-  
+
 }
 
 function addToVisitList(park) {
-    
+
     let visitList = getLocalStorage('visit-list');
 
     // check to see if it is currently empty
     if (!visitList) {
         visitList = [];
     }
- 
+
     // add the current park to the array
     visitList.push(park.data);
     setLocalStorage('visit-list', visitList);
@@ -131,7 +131,7 @@ function removeFromVisitList(park) {
     const visitList = getLocalStorage('visit-list');
     const remove = park.data[0].parkCode;
     const newVisitList = visitList.filter(p => p.parkCode !== remove);
-    
+
     setLocalStorage('visit-list', newVisitList);
     document.getElementById('addToVisitList').classList.remove('inList'); 
     document.getElementById('addToVisitList').textContent = "Removed!"  
