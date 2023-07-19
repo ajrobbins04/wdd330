@@ -253,6 +253,12 @@ header {
 }
 
 /** parkDetails.html content layout **/
+.parkDetails .prevArrow {
+    grid-area: pBack;
+    width: 20%;
+    justify-self: center;
+}
+
 #parkDetails-name {
     grid-area: pTitle;
 }
@@ -276,12 +282,13 @@ header {
 
 .parkDetails {
     display: grid;
-    margin: 3rem auto;
+    margin: 1rem auto 3rem auto;
     gap: 3rem;
     grid-template-areas:
+    "pBack"
     "pTitle"
     "pDescription"
-    "pState"
+    "pState "
     "pImage"
     "pHours";
     width: max(85vw, 300px);

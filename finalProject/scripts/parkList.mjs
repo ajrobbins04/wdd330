@@ -14,7 +14,7 @@ import { apiFetch,
 export default async function parkList(selector) {
 
     let currentPage = 1; 
-    const resultsPerPage = 10;
+    const resultsPerPage = 16;
 
     // retrive data for all parks and its
     // eventual parent element
@@ -127,6 +127,9 @@ function getNumPages(parks, resultsPerPage) {
     return totalPages;
 }
 
+export function savePagePosition() {
+
+}
 // called if user wants park results to be sorted differently
 async function switchResultDisplay(parks, element) {
 
