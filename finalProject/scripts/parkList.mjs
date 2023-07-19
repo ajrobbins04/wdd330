@@ -16,13 +16,13 @@ export default async function parkList(selector) {
     let currentPage = 1; 
     const resultsPerPage = 10;
 
-    // retrive data on all parks and get the
-    // intended parent element
+    // retrive data for all parks and its
+    // eventual parent element
     const parks = await apiFetch();
     const element = document.querySelector(selector);
 
-    // set lastPage to total number of pages possible
-    const lastPage = getNumPages(parks, resultsPerPage);
+    // set finalPage to total number of pages possible
+    const finalPage = getNumPages(parks, resultsPerPage);
 
     // display first 10 park results on single page
     displayPage(parks, element, currentPage, resultsPerPage);
@@ -37,10 +37,10 @@ export default async function parkList(selector) {
     });
 }
 
-
+// displays 10 park results per page
 function displayPage(parks, element, currentPage, resultsPerPage) {
 
-    // only show 10 results per page
+    // will use indices to slice parks data
     const startIndex = (currentPage - 1) * resultsPerPage;
     const endIndex = startIndex + resultsPerPage;
 
@@ -53,7 +53,7 @@ function displayPage(parks, element, currentPage, resultsPerPage) {
 
 
 // checks if user has clicked on a new page
-function clickNewPage(parks, element, currentPage, resultsPerPage, lastPage) {
+function clickNewPage(parks, element, currentPage, resultsPerPage, finalPage) {
 
     const prevBtn = document.querySelector('.prevArrow');
     const nextBtn = document.querySelector('.nextArrow');
@@ -63,7 +63,7 @@ function clickNewPage(parks, element, currentPage, resultsPerPage, lastPage) {
         if (currentPage === 1) {
             prevBtn.classList.add('hide');
             nextBtn.classList.remove('hide');
-        } else if (currentPage === lastPage) {
+        } else if (currentPage === finalPage) {
             prevBtn.classList.remove('hide');
             nextBtn.classList.add('hide');
         } else {
@@ -75,8 +75,9 @@ function clickNewPage(parks, element, currentPage, resultsPerPage, lastPage) {
     updateButtons();
 
     nextBtn.addEventListener('click', function() {
-        currentPage += 1;
-        try {
+        currentPage += 1;   // go forward 1 page
+
+        try {  // ensure page number is valid before displaying it
             if (currentPage <= 0 || currentPage > lastPage) {
                 throw new Error('Invalid current page.');
             }
@@ -89,8 +90,9 @@ function clickNewPage(parks, element, currentPage, resultsPerPage, lastPage) {
     });
 
     prevBtn.addEventListener('click', function () {
-        currentPage -= 1;
-        try {
+        currentPage -= 1;  // go back 1 page
+
+        try {  // ensure page number is valid before displaying it
             if (currentPage <= 0 || currentPage > lastPage) {
                 throw new Error('Invalid current page.');
             }
@@ -125,7 +127,7 @@ function getNumPages(parks, resultsPerPage) {
     return totalPages;
 }
 
-
+// called if user wants park results to be sorted differently
 async function switchResultDisplay(parks, element) {
 
     const options = document.getElementById('sortOptions');
@@ -194,7 +196,7 @@ async function switchResultDisplay(parks, element) {
             }
         }
 
-    // sort park names from A - Z
+    // sort parks by default from A - Z names
     } else {
 
         // remove unnecessary filter table used by the
@@ -207,7 +209,6 @@ async function switchResultDisplay(parks, element) {
             regionFilterOptions.classList.add('hide');
         }
         
-        // display park results by name from A - Z
         renderListWithTemplate(parkResultTemplate, element, Array.from(parks.data));
     }
     

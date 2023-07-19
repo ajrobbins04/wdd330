@@ -14,11 +14,6 @@ renderListWithTemplate(parkToVisitTemplate, outputElement, parksToVisit);
 
 }
 
-
-function removePark() {
-
-}
-
 function parkToVisitTemplate(data) {
 
 console.log(data.fullName);

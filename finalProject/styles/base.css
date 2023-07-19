@@ -244,9 +244,12 @@ header {
 
 .pageLinks {
     display: flex;
-    justify-content: end;
+    justify-content: center;
     width: max(85vw, 300px);
-    padding: 2rem;
+}
+
+.pageLinks img {
+    padding: 0 2rem;
 }
 
 /** parkDetails.html content layout **/
