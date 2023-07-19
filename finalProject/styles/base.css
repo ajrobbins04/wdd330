@@ -241,6 +241,17 @@ header {
 .btn:hover {
     transform: scale(1.05);
 }
+
+.pageLinks {
+    display: flex;
+    justify-content: end;
+    width: max(85vw, 300px);
+    padding: 2rem;
+}
+
+.prevArrow {
+    display: none;
+}
  
 /** parkDetails.html content layout **/
 #parkDetails-name {

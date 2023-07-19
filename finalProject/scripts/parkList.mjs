@@ -9,19 +9,42 @@ import { convertStateAbbr,
 import { apiFetch,
          findByStateCode } from './externalServices.mjs';
 
+const resultsPerPage = 10;
+let currentPage = 1;
 
 export default async function parkList(selector) {
 
+    // retrive data on all parks and get the
+    // intended parent element
     const parks = await apiFetch();
     const element = document.querySelector(selector);
 
-    renderListWithTemplate(parkResultTemplate, element, Array.from(parks.data));
+    // only show 10 results per page
+    const startIndex = (currentPage - 1) * resultsPerPage;
+    const endIndex = startIndex + resultsPerPage;
 
+    // only contains first 10 parks 
+    const parksPage = Array.from(parks.data.slice(startIndex, endIndex));
+
+     // initial display of first 10 parks by slicing 
+     // using the startIndex to endIndex range
+    renderListWithTemplate(parkResultTemplate, element, parksPage);
+
+    const prevArrow = document.getElementsByClassName(prevArrow)
     // organizes results based on the current sort option
     const option = document.getElementById('sortOptions');
     option.addEventListener('change', function() {
         switchResultDisplay(parks, element)
     });
+
+}
+
+
+async function displayResults() {
+
+}
+
+function switchPage() {
 
 }
 
