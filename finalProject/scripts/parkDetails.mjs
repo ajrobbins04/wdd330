@@ -14,14 +14,13 @@ export default async function parkDetails(parkCode) {
 
 
     renderParkDetails(park);
-    checkInList(park);
+    checkInVisitList(park);
 
     // listener for add to (or remove from) visit list button
     document.getElementById('btnVisitList')
     .addEventListener('click', function(event) {
         btnClickOptions(event, park);
     });
-
 }
 
 function btnClickOptions(event, park) {
@@ -38,7 +37,7 @@ function btnClickOptions(event, park) {
 }
 
 
-function checkInList(park) {
+function checkInVisitList(park) {
 
     let visitList = getLocalStorage('visit-list');
     

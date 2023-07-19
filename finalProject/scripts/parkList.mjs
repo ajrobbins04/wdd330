@@ -35,6 +35,14 @@ export default async function parkList(selector) {
     option.addEventListener('change', function() {
         switchResultDisplay(parks, element);
     });
+
+    const parkDetailLinks = document.getElementsByClassName('parkResult-learnMore');
+    Array.from(parkDetailLinks).forEach(link => {
+        link.addEventListener('click', setPagePosition);
+    })
+
+
+    window.addEventListener('load', restorePagePosition);
 }
 
 // displays 10 park results per page
@@ -127,9 +135,24 @@ function getNumPages(parks, resultsPerPage) {
     return totalPages;
 }
 
-export function savePagePosition() {
-
+function setPagePosition() {
+    // y position of viewport window
+    const currentPosition = window.scrollY;
+    sessionStorage.setItem('pagePosition', currentPosition);
 }
+
+
+function restorePagePosition() {
+    console.log('Event listener called!')
+    const savedPosition = sessionStorage.getItem('pagePosition');
+    const restoredPosition = parseInt(savedPosition, 10);
+
+    if (restoredPosition > 0) {
+        window.scrollTo(0, restoredPosition);
+    }
+}
+
+
 // called if user wants park results to be sorted differently
 async function switchResultDisplay(parks, element) {
 
