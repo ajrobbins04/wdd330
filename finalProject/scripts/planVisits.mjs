@@ -6,7 +6,7 @@ import { getLocalStorage,
 export default function visitList() {
 
 const parksToVisit = getLocalStorage('visit-list');
-const outputElement = document.getElementById('visitList');
+const outputElement = document.querySelector('.visitList');
 
 let parksVisit = Object.values(parksToVisit);
 

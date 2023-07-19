@@ -9,35 +9,36 @@ import { convertStateAbbr,
 import { apiFetch,
          findByStateCode } from './externalServices.mjs';
 
-let currentPage = 1; 
-let resultsPerPage = 10;
+
 
 export default async function parkList(selector) {
+
+    let currentPage = 1; 
+    const resultsPerPage = 10;
 
     // retrive data on all parks and get the
     // intended parent element
     const parks = await apiFetch();
     const element = document.querySelector(selector);
 
-    // display page 1 by setting page
-    // interval to 0
-    displayPage(parks, element, 0);
+    // set lastPage to total number of pages possible
+    const lastPage = getNumPages(parks, resultsPerPage);
+
+    // display first 10 park results on single page
+    displayPage(parks, element, currentPage, resultsPerPage);
 
     // check if new page is clicked
-    clickNewPage(parks, element);
+    clickNewPage(parks, element, currentPage, resultsPerPage);
 
     // organizes results based on the current sort option
     const option = document.getElementById('sortOptions');
     option.addEventListener('change', function() {
-        switchResultDisplay(parks, element)
+        switchResultDisplay(parks, element);
     });
-
 }
 
 
-function displayPage(parks, element, pageInterval) {
-
-    currentPage += pageInterval;
+function displayPage(parks, element, currentPage, resultsPerPage) {
 
     // only show 10 results per page
     const startIndex = (currentPage - 1) * resultsPerPage;
@@ -46,13 +47,65 @@ function displayPage(parks, element, pageInterval) {
     // make array with 10 parks inside index range
     const parksPage = Array.from(parks.data.slice(startIndex, endIndex));
 
-    // display page
+    // render page display 
     renderListWithTemplate(parkResultTemplate, element, parksPage);
 }
 
 
+// checks if user has clicked on a new page
+function clickNewPage(parks, element, currentPage, resultsPerPage, lastPage) {
+
+    const prevBtn = document.querySelector('.prevArrow');
+    const nextBtn = document.querySelector('.nextArrow');
+
+    // update the buttons to display based on current page
+    function updateButtons() {
+        if (currentPage === 1) {
+            prevBtn.classList.add('hide');
+            nextBtn.classList.remove('hide');
+        } else if (currentPage === lastPage) {
+            prevBtn.classList.remove('hide');
+            nextBtn.classList.add('hide');
+        } else {
+            prevBtn.classList.remove('hide');
+            nextBtn.classList.remove('hide');
+        }
+    }
+
+    updateButtons();
+
+    nextBtn.addEventListener('click', function() {
+        currentPage += 1;
+        try {
+            if (currentPage <= 0 || currentPage > lastPage) {
+                throw new Error('Invalid current page.');
+            }
+            updateButtons();
+            displayPage(parks, element, currentPage, resultsPerPage);
+        } 
+        catch (error) {
+            console.log('ERROR: ' + error.message);
+        }
+    });
+
+    prevBtn.addEventListener('click', function () {
+        currentPage -= 1;
+        try {
+            if (currentPage <= 0 || currentPage > lastPage) {
+                throw new Error('Invalid current page.');
+            }
+            updateButtons();
+            displayPage(parks, element, currentPage, resultsPerPage);
+        } 
+        catch (error) {
+            console.log('ERROR: ' + error.message);
+        }
+    });
+}
+
+
 // find max number of pages possible based on number of parks
-function getNumPages(parks) {
+function getNumPages(parks, resultsPerPage) {
 
     const totalParkNum = Object.keys(parks.data).length;
 
@@ -66,46 +119,10 @@ function getNumPages(parks) {
         }
     }
     catch(error) {
-        alert('ERROR: ' + error.message);
+        console.log('ERROR: ' + error.message);
     }
 
     return totalPages;
-}
-
-
-// checks if user has clicked on a new page
-function clickNewPage(parks, element) {
-
-    const lastPage = getNumPages(parks);
-    const prevBtn = document.getElementsByClassName(prevArrow);
-    const nextBtn = document.getElementsByClassName(nextArrow);
-
-    // first page doesn't need previous button
-    if (currentPage === 1) {
-        prevBtn.classList.add('hide');
-        nextBtn.addEventListener('click', displayPage.bind(parks, element, 1))
-    }
-
-    // middle pages need both buttons
-    if (currentPage > 1 && currentPage < lastPage) {
-
-        // make sure both buttons are displayed
-        if (prevBtn.classList.contains('hide')) {
-            prevBtn.classList.remove('hide');
-        }
-        else if (nextBtn.classlist.contains('hide')) {
-            nextBtn.classList.remove('hide');
-        }
-
-        nextBtn.addEventListener('click', displayPage.bind(parks, element, 1));
-        prevBtn.addEventListener('click', displayPage.bind(parks, element, -1));
-    }
-
-    // last page doesn't need next button
-    if (currentPage === lastPage) {
-        nextBtn.classList.add('hide');
-        prevBtn.addEventListener('click', displayPage.bind(parks, element, 1))
-    }
 }
 
 

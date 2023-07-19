@@ -148,13 +148,13 @@ header {
 
 .parkResults,
 .parkResults li *,
-#visitList,
-#visitList li * {
+.visitList,
+.visitList li * {
     margin: 2rem auto;
 }
 
 .parkResults li,
-#visitList li {
+.visitList li {
     margin: 5rem auto;
 }
 
@@ -307,7 +307,7 @@ header {
 
 /** planParkVisits.html content layout **/
 
-#visitList {
+.visitList {
     grid-area: parkVisit;
 }
 
