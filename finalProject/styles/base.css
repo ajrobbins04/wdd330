@@ -249,10 +249,6 @@ header {
     padding: 2rem;
 }
 
-.prevArrow {
-    display: none;
-}
- 
 /** parkDetails.html content layout **/
 #parkDetails-name {
     grid-area: pTitle;
