@@ -9,9 +9,8 @@ import { convertStateAbbr,
 import { apiFetch,
          findByStateCode } from './externalServices.mjs';
 
-
-
-let currentPage = 1;
+let currentPage = 1; 
+let resultsPerPage = 10;
 
 export default async function parkList(selector) {
 
@@ -19,20 +18,14 @@ export default async function parkList(selector) {
     // intended parent element
     const parks = await apiFetch();
     const element = document.querySelector(selector);
-    console.log(parks);
 
-    displayInitialPage(resultsPerPage, parks, element);
+    // display page 1 by setting page
+    // interval to 0
+    displayPage(parks, element, 0);
 
-    checkPageSwitch(parks);
+    // check if new page is clicked
+    clickNewPage(parks, element);
 
-    
-  
-
- 
-    
-
-    nextBtn.addEventListener('click', switchPage);
-    
     // organizes results based on the current sort option
     const option = document.getElementById('sortOptions');
     option.addEventListener('change', function() {
@@ -41,20 +34,32 @@ export default async function parkList(selector) {
 
 }
 
+
+function displayPage(parks, element, pageInterval) {
+
+    currentPage += pageInterval;
+
+    // only show 10 results per page
+    const startIndex = (currentPage - 1) * resultsPerPage;
+    const endIndex = startIndex + resultsPerPage;
+
+    // make array with 10 parks inside index range
+    const parksPage = Array.from(parks.data.slice(startIndex, endIndex));
+
+    // display page
+    renderListWithTemplate(parkResultTemplate, element, parksPage);
+}
+
+
+// find max number of pages possible based on number of parks
 function getNumPages(parks) {
 
     const totalParkNum = Object.keys(parks.data).length;
-    const resultsPerPage = 10;
 
     let totalPages = 0;
 
     try {
-        if (totalParkNum % resultsPerPage > 0) {
-            totalPages = (totalParkNum / resultsPerPage) + 1;
-        }
-        else {
-            totalPages = (totalParkNum / resultsPerPage);
-        }
+        totalPages = Math.ceil(totalParkNum / resultsPerPage);
 
         if (totalPages <= 0) {
             throw new Error('Total page must be greater than 0.');
@@ -67,20 +72,9 @@ function getNumPages(parks) {
     return totalPages;
 }
 
-function displayInitialPage(resultsPerPage, parks, element) {
-        // only show 10 results per page
-        const startIndex = (currentPage - 1) * resultsPerPage;
-        const endIndex = startIndex + resultsPerPage;
-    
-        // only contains first 10 parks 
-        const parksPage = Array.from(parks.data.slice(startIndex, endIndex));
-    
-         // initial display of first 10 parks by slicing 
-         // using the startIndex to endIndex range
-        renderListWithTemplate(parkResultTemplate, element, parksPage);
-}
 
-function checkPageSwitch(parks) {
+// checks if user has clicked on a new page
+function clickNewPage(parks, element) {
 
     const lastPage = getNumPages(parks);
     const prevBtn = document.getElementsByClassName(prevArrow);
@@ -89,7 +83,7 @@ function checkPageSwitch(parks) {
     // first page doesn't need previous button
     if (currentPage === 1) {
         prevBtn.classList.add('hide');
-        nextBtn.addEventListener('click', switchPage())
+        nextBtn.addEventListener('click', displayPage.bind(parks, element, 1))
     }
 
     // middle pages need both buttons
@@ -103,27 +97,17 @@ function checkPageSwitch(parks) {
             nextBtn.classList.remove('hide');
         }
 
-        nextBtn.addEventListener('click', switchPage());
-        prevBtn.addEventListener('click', switchPage());
+        nextBtn.addEventListener('click', displayPage.bind(parks, element, 1));
+        prevBtn.addEventListener('click', displayPage.bind(parks, element, -1));
     }
 
     // last page doesn't need next button
     if (currentPage === lastPage) {
         nextBtn.classList.add('hide');
-        prevBtn.addEventListener('click', switchPage())
+        prevBtn.addEventListener('click', displayPage.bind(parks, element, 1))
     }
 }
-async function displayResults() {
 
-}
-
-function nextPage() {
-
-}
-
-function prevPage() {
-
-}
 
 async function switchResultDisplay(parks, element) {
 
@@ -212,6 +196,7 @@ async function switchResultDisplay(parks, element) {
     
 }
 
+
 async function getParksByState() {
     
     let parksByState = {}; 
@@ -226,6 +211,7 @@ async function getParksByState() {
  
     return parksByState;
 }
+
 
 async function getParksByRegion() {
  
@@ -248,6 +234,7 @@ async function getParksByRegion() {
     return allParksByRegion;
 }
 
+
 async function getParksBySubRegion(subRegion) {
    
     let subRegionParks = {};
@@ -267,6 +254,7 @@ async function getParksBySubRegion(subRegion) {
  
     return subRegionParks;
 }
+
 
 function parkResultTemplate(data) {
 
