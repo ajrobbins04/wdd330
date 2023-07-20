@@ -18,7 +18,7 @@ export default async function parkList(selector) {
     let currentPage = 1; 
     const resultsPerPage = 16; 
 
-    window.addEventListener('DOMContentLoaded', restorePagePosition);  
+    //window.addEventListener('DOMContentLoaded', restorePagePosition);  
     // retrive data for all parks and its
     // eventual parent element
     const parks = await apiFetch();
@@ -38,6 +38,7 @@ export default async function parkList(selector) {
     option.addEventListener('change', function() {
         switchResultDisplay(parks, element);
     });
+
 
    /* const parkDetailLinks = document.getElementsByClassName('parkResult-learnMore');
     Array.from(parkDetailLinks).forEach(link => {
@@ -227,6 +228,7 @@ async function switchResultDisplay(parks, element) {
 
 function includeState(event) {
     console.log('event fired!');
+    console.log(event);
 }
 async function getParksByState(states) {
     
@@ -317,7 +319,7 @@ function parkResultTemplate(data) {
         <p class="state parkResult-state">Located in ${fullStates}</p>
         <p class="parkResult-noImg">[No Image Provided]</p>
         <p class="description parkResult-description">${data.description}</p>
-        <a class="parkResult-learnMore" href="./parkDetails.html?parkCode=${park.parkCode}">Learn More</a>
+        <a class="parkResult-learnMore" href="./parkDetails.html?parkCode=${data.parkCode}">Learn More</a>
         </li>`;
     }
 }
