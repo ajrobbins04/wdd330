@@ -4,7 +4,9 @@ import { convertStateAbbr,
          states,
          states_short,
          regions,
-         regions_short } from './utils.mjs';
+         regions_short, 
+         setPagePosition,
+         restorePagePosition } from './utils.mjs';
 
 import { apiFetch,
          findByStateCode } from './externalServices.mjs';
@@ -14,8 +16,9 @@ import { apiFetch,
 export default async function parkList(selector) {
 
     let currentPage = 1; 
-    const resultsPerPage = 16;
+    const resultsPerPage = 16; 
 
+    window.addEventListener('DOMContentLoaded', restorePagePosition);  
     // retrive data for all parks and its
     // eventual parent element
     const parks = await apiFetch();
@@ -23,10 +26,10 @@ export default async function parkList(selector) {
 
     // set finalPage to total number of pages possible
     const finalPage = getNumPages(parks, resultsPerPage);
-
+  
     // display first 10 park results on single page
     displayPage(parks, element, currentPage, resultsPerPage);
-
+ 
     // check if new page is clicked
     clickNewPage(parks, element, currentPage, resultsPerPage);
 
@@ -36,13 +39,10 @@ export default async function parkList(selector) {
         switchResultDisplay(parks, element);
     });
 
-    const parkDetailLinks = document.getElementsByClassName('parkResult-learnMore');
+   /* const parkDetailLinks = document.getElementsByClassName('parkResult-learnMore');
     Array.from(parkDetailLinks).forEach(link => {
         link.addEventListener('click', setPagePosition);
-    })
-
-
-    window.addEventListener('load', restorePagePosition);
+    })*/
 }
 
 // displays 10 park results per page
@@ -135,24 +135,6 @@ function getNumPages(parks, resultsPerPage) {
     return totalPages;
 }
 
-function setPagePosition() {
-    // y position of viewport window
-    const currentPosition = window.scrollY;
-    sessionStorage.setItem('pagePosition', currentPosition);
-}
-
-
-function restorePagePosition() {
-    console.log('Event listener called!')
-    const savedPosition = sessionStorage.getItem('pagePosition');
-    const restoredPosition = parseInt(savedPosition, 10);
-
-    if (restoredPosition > 0) {
-        window.scrollTo(0, restoredPosition);
-    }
-}
-
-
 // called if user wants park results to be sorted differently
 async function switchResultDisplay(parks, element) {
 
@@ -173,7 +155,7 @@ async function switchResultDisplay(parks, element) {
 
         // gets an object containing each state as a key
         // w/an array of its parks as its value
-        let parkSort = await getParksByState();
+        let parkSort = await getParksByState(states_short);
 
         let allParksByState = [];
 
@@ -192,10 +174,13 @@ async function switchResultDisplay(parks, element) {
             renderListWithTemplate(parkResultTemplate, element, Array.from(stateParks));
         })
 
-        const stateCheckboxes = document.querySelectorAll('.stateBox');
-        stateCheckboxes.forEach((box) => {
-            box.addEventListener('click', includeInSearch);
+        const stateOptions = document.querySelectorAll('.stateBox');
+        stateOptions.forEach((state) => {
+            state.addEventListener('click', (event) => {
+                includeState(event);
+            });
         })
+
  
     // sort by region
     } else if (options.value === 'region') {
@@ -222,7 +207,7 @@ async function switchResultDisplay(parks, element) {
             }
         }
 
-    // sort parks by default from A - Z names
+    // sort parks by name from A - Z (the default option)
     } else {
 
         // remove unnecessary filter table used by the
@@ -240,14 +225,16 @@ async function switchResultDisplay(parks, element) {
     
 }
 
-
-async function getParksByState() {
+function includeState(event) {
+    console.log('event fired!');
+}
+async function getParksByState(states) {
     
     let parksByState = {}; 
 
     // places an array of parks for each state in the
     // parksByState object w/state name as its key
-    for (const state of states_short) {
+    for (const state of states) {
         let parks = await findByStateCode('parks?', state);
         let parksArray = Array.from(parks.data);
         parksByState[`${state}`] = parksArray; 

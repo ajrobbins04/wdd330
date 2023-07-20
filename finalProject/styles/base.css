@@ -47,7 +47,7 @@ h2 {
 
 header,
 select,
-.stateFilterOption,
+.stateOption,
 .state,
 .parkResult-learnMore,
 .btn {
@@ -142,7 +142,7 @@ header {
 #template-footer {
     padding: 1.25rem .25rem;
 }
-.stateFilterOption {
+.stateOption {
     margin: 0.75rem 0;
 }
 

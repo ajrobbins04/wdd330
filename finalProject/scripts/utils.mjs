@@ -1,4 +1,20 @@
- 
+export function setPagePosition() {
+  // y position of viewport window
+  const currentPosition = window.scrollY;
+  sessionStorage.setItem('pagePosition', currentPosition);
+}
+
+
+export function restorePagePosition() {
+  console.log('Event listener called!')
+  const savedPosition = sessionStorage.getItem('pagePosition');
+  const restoredPosition = parseInt(savedPosition, 10);
+
+  if (restoredPosition > 0) {
+      window.scrollTo(0, restoredPosition);
+  }
+}
+
 // save data to local storage
 export function setLocalStorage(key, data) {
   localStorage.setItem(key, JSON.stringify(data));
