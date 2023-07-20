@@ -15,39 +15,50 @@ import { apiFetch,
 
 export default async function parkList(selector) {
 
+    //window.addEventListener('DOMContentLoaded', restorePagePosition);  
+  
+    // the element that all park results will be placed in
+    const parentElement = document.querySelector(selector);  
+
+    // for switching pages
+    const prevBtn = document.querySelector('.prevArrow');    
+    const nextBtn = document.querySelector('.nextArrow');
+
+    // for viewing parks based on sort options, followed by result filters
+    const options = document.getElementById('sortOptions');
+    const stateFilterOptions = document.getElementById('stateFilter');
+    const regionFilterOptions = document.getElementById('regionFilter');
+   
+    // retrive data for all parks
+    const parks = await apiFetch();
+
     let currentPage = 1; 
     const resultsPerPage = 16; 
 
-    //window.addEventListener('DOMContentLoaded', restorePagePosition);  
-    // retrive data for all parks and its
-    // eventual parent element
-    const parks = await apiFetch();
-    const element = document.querySelector(selector);
-
     // set finalPage to total number of pages possible
     const finalPage = getNumPages(parks, resultsPerPage);
-  
+
     // display first 10 park results on single page
-    displayPage(parks, element, currentPage, resultsPerPage);
+    displayPage(parks, parentElement, currentPage, resultsPerPage);
  
     // check if new page is clicked
-    clickNewPage(parks, element, currentPage, resultsPerPage);
+    clickNewPage(parks, parentElement, prevBtn, nextBtn, currentPage, resultsPerPage);
 
     // organizes results based on the current sort option
-    const option = document.getElementById('sortOptions');
-    option.addEventListener('change', function() {
-        switchResultDisplay(parks, element);
+    options.addEventListener('change', function() {
+        const value = options.value;
+        switchResultDisplay(parks, parentElement, value, stateFilterOptions, regionFilterOptions);
     });
 
 
-   /* const parkDetailLinks = document.getElementsByClassName('parkResult-learnMore');
+   /* const parkDetailLinks = document.getparentElementsByClassName('parkResult-learnMore');
     Array.from(parkDetailLinks).forEach(link => {
         link.addEventListener('click', setPagePosition);
     })*/
 }
 
 // displays 10 park results per page
-function displayPage(parks, element, currentPage, resultsPerPage) {
+function displayPage(parks, parentElement, currentPage, resultsPerPage) {
 
     // will use indices to slice parks data
     const startIndex = (currentPage - 1) * resultsPerPage;
@@ -57,15 +68,13 @@ function displayPage(parks, element, currentPage, resultsPerPage) {
     const parksPage = Array.from(parks.data.slice(startIndex, endIndex));
 
     // render page display 
-    renderListWithTemplate(parkResultTemplate, element, parksPage);
+    renderListWithTemplate(parkResultTemplate, parentElement, parksPage);
 }
 
 
 // checks if user has clicked on a new page
-function clickNewPage(parks, element, currentPage, resultsPerPage, finalPage) {
-
-    const prevBtn = document.querySelector('.prevArrow');
-    const nextBtn = document.querySelector('.nextArrow');
+function clickNewPage(parks, parentElement, prevBtn, nextBtn, 
+                      currentPage, resultsPerPage, finalPage) {
 
     // update the buttons to display based on current page
     function updateButtons() {
@@ -91,7 +100,7 @@ function clickNewPage(parks, element, currentPage, resultsPerPage, finalPage) {
                 throw new Error('Invalid current page.');
             }
             updateButtons();
-            displayPage(parks, element, currentPage, resultsPerPage);
+            displayPage(parks, parentElement, currentPage, resultsPerPage);
         } 
         catch (error) {
             console.log('ERROR: ' + error.message);
@@ -106,7 +115,7 @@ function clickNewPage(parks, element, currentPage, resultsPerPage, finalPage) {
                 throw new Error('Invalid current page.');
             }
             updateButtons();
-            displayPage(parks, element, currentPage, resultsPerPage);
+            displayPage(parks, parentElement, currentPage, resultsPerPage);
         } 
         catch (error) {
             console.log('ERROR: ' + error.message);
@@ -137,14 +146,11 @@ function getNumPages(parks, resultsPerPage) {
 }
 
 // called if user wants park results to be sorted differently
-async function switchResultDisplay(parks, element) {
-
-    const options = document.getElementById('sortOptions');
-    const stateFilterOptions = document.getElementById('stateFilter');
-    const regionFilterOptions = document.getElementById('regionFilter');
+async function switchResultDisplay(parks, parentElement, value,
+     stateFilterOptions, regionFilterOptions) {
 
     // sort by state
-    if (options.value === 'state') {
+    if (value === 'state') {
 
         // remove selection table of region names if present
         if (!regionFilterOptions.classList.contains('hide')) {
@@ -172,7 +178,7 @@ async function switchResultDisplay(parks, element) {
         allParksByState.reverse().forEach(stateParks => {
 
             // display park results by state
-            renderListWithTemplate(parkResultTemplate, element, Array.from(stateParks));
+            renderListWithTemplate(parkResultTemplate, parentElement, Array.from(stateParks));
         })
 
         const stateOptions = document.querySelectorAll('.stateBox');
@@ -184,7 +190,7 @@ async function switchResultDisplay(parks, element) {
 
  
     // sort by region
-    } else if (options.value === 'region') {
+    } else if (value === 'region') {
 
         // remove selection table of state names if present
         if (!stateFilterOptions.classList.contains('hide')) {
@@ -204,7 +210,7 @@ async function switchResultDisplay(parks, element) {
                 let subRegionParks = Object.values(subRegion);
            
                 // display park results by region
-                renderListWithTemplate(parkResultTemplate, element, Array.from(subRegionParks[0]));
+                renderListWithTemplate(parkResultTemplate, parentElement, Array.from(subRegionParks[0]));
             }
         }
 
@@ -221,7 +227,7 @@ async function switchResultDisplay(parks, element) {
             regionFilterOptions.classList.add('hide');
         }
         
-        renderListWithTemplate(parkResultTemplate, element, Array.from(parks.data));
+        renderListWithTemplate(parkResultTemplate, parentElement, Array.from(parks.data));
     }
     
 }
