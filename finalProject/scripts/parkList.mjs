@@ -200,9 +200,9 @@ async function switchResultDisplay(parks, parentElement, value,
         // add selection table of regions
         regionFilterOptions.classList.remove('hide');
   
-        let allParksByRegion = await getParksByRegion();
-      
-        for (let [regionName, subRegions] of Object.entries(allParksByRegion)) {
+        let allParksByRegion = await getParksByRegion(regions);
+      console.log(allParksByRegion);
+       /* for (let [regionName, subRegions] of Object.entries(allParksByRegion)) {
  
             for (let subRegion of subRegions) {
               
@@ -212,7 +212,7 @@ async function switchResultDisplay(parks, parentElement, value,
                 // display park results by region
                 renderListWithTemplate(parkResultTemplate, parentElement, Array.from(subRegionParks[0]));
             }
-        }
+        }*/
 
     // sort parks by name from A - Z (the default option)
     } else {
@@ -234,63 +234,68 @@ async function switchResultDisplay(parks, parentElement, value,
 
 function includeState(event) {
     console.log('event fired!');
-    console.log(event);
+
 }
 async function getParksByState(states) {
     
+    // generates an array of parks w/in each state in states array
+    const promises = states.map(state => findByStateCode('parks?', state));
+
+    // is an array of promise objects, where each object
+    // contains the array of parks w/in a single state
+    const parksResponses = await Promise.all(promises);
+
+    // each object property will be a state name &
+    // its value will be an array of the state's parks
     let parksByState = {}; 
 
-    // places an array of parks for each state in the
-    // parksByState object w/state name as its key
-    for (const state of states) {
-        let parks = await findByStateCode('parks?', state);
-        let parksArray = Array.from(parks.data);
-        parksByState[`${state}`] = parksArray; 
-    }
- 
+    parksResponses.forEach((response, index) => {
+        const state = states[index]; 
+        const parksArray = Array.from(response.data);
+        parksByState[state] = parksArray;
+    })
+
     return parksByState;
 }
 
 
-async function getParksByRegion() {
+async function getParksByRegion(regions) {
  
     let allParksByRegion = {};
-   
-    // get sub-region information for each major region
-    for (let i in regions_short) {
 
-        for (let [region, subRegions] of Object.entries(regions_short[i])) {
+    const promises = regions.map(async (region) => {
 
-            let subRegionParks = [];
-            for (let subRegion of subRegions) {
-                let parks = await getParksBySubRegion(subRegion);
-                subRegionParks.push(parks);
-            } 
-            allParksByRegion[`${region}`] = subRegionParks; 
-        }  
-    };
+        // access the one and only key-value pair in each
+        // region object to get its name and subRegion names
+        const regionName = Object.keys(region)[0];
+        const subRegions = Object.values(region)[0];
+        const parks = await Promise.all(
+            subRegions.map((subRegion) => getParksBySubRegion(subRegion))
+        );
+
+        allParksByRegion[regionName] = parks;
+    });
+    await Promise.all(promises);
 
     return allParksByRegion;
 }
 
 
 async function getParksBySubRegion(subRegion) {
-   
+
+    const subRegionName = Object.keys(subRegion)[0];
+    const states = Object.values(subRegion)[0];
+ 
+    const promises = states.map(state => findByStateCode('parks?', state));
+    const parksResponses = await Promise.all(promises);
+
     let subRegionParks = {};
 
-    const subRegionName = Object.keys(subRegion);
-    const states = Object.values(subRegion);
- 
-    // get the parks for each state in the subregion
-    for (let state of states) {
-        let parks = await findByStateCode('parks?', state);
-        let parksArray = Array.from(parks.data);
-
-        // add the array of parks as a subRegionParks 
-        // object value w/the subRegion name as its key
-        subRegionParks[`${subRegionName}`] = parksArray; 
-    }
- 
+    states.forEach((state, index) => {
+        const parksArray = Array.from(parksResponses[index].data);
+        subRegionParks[state] = parksArray;
+    })
+    
     return subRegionParks;
 }
 

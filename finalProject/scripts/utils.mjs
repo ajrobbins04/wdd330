@@ -198,7 +198,7 @@ export const regions =
   {west: [{mountain: ['AZ', 'CO', 'ID', 'MT', 'NV', 'NM', 'UT', 'WY']}, 
           {pacific: ['AK', 'CA', 'HI', 'WA', 'OR']}]
   }, 
-  {atlanticTerritories: [{atlanticTerritories: ['AS', 'GU', 'NP', 'PR', 'VI']}]}
+  {atlanticTerritories: [{atlanticTerritories: ['AS', 'GU', 'MP', 'PR', 'VI']}]}
 ];
 
 export const regions_short =
