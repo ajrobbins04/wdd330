@@ -47,6 +47,21 @@ export async function renderListWithTemplate(templateFn,
     parentElement.insertAdjacentHTML(position, htmlString.join(''));
   }
 
+export async function renderNestedListWithTemplate(templateFn,
+  parentElement,
+  nestedList,
+  position = 'afterbegin',
+  clear = true) {
+    if (clear) {
+      parentElement.innerHTML = '';   
+    }
+    for (const list of nestedList) {
+      const htmlString = list.map(templateFn);
+      parentElement.insertAdjacentHTML(position, htmlString.join(''));
+    } 
+  }
+
+
 export async function renderWithTemplate(templateFn,
   parentElement,
   data, 
