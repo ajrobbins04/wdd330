@@ -40,15 +40,19 @@ export default async function parkList(selector) {
     }
    
     let currentPage = 1; 
+    let finalPage = null;
 
     // set finalPage to total number of pages possible
-    const finalPage = getNumPages(allParks);
+    if (!finalPage) {
+        finalPage = getNumPages(allParks);
+    }
+    
 
     // display first 10 park results on single page
     displayPage(allParks, parentElement, currentPage);
  
     // check if new page is clicked
-    clickNewPage(allParks, parentElement, prevBtn, nextBtn, currentPage);
+    clickNewPage(allParks, parentElement, prevBtn, nextBtn, currentPage, finalPage);
 
     // organizes results based on the current sort option
     options.addEventListener('change', function() {
@@ -132,7 +136,7 @@ function clickNewPage(parks, parentElement, prevBtn, nextBtn,
         currentPage -= 1;  // go back 1 page
 
         try {  // ensure page number is valid before displaying it
-            if (currentPage <= 0 || currentPage > lastPage) {
+            if (currentPage <= 0 || currentPage > finalPage) {
                 throw new Error('Invalid current page.');
             }
             updateButtons();
