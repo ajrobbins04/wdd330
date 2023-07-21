@@ -49,12 +49,6 @@ export default async function parkList(selector) {
         const value = options.value;
         switchResultDisplay(parks, parentElement, value, stateFilterOptions, regionFilterOptions);
     });
-
-
-   /* const parkDetailLinks = document.getparentElementsByClassName('parkResult-learnMore');
-    Array.from(parkDetailLinks).forEach(link => {
-        link.addEventListener('click', setPagePosition);
-    })*/
 }
 
 // displays 10 park results per page
@@ -160,31 +154,19 @@ async function switchResultDisplay(parks, parentElement, value,
         // add selection table of states
         stateFilterOptions.classList.remove('hide');
 
-        // gets an object containing each state as a key
-        // w/an array of its parks as its value
-        let parkSort = await getParksByState(states_short);
+        const parksByState = await getParksByState(states);
 
-        let allParksByState = [];
-
-        for (let [state, stateParks] of Object.entries(parkSort)) {
-
-            // adds just the parks into an array,
-            // but is now sorted by state
-            allParksByState.push(stateParks);
-        }
-    
         // must iterate backwards for parks to be rendered
-        // in A-Z order instead of Z-A
-        allParksByState.reverse().forEach(stateParks => {
-
-            // display park results by state
+        // by state from A-Z 
+        parksByState.reverse().forEach(stateParks => {
             renderListWithTemplate(parkResultTemplate, parentElement, Array.from(stateParks));
         })
 
+        let selectedStates = [];
         const stateOptions = document.querySelectorAll('.stateBox');
         stateOptions.forEach((state) => {
             state.addEventListener('click', (event) => {
-                includeState(event);
+                includeState(event, selectedStates, parentElement);
             });
         })
 
@@ -200,19 +182,18 @@ async function switchResultDisplay(parks, parentElement, value,
         // add selection table of regions
         regionFilterOptions.classList.remove('hide');
   
-        let allParksByRegion = await getParksByRegion(regions);
-      console.log(allParksByRegion);
-       /* for (let [regionName, subRegions] of Object.entries(allParksByRegion)) {
- 
-            for (let subRegion of subRegions) {
+        const allParksByRegion = await getParksByRegion(regions);
+  
+        for (const [regionName, subRegions] of Object.entries(allParksByRegion)) {
+            for (const subRegion of subRegions) {
               
-                let subRegionName = Object.keys(subRegion);
-                let subRegionParks = Object.values(subRegion);
+                const stateNames = Object.keys(subRegion);
+                const stateParks = Object.values(subRegion);
            
                 // display park results by region
-                renderListWithTemplate(parkResultTemplate, parentElement, Array.from(subRegionParks[0]));
+                renderListWithTemplate(parkResultTemplate, parentElement, Array.from(stateParks[0]));
             }
-        }*/
+        }
 
     // sort parks by name from A - Z (the default option)
     } else {
@@ -232,10 +213,26 @@ async function switchResultDisplay(parks, parentElement, value,
     
 }
 
-function includeState(event) {
-    console.log('event fired!');
+async function includeState(event, selectedStates, parentElement) {
+
+    const state = event.target.value;
+
+    selectedStates.push(state);
+    const statesSorted = selectedStates.sort();
+
+    let parksByState = await getParksByState(statesSorted);
+
+    // must iterate backwards for parks to be rendered
+    // in A-Z order instead of Z-A
+    parksByState.reverse().forEach(stateParks => {
+
+        // display park results by state
+        renderListWithTemplate(parkResultTemplate, parentElement, Array.from(stateParks));
+    })
+
 
 }
+
 async function getParksByState(states) {
     
     // generates an array of parks w/in each state in states array
@@ -247,13 +244,21 @@ async function getParksByState(states) {
 
     // each object property will be a state name &
     // its value will be an array of the state's parks
-    let parksByState = {}; 
+    let parksInState = {}; 
 
     parksResponses.forEach((response, index) => {
         const state = states[index]; 
         const parksArray = Array.from(response.data);
-        parksByState[state] = parksArray;
-    })
+        parksInState[state] = parksArray;
+    });
+
+    let parksByState = [];
+
+    for (const [state, stateParks] of Object.entries(parksInState)) {
+        // adds just the parks into an array,
+        // but is now sorted by state
+        parksByState.push(stateParks);
+    }
 
     return parksByState;
 }
@@ -261,7 +266,7 @@ async function getParksByState(states) {
 
 async function getParksByRegion(regions) {
  
-    let allParksByRegion = {};
+    let parksByRegion = {};
 
     const promises = regions.map(async (region) => {
 
@@ -273,11 +278,11 @@ async function getParksByRegion(regions) {
             subRegions.map((subRegion) => getParksBySubRegion(subRegion))
         );
 
-        allParksByRegion[regionName] = parks;
+        parksByRegion[regionName] = parks;
     });
     await Promise.all(promises);
 
-    return allParksByRegion;
+    return parksByRegion;
 }
 
 
