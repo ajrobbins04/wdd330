@@ -1,20 +1,15 @@
+import parksByState from './states.mjs';
 import { renderListWithTemplate,
          selectRandomImage,
-         states,
          regions,
          setPagePosition,
          restorePagePosition } from './utils.mjs';
-import { statesObj,
-         getParksByState,
-         displayStatePage,
-         clickNewStatePage,
-         convertStateAbbr,
-         includeState } from './states.mjs';
+import { states,
+    convertStateAbbr } from './states.mjs';
 import { apiFetch,
          findByStateCode } from './externalServices.mjs';
 
 let allParks = null;
-let allParksByState = null;
 let allParksByRegion = null;
 
 const resultsPerPage = 16;
@@ -176,24 +171,8 @@ async function switchResultDisplay(parentElement, value,
         // add selection table of states
         stateFilterOptions.classList.remove('hide');
 
-        if (!allParksByState) {
-            allParksByState = await getParksByState(states);
-        }
-
-        displayStatePage(allParksByState, parentElement, currentPage);
-        clickNewStatePage(allParksByState, parentElement, prevBtn, nextBtn, currentPage);
+        parksByState(parentElement, prevBtn, nextBtn);
         
-        let selectedStates = [];
-        const stateOptions = document.querySelectorAll('.stateBox');
-        
-        // let user choose states to view
-        stateOptions.forEach((state) => {
-            state.addEventListener('click', (event) => {
-                includeState(event, selectedStates, parentElement);
-            });
-        });
-
- 
     // sort by region
     } else if (value === 'region') {
 

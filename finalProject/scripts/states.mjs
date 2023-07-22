@@ -3,15 +3,36 @@ import { renderListWithTemplate,
 import { apiFetch,
          findByStateCode } from './externalServices.mjs';
 
-// each page displays parks within a single state
-export function displayStatePage(allParksByState, parentElement, currentPage) {
-   
-    const stateParksPage = Array.from(allParksByState[currentPage - 1]);
-    renderListWithTemplate(parkResultTemplate, parentElement, stateParksPage);
+let allParksByState = null;
+
+export default async function parksByState(parentElement, prevBtn, nextBtn) {
+
+    if (!allParksByState) {
+        allParksByState = await getParksByState(states);
+    }
+
+    let currentPage = 1;
+    let finalPage = Object.keys(allParksByState).length;
+
+    displayStatePage(allParksByState, parentElement, currentPage);
+    clickNewStatePage(allParksByState, parentElement, prevBtn, nextBtn,
+                      currentPage, finalPage);
+
+    let clickedStates = [];
+    const stateOptions = document.querySelectorAll('.stateBox');
+    
+    // let user choose states to view
+    stateOptions.forEach((state) => {
+        state.addEventListener('click', (event) => {
+            includeState(event, clickedStates, parentElement, 
+                         currentPage, finalPage);
+        });
+    });
 
 }
 
-export async function getParksByState(states) {
+
+async function getParksByState(states) {
     
     // generates an array of parks w/in each state in states array
     const promises = states.map(state => findByStateCode('parks?', state));
@@ -37,47 +58,35 @@ export async function getParksByState(states) {
         // but is now sorted by state
         parksByState.push(stateParks);
     }
-
     return parksByState;
 }
 
 
-// user may alternately choose which states to include in
-// the display pages
-export async function includeState(event, selectedStates, parentElement) {
-
-    const stateAbbr = event.target.value;
-    const fullNameState = statesObj[stateAbbr];    
+// each page will display parks in a single state
+function displayStatePage(allParksByState, parentElement, currentPage) {
    
-    // create array that holds the full names 
-    // of selected states
-    selectedStates.push(fullNameState);
+    const stateParksPage = Array.from(allParksByState[currentPage - 1]);
+    renderListWithTemplate(parkResultTemplate, parentElement, stateParksPage);
+}
 
-    // this would alphabetize the states incorrectly
-    // if they were abbreviated.
-    const statesSorted = selectedStates.sort();
 
-    // updated selectedStates w/abbreviated state names
-    selectedStates = statesSorted.map((fullNameState) => {
-        return findStateAbbr(fullNameState);
-    })
+// each page will display parks in a single state selected by the user
+function displaySelectedStatePage(allParksByState, selectedStates, parentElement, currentPage) {
 
-    let parksByState = await getParksByState(statesSorted);
+    const selectedStatesData = [];
+    Object.keys(selectedStates).forEach((index) => {
+        const data = allParksByState[index];
+        selectedStatesData.push(data);
+    });
 
-    // must iterate backwards for parks to be rendered
-    // in A-Z order instead of Z-A
-    parksByState.reverse().forEach(stateParks => {
-
-        // display park results by state
-        renderListWithTemplate(parkResultTemplate, parentElement, Array.from(stateParks));
-    })
+    const stateParksPage = Array.from(selectedStatesData[currentPage - 1]);
+    renderListWithTemplate(parkResultTemplate, parentElement, stateParksPage);
 }
 
 
 // checks if user has clicked on a new page
-export function clickNewStatePage(allParksByState, parentElement, prevBtn, nextBtn, currentPage) {
-
-    const finalPage = Object.keys(allParksByState).length;
+function clickNewStatePage(allParksByState, parentElement, prevBtn, nextBtn, 
+                           currentPage, finalPage) {
 
     function scrollToTop() {
         window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -133,6 +142,54 @@ export function clickNewStatePage(allParksByState, parentElement, prevBtn, nextB
 }
 
 
+// user may alternately choose which states to include in
+// the display pages
+async function includeState(event, clickedStates, parentElement, 
+                            currentPage, finalPage) {
+
+    const stateAbbr = event.target.value;
+    const fullNameState = statesObj[stateAbbr];    
+   
+    // create array that holds the full names 
+    // of selected states
+    clickedStates.push(fullNameState);
+
+    // this would alphabetize the states incorrectly
+    // if they were abbreviated.
+    const statesSorted = clickedStates.sort();
+
+    // updated selectedStates w/abbreviated state names
+    const abbrStates = statesSorted.map((fullNameState) => {
+        return findStateAbbr(fullNameState);
+    });
+
+    const selectedStates = Object.entries(statesObj).reduce((acc, [abbr, name], index) => {
+        if (abbrStates.includes(abbr)) {
+            acc[index] = abbr;
+        }
+        return acc;
+    }, {});
+
+    // changes whenever another state is added/removed 
+    finalPage = Object.keys(selectedStates).length;
+   
+    displaySelectedStatePage(allParksByState, selectedStates, parentElement, currentPage);
+    clickNewStatePage(selectedStates, parentElement, prevBtn, nextBtn,
+                      currentPage, finalPage);
+
+/*
+
+    let parksByState = await getParksByState(statesSorted);
+
+    // must iterate backwards for parks to be rendered
+    // in A-Z order instead of Z-A
+    parksByState.reverse().forEach(stateParks => {
+
+        // display park results by state
+        renderListWithTemplate(parkResultTemplate, parentElement, Array.from(stateParks));
+    })*/
+}
+ 
 export function convertStateAbbr(stateAbbr) {
 
     let fullNameState = '';
@@ -170,7 +227,6 @@ export function convertStateAbbr(stateAbbr) {
     }
 
 }
-
 
 export function findStateAbbr(fullNameState) {
 
@@ -281,3 +337,61 @@ export const statesObj = {
     WY: 'Wyoming'
 }
  
+export const states = [
+    'AL',
+    'AK',
+    'AS',
+    'AZ',
+    'AR',
+    'CA',
+    'CO',
+    'CT',
+    'DE',
+    'DC',
+    'FL',
+    'GA',
+    'GU',
+    'HI',
+    'ID',
+    'IL',
+    'IN',
+    'IA',
+    'KS',
+    'KY',
+    'LA',
+    'ME',
+    'MD',
+    'MA',
+    'MI',
+    'MN',
+    'MS',
+    'MO',
+    'MT',
+    'NE',
+    'NV',
+    'NH',
+    'NJ',
+    'NM',
+    'NY',
+    'NC',
+    'ND',
+    'MP',
+    'OH',
+    'OK',
+    'OR',
+    'PA',
+    'PR',
+    'RI',
+    'SC',
+    'SD',
+    'TN',
+    'TX',
+    'UT',
+    'VT',
+    'VI',
+    'VA',
+    'WA',
+    'WV',
+    'WI',
+    'WY'
+  ];
