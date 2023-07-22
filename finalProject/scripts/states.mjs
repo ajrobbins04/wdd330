@@ -14,9 +14,8 @@ export default async function parksByState(parentElement, prevBtn, nextBtn) {
     let currentPage = 1;
     let finalPage = Object.keys(allParksByState).length;
 
-    displayStatePage(allParksByState, parentElement, currentPage);
-    clickNewStatePage(allParksByState, parentElement, prevBtn, nextBtn,
-                      currentPage, finalPage);
+    displayStatePage(parentElement, currentPage);
+    clickNewStatePage(parentElement, prevBtn, nextBtn, currentPage, finalPage);
 
     let clickedStates = [];
     const stateOptions = document.querySelectorAll('.stateBox');
@@ -25,10 +24,9 @@ export default async function parksByState(parentElement, prevBtn, nextBtn) {
     stateOptions.forEach((state) => {
         state.addEventListener('click', (event) => {
             includeState(event, clickedStates, parentElement, 
-                         currentPage, finalPage);
+                         currentPage, finalPage, prevBtn, nextBtn);
         });
     });
-
 }
 
 
@@ -63,29 +61,15 @@ async function getParksByState(states) {
 
 
 // each page will display parks in a single state
-function displayStatePage(allParksByState, parentElement, currentPage) {
+function displayStatePage(parentElement, currentPage) {
    
     const stateParksPage = Array.from(allParksByState[currentPage - 1]);
     renderListWithTemplate(parkResultTemplate, parentElement, stateParksPage);
 }
 
 
-// each page will display parks in a single state selected by the user
-function displaySelectedStatePage(allParksByState, selectedStates, parentElement, currentPage) {
-
-    const selectedStatesData = [];
-    Object.keys(selectedStates).forEach((index) => {
-        const data = allParksByState[index];
-        selectedStatesData.push(data);
-    });
-
-    const stateParksPage = Array.from(selectedStatesData[currentPage - 1]);
-    renderListWithTemplate(parkResultTemplate, parentElement, stateParksPage);
-}
-
-
 // checks if user has clicked on a new page
-function clickNewStatePage(allParksByState, parentElement, prevBtn, nextBtn, 
+function clickNewStatePage(parentElement, prevBtn, nextBtn, 
                            currentPage, finalPage) {
 
     function scrollToTop() {
@@ -94,13 +78,16 @@ function clickNewStatePage(allParksByState, parentElement, prevBtn, nextBtn,
 
     // update the buttons to display based on current page
     function updateButtons() {
+
         if (currentPage === 1) {
             prevBtn.classList.add('hide');
             nextBtn.classList.remove('hide');
-        } else if (currentPage < finalPage) {
+        }
+        else if (currentPage < finalPage) {
             prevBtn.classList.remove('hide');
             nextBtn.classList.remove('hide');
-        } else {
+        } 
+        else {
             prevBtn.classList.remove('hide');
             nextBtn.classList.add('hide');
         }
@@ -116,7 +103,7 @@ function clickNewStatePage(allParksByState, parentElement, prevBtn, nextBtn,
                 throw new Error('Invalid current page.');
             }
             updateButtons();
-            displayStatePage(allParksByState, parentElement, currentPage);
+            displayStatePage(parentElement, currentPage);
             scrollToTop();
         } 
         catch (error) {
@@ -132,7 +119,7 @@ function clickNewStatePage(allParksByState, parentElement, prevBtn, nextBtn,
                 throw new Error('Invalid current page.');
             }
             updateButtons();
-            displayStatePage(allParksByState, parentElement, currentPage);
+            displayStatePage(parentElement, currentPage);
             scrollToTop();
         } 
         catch (error) {
@@ -145,11 +132,11 @@ function clickNewStatePage(allParksByState, parentElement, prevBtn, nextBtn,
 // user may alternately choose which states to include in
 // the display pages
 async function includeState(event, clickedStates, parentElement, 
-                            currentPage, finalPage) {
+    currentPage, finalPage, prevBtn, nextBtn) {
 
     const stateAbbr = event.target.value;
     const fullNameState = statesObj[stateAbbr];    
-   
+
     // create array that holds the full names 
     // of selected states
     clickedStates.push(fullNameState);
@@ -172,23 +159,92 @@ async function includeState(event, clickedStates, parentElement,
 
     // changes whenever another state is added/removed 
     finalPage = Object.keys(selectedStates).length;
-   
-    displaySelectedStatePage(allParksByState, selectedStates, parentElement, currentPage);
-    clickNewStatePage(selectedStates, parentElement, prevBtn, nextBtn,
-                      currentPage, finalPage);
 
-/*
-
-    let parksByState = await getParksByState(statesSorted);
-
-    // must iterate backwards for parks to be rendered
-    // in A-Z order instead of Z-A
-    parksByState.reverse().forEach(stateParks => {
-
-        // display park results by state
-        renderListWithTemplate(parkResultTemplate, parentElement, Array.from(stateParks));
-    })*/
+    displaySelectedStatePage(selectedStates, parentElement, currentPage);
+    clickNewSelectedStatePage(selectedStates, parentElement, prevBtn, nextBtn,
+                              currentPage, finalPage);
 }
+
+
+// each page will display parks in a single state selected by the user
+function displaySelectedStatePage(selectedStates, parentElement, currentPage) {
+
+    const selectedStatesData = [];
+    Object.keys(selectedStates).forEach((index) => {
+        const data = allParksByState[index];
+        selectedStatesData.push(data);
+    });
+
+    const stateParksPage = Array.from(selectedStatesData[currentPage - 1]);
+    renderListWithTemplate(parkResultTemplate, parentElement, stateParksPage);
+}
+
+
+// checks if user has clicked on a new page after selecting states
+function clickNewSelectedStatePage(selectedStates, parentElement, prevBtn, nextBtn, 
+    currentPage, finalPage) {
+
+    function scrollToTop() {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // update the buttons to display based on current page
+    function updateButtons() {
+
+        // in case only one state was selected
+        if (currentPage == 1 && finalPage == 1) {
+            prevBtn.classList.add('hide');
+            nextBtn.classList.add('hide');
+        }
+        else if (currentPage === 1) {
+            prevBtn.classList.add('hide');
+            nextBtn.classList.remove('hide');
+        }
+        else if (currentPage < finalPage) {
+            prevBtn.classList.remove('hide');
+            nextBtn.classList.remove('hide');
+        } 
+        else {
+            prevBtn.classList.remove('hide');
+            nextBtn.classList.add('hide');
+        }
+    }
+
+    updateButtons();
+
+    nextBtn.addEventListener('click', function() {
+        currentPage += 1;   // go forward 1 page
+
+        try {  // ensure page number is valid before displaying it
+            if (currentPage <= 0 || currentPage > finalPage) {
+                throw new Error('Invalid current page.');
+            }
+            updateButtons();
+            displaySelectedStatePage(selectedStates, parentElement, currentPage);
+            scrollToTop();
+} 
+        catch (error) {
+            console.log('ERROR: ' + error.message);
+        }
+    });
+
+    prevBtn.addEventListener('click', function () {
+        currentPage -= 1;  // go back 1 page
+
+        try {  // ensure page number is valid before displaying it
+            if (currentPage <= 0 || currentPage > finalPage) {
+                throw new Error('Invalid current page.');
+            }
+            updateButtons();
+            displaySelectedStatePage(selectedStates, parentElement, currentPage);
+            scrollToTop();
+        } 
+        catch (error) {
+            console.log('ERROR: ' + error.message);
+        }
+    });
+}
+
  
 export function convertStateAbbr(stateAbbr) {
 
