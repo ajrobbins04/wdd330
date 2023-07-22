@@ -1,18 +1,87 @@
 import { renderListWithTemplate,
          selectRandomImage } from "./utils.mjs";
+import { apiFetch,
+         findByStateCode } from './externalServices.mjs';
 
 // each page displays parks within a single state
 export function displayStatePage(allParksByState, parentElement, currentPage) {
    
     const stateParksPage = Array.from(allParksByState[currentPage - 1]);
-
     renderListWithTemplate(parkResultTemplate, parentElement, stateParksPage);
+
 }
+
+export async function getParksByState(states) {
+    
+    // generates an array of parks w/in each state in states array
+    const promises = states.map(state => findByStateCode('parks?', state));
+
+    // is an array of promise objects, where each object
+    // contains the array of parks w/in a single state
+    const parksResponses = await Promise.all(promises);
+
+    // each object property will be a state name &
+    // its value will be an array of the state's parks
+    let parksInState = {}; 
+
+    parksResponses.forEach((response, index) => {
+        const state = states[index]; 
+        const parksArray = Array.from(response.data);
+        parksInState[state] = parksArray;
+    });
+
+    let parksByState = [];
+
+    for (const [state, stateParks] of Object.entries(parksInState)) {
+        // adds just the parks into an array,
+        // but is now sorted by state
+        parksByState.push(stateParks);
+    }
+
+    return parksByState;
+}
+
+
+// user may alternately choose which states to include in
+// the display pages
+export async function includeState(event, selectedStates, parentElement) {
+
+    const stateAbbr = event.target.value;
+    const fullNameState = statesObj[stateAbbr];    
+   
+    // create array that holds the full names 
+    // of selected states
+    selectedStates.push(fullNameState);
+
+    // this would alphabetize the states incorrectly
+    // if they were abbreviated.
+    const statesSorted = selectedStates.sort();
+
+    // updated selectedStates w/abbreviated state names
+    selectedStates = statesSorted.map((fullNameState) => {
+        return findStateAbbr(fullNameState);
+    })
+
+    let parksByState = await getParksByState(statesSorted);
+
+    // must iterate backwards for parks to be rendered
+    // in A-Z order instead of Z-A
+    parksByState.reverse().forEach(stateParks => {
+
+        // display park results by state
+        renderListWithTemplate(parkResultTemplate, parentElement, Array.from(stateParks));
+    })
+}
+
 
 // checks if user has clicked on a new page
 export function clickNewStatePage(allParksByState, parentElement, prevBtn, nextBtn, currentPage) {
 
     const finalPage = Object.keys(allParksByState).length;
+
+    function scrollToTop() {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
 
     // update the buttons to display based on current page
     function updateButtons() {
@@ -39,6 +108,7 @@ export function clickNewStatePage(allParksByState, parentElement, prevBtn, nextB
             }
             updateButtons();
             displayStatePage(allParksByState, parentElement, currentPage);
+            scrollToTop();
         } 
         catch (error) {
             console.log('ERROR: ' + error.message);
@@ -54,6 +124,7 @@ export function clickNewStatePage(allParksByState, parentElement, prevBtn, nextB
             }
             updateButtons();
             displayStatePage(allParksByState, parentElement, currentPage);
+            scrollToTop();
         } 
         catch (error) {
             console.log('ERROR: ' + error.message);
@@ -61,14 +132,15 @@ export function clickNewStatePage(allParksByState, parentElement, prevBtn, nextB
     });
 }
 
+
 export function convertStateAbbr(stateAbbr) {
 
-    let fullStateName = '';
+    let fullNameState = '';
 
     // would be true if stateAbbr string = 'NV' 
     if (stateAbbr.length == 2) {
-        fullStateName = statesObj[stateAbbr];
-        return fullStateName;
+        fullNameState = statesObj[stateAbbr];
+        return fullNameState;
     }
 
     // woud be true if stateAbbr string = 'CA,NV,UT'
@@ -77,31 +149,45 @@ export function convertStateAbbr(stateAbbr) {
         const stateAbbrArray = stateAbbr.split(',');
 
         // would now be ['California', 'Nevada', 'Utah']
-        const fullStateNamesArray = stateAbbrArray.map(abbr => statesObj[abbr]);
+        const fullNameStatesArray = stateAbbrArray.map(abbr => statesObj[abbr]);
     
         // only 2 states in array
-        if (fullStateNamesArray.length === 2) {
-            fullStateName = fullStateNamesArray.join(' and ');
+        if (fullNameStatesArray.length === 2) {
+            fullNameState = fullNameStatesArray.join(' and ');
         }
         // 3 or more states in array
-        else if (fullStateNamesArray.length > 2) {
+        else if (fullNameStatesArray.length > 2) {
 
             // remove last state from array
-            const lastState = fullStateNamesArray.pop();
+            const lastState = fullNameStatesArray.pop();
 
             // Add the last state into the string as a final 
             // add-on so .join doesn't place a comma after it
-            fullStateName = fullStateNamesArray.join(', ') + `, and ${lastState}`;
+            fullNameState = fullNameStatesArray.join(', ') + `, and ${lastState}`;
         }
 
-        return fullStateName;
+        return fullNameState;
     }
 
 }
 
+
+export function findStateAbbr(fullNameState) {
+
+    for (const abbr in statesObj) {
+        if (statesObj.hasOwnProperty(abbr)) {
+            if (statesObj[abbr] === fullNameState) {
+                return abbr;
+            }
+        }
+    }
+    return null;
+}
+
+
 function parkResultTemplate(data) {
 
-    const fullStateName = convertStateAbbr(data.states);
+    const fullNameState = convertStateAbbr(data.states);
 
     const imageIndex = selectRandomImage(data);
  
@@ -110,7 +196,7 @@ function parkResultTemplate(data) {
     if (data.images.length > 0) {
         return `<li class="parkResult">
         <h2 class="name parkResult-name">${data.fullName}</h2>
-        <p class="state parkResult-state">Located in ${fullStateName}</p>
+        <p class="state parkResult-state">Located in ${fullNameState}</p>
         <div class="hover overlay">
            <picture>
                 <img class="park-img parkResult-img" src="${data.images[imageIndex].url}" alt="${data.images[0].altText}">
@@ -127,13 +213,14 @@ function parkResultTemplate(data) {
     else {
         return `<li class="parkResult">
         <h2 class="name parkResult-name">${data.fullName}</h2>
-        <p class="state parkResult-state">Located in ${fullStateName}</p>
+        <p class="state parkResult-state">Located in ${fullNameState}</p>
         <p class="parkResult-noImg">[No Image Provided]</p>
         <p class="description parkResult-description">${data.description}</p>
         <a class="parkResult-learnMore" href="./parkDetails.html?parkCode=${data.parkCode}">Learn More</a>
         </li>`;
     }
 }
+
 
 export const statesObj = {
     AL: 'Alabama',

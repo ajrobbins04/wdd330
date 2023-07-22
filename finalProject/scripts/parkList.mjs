@@ -5,9 +5,11 @@ import { renderListWithTemplate,
          setPagePosition,
          restorePagePosition } from './utils.mjs';
 import { statesObj,
+         getParksByState,
          displayStatePage,
          clickNewStatePage,
-         convertStateAbbr } from './states.mjs';
+         convertStateAbbr,
+         includeState } from './states.mjs';
 import { apiFetch,
          findByStateCode } from './externalServices.mjs';
 
@@ -66,7 +68,6 @@ export default async function parkList(selector) {
 function getNumPages(parks) {
 
     const totalParkNum = Object.keys(parks).length;
-
     let totalPages = 0;
 
     try {
@@ -75,11 +76,9 @@ function getNumPages(parks) {
         if (totalPages <= 0) {
             throw new Error('Total page must be greater than 0.');
         }
-    }
-    catch(error) {
+    } catch(error) {
         console.log('ERROR: ' + error.message);
     }
-  
     return totalPages;
 }
 
@@ -103,7 +102,12 @@ function displayPage(allParks, parentElement, currentPage) {
 function clickNewPage(parks, parentElement, prevBtn, nextBtn, 
                       currentPage, finalPage) {
 
-    // update the buttons to display based on current page
+    // scroll to top of page when new page is clicked
+    function scrollToTop() {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+                    
+    // update which buttons to display based on current page
     function updateButtons() {
         if (currentPage === 1) {
             prevBtn.classList.add('hide');
@@ -128,6 +132,7 @@ function clickNewPage(parks, parentElement, prevBtn, nextBtn,
             }
             updateButtons();
             displayPage(parks, parentElement, currentPage);
+            scrollToTop();
         } 
         catch (error) {
             console.log('ERROR: ' + error.message);
@@ -143,12 +148,14 @@ function clickNewPage(parks, parentElement, prevBtn, nextBtn,
             }
             updateButtons();
             displayPage(parks, parentElement, currentPage);
+            scrollToTop();
         } 
         catch (error) {
             console.log('ERROR: ' + error.message);
         }
     });
 }
+
 
 // called if user wants park results to be sorted differently
 async function switchResultDisplay(parentElement, value,
@@ -184,7 +191,7 @@ async function switchResultDisplay(parentElement, value,
             state.addEventListener('click', (event) => {
                 includeState(event, selectedStates, parentElement);
             });
-        })
+        });
 
  
     // sort by region
@@ -232,57 +239,6 @@ async function switchResultDisplay(parentElement, value,
     
 }
 
-async function includeState(event, selectedStates, parentElement) {
-
-    const state = event.target.value;
-
-    selectedStates.push(state);
-    const statesSorted = selectedStates.sort();
-
-    let parksByState = await getParksByState(statesSorted);
-
-    // must iterate backwards for parks to be rendered
-    // in A-Z order instead of Z-A
-    parksByState.reverse().forEach(stateParks => {
-
-        // display park results by state
-        renderListWithTemplate(parkResultTemplate, parentElement, Array.from(stateParks));
-    })
-
-
-}
-
-async function getParksByState(states) {
-    
-    // generates an array of parks w/in each state in states array
-    const promises = states.map(state => findByStateCode('parks?', state));
-
-    // is an array of promise objects, where each object
-    // contains the array of parks w/in a single state
-    const parksResponses = await Promise.all(promises);
-
-    // each object property will be a state name &
-    // its value will be an array of the state's parks
-    let parksInState = {}; 
-
-    parksResponses.forEach((response, index) => {
-        const state = states[index]; 
-        const parksArray = Array.from(response.data);
-        parksInState[state] = parksArray;
-    });
-
-    let parksByState = [];
-
-    for (const [state, stateParks] of Object.entries(parksInState)) {
-        // adds just the parks into an array,
-        // but is now sorted by state
-        parksByState.push(stateParks);
-    }
-
-    return parksByState;
-}
-
-
 async function getParksByRegion(regions) {
  
     let parksByRegion = {};
@@ -326,7 +282,7 @@ async function getParksBySubRegion(subRegion) {
 
 function parkResultTemplate(data) {
 
-    const fullStateName = convertStateAbbr(data.states);
+    const fullNameState = convertStateAbbr(data.states);
     const imageIndex = selectRandomImage(data);
  
     // make sure an image is included before trying to place
@@ -334,7 +290,7 @@ function parkResultTemplate(data) {
     if (data.images.length > 0) {
         return `<li class="parkResult">
         <h2 class="name parkResult-name">${data.fullName}</h2>
-        <p class="state parkResult-state">Located in ${fullStateName}</p>
+        <p class="state parkResult-state">Located in ${fullNameState}</p>
         <div class="hover overlay">
            <picture>
                 <img class="park-img parkResult-img" src="${data.images[imageIndex].url}" alt="${data.images[0].altText}">
@@ -351,7 +307,7 @@ function parkResultTemplate(data) {
     else {
         return `<li class="parkResult">
         <h2 class="name parkResult-name">${data.fullName}</h2>
-        <p class="state parkResult-state">Located in ${fullStateName}</p>
+        <p class="state parkResult-state">Located in ${fullNameState}</p>
         <p class="parkResult-noImg">[No Image Provided]</p>
         <p class="description parkResult-description">${data.description}</p>
         <a class="parkResult-learnMore" href="./parkDetails.html?parkCode=${data.parkCode}">Learn More</a>

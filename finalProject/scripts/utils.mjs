@@ -15,10 +15,12 @@ export function restorePagePosition() {
   }
 }
 
+
 // save data to local storage
 export function setLocalStorage(key, data) {
   localStorage.setItem(key, JSON.stringify(data));
 }
+
 
 // retrieve data from localstorage
 export function getLocalStorage(key) {
@@ -28,12 +30,14 @@ export function getLocalStorage(key) {
   return JSON.parse(localStorage.getItem(key));
 }
 
+
 export function getParam(param) {
 
   const queryString = window.location.search;
   const urlParams = new URLSearchParams(queryString);
   return urlParams.get(param);
 }
+
 
 export async function renderListWithTemplate(templateFn,
   parentElement,
@@ -46,6 +50,7 @@ export async function renderListWithTemplate(templateFn,
     const htmlString = list.map(templateFn);
     parentElement.insertAdjacentHTML(position, htmlString.join(''));
   }
+
 
 export async function renderNestedListWithTemplate(templateFn,
   parentElement,
@@ -79,8 +84,8 @@ export async function renderWithTemplate(templateFn,
     if (callback) {
       callback(data);
     }
-  
   }
+
 
 function loadTemplate(path) {
   return async function() {
@@ -96,13 +101,14 @@ function loadTemplate(path) {
   }
 }
 
+
 export function selectRandomImage(park)
 {
   const numImages = park.images.length;
   return (Math.floor(Math.random() * (numImages - 1)));
 }
 
-// year will be placed in footer, next to copyright
+
 function getCurrentYear() {
   const currentDate = new Date();
   const currentYear = currentDate.getFullYear();
@@ -110,24 +116,13 @@ function getCurrentYear() {
   return currentYear;
 }
 
+
+// year will be placed in footer, next to copyright
 function updateFooter() {
   const currentYear = getCurrentYear();
   document.getElementById('copyright-year').textContent = currentYear;
 }
 
-// for the main search page
-export function loadSearchPageHeaderFooter() {
-
-  const headerTemplateFn = loadTemplate('./partials/header.html');
-  const footerTemplateFn = loadTemplate('./partials/footer.html');
-
-  const header = document.querySelector('#template-header');
-  const footer = document.querySelector('#template-footer');
-
-  renderWithTemplate(headerTemplateFn, header, {}, updateSearchPageHeader);
-  renderWithTemplate(footerTemplateFn, footer, {}, updateFooter);
-  
-}
 
 // only the 'Search Parks' header link will be underlined
 function updateSearchPageHeader() {
@@ -139,30 +134,15 @@ function updateSearchPageHeader() {
   if (visitPage.hasAttribute('active')) {
     visitPage.classList.remove('active')
   }
- 
 }
 
-// only the 'Visit List' header link will be underlined
+// only the 'Planned Visits' header link will be underlined
 function updateVisitPageHeader() {
   const searchPage = document.getElementById('search');
   const visitPage = document.getElementById('planVisit');
 
   searchPage.classList.remove('active');
   visitPage.classList.add('active')
-}
-
-// for the visit list page
-export function loadVisitPageHeaderFooter() {
-
-  const headerTemplateFn = loadTemplate('./partials/header.html');
-  const footerTemplateFn = loadTemplate('./partials/footer.html');
-
-  const header = document.querySelector('#template-header');
-  const footer = document.querySelector('#template-footer');
-
-  renderWithTemplate(headerTemplateFn, header, {}, updateVisitPageHeader);
-  renderWithTemplate(footerTemplateFn, footer, {}, updateFooter);
-  
 }
 
 // neither of the header links will be underlined
@@ -179,6 +159,35 @@ function updateDetailsPageHeader() {
   }
 }
 
+
+// for the main search page
+export function loadSearchPageHeaderFooter() {
+
+  const headerTemplateFn = loadTemplate('./partials/header.html');
+  const footerTemplateFn = loadTemplate('./partials/footer.html');
+
+  const header = document.querySelector('#template-header');
+  const footer = document.querySelector('#template-footer');
+
+  renderWithTemplate(headerTemplateFn, header, {}, updateSearchPageHeader);
+  renderWithTemplate(footerTemplateFn, footer, {}, updateFooter);
+}
+
+
+// for the visit list page
+export function loadVisitPageHeaderFooter() {
+
+  const headerTemplateFn = loadTemplate('./partials/header.html');
+  const footerTemplateFn = loadTemplate('./partials/footer.html');
+
+  const header = document.querySelector('#template-header');
+  const footer = document.querySelector('#template-footer');
+
+  renderWithTemplate(headerTemplateFn, header, {}, updateVisitPageHeader);
+  renderWithTemplate(footerTemplateFn, footer, {}, updateFooter);
+}
+
+
 // for the park details page
 export function loadDetailsPageHeaderFooter() {
 
@@ -190,8 +199,8 @@ export function loadDetailsPageHeaderFooter() {
 
   renderWithTemplate(headerTemplateFn, header, {}, updateDetailsPageHeader);
   renderWithTemplate(footerTemplateFn, footer, {}, updateFooter);
-  
 }
+
 
 export const states = [
   'AL',
