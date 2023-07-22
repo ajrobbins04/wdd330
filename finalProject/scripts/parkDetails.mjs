@@ -1,19 +1,19 @@
-import { convertStateAbbr,
-         setLocalStorage,
-         getLocalStorage } from './utils.mjs';
-import { findByParkCode  } from './externalServices.mjs';
+import { setLocalStorage,
+         getLocalStorage  } from './utils.mjs';
+import { findByParkCode   } from './externalServices.mjs';
+import { convertStateAbbr } from './states.mjs';
 
 
 export default async function parkDetails(parkCode) {
 
     const parksPath = 'parks?';
     let park = await findByParkCode(parksPath, parkCode);
-
+    console.log(park);
     const activitiesPath = 'thingstodo?';
     let parkActivities = await findByParkCode(activitiesPath, parkCode);
+    console.log(parkActivities);
 
-
-    renderParkDetails(park);
+    renderParkDetails(park, parkActivities);
     checkInVisitList(park);
 
     // listener for add to (or remove from) visit list button
@@ -56,7 +56,7 @@ function checkInVisitList(park) {
     }
 }
 
-function renderParkDetails(park) {
+function renderParkDetails(park, parkActivities) {
 
     // park name and description
     document.getElementById('parkDetails-name').textContent = park.data[0].fullName;
@@ -81,7 +81,51 @@ function renderParkDetails(park) {
     document.getElementById('standardSaturdayHours').textContent = ` ${park.data[0].operatingHours[0].standardHours.saturday}`;
     document.getElementById('standardSundayHours').textContent = ` ${park.data[0].operatingHours[0].standardHours.sunday}`;
 
-    // image carousel
+    const allParkActivities = getAllParkActivities(parkActivities);
+    renderParkActivities(allParkActivities);
+}
+
+function getAllParkActivities(parkActivities) {
+
+
+    const activities = parkActivities.data;
+    const activityNames = activities.map((activity) => activity.activities[0].name);
+    const activityDescriptions = activities.map((activity) => activity.shortDescription);
+
+    const allParkActivities = {};
+
+    activityNames.forEach((name, index) => {
+        const description = activityDescriptions[index];
+        allParkActivities[name] = description;
+    });
+
+    return allParkActivities;
+}
+
+function renderParkActivities(allParkActivities) {
+
+    const parentElement = document.getElementById('activitiesList');
+    let id = 1;
+
+    for (const [name, description] of Object.entries(allParkActivities)) {
+        // create a section to encompass each activity name
+        // and description
+        const section = document.createElement('section');
+        section.setAttribute('class', 'parkActivity');
+        section.setAttribute('id', `parkActivity-${id}`);
+        id += 1;
+
+        const listItem = document.createElement('li');
+        listItem.textContent = name;
+   
+        const paragraph = document.createElement('p');
+        paragraph.textContent = description;
+
+        section.appendChild(listItem);
+        section.appendChild(paragraph);
+        parentElement.appendChild(section);
+    }
+
 }
 
 function addToVisitList(park) {

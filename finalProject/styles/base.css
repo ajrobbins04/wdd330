@@ -142,6 +142,7 @@ header {
 #template-footer {
     padding: 1.25rem .25rem;
 }
+
 .stateOption {
     margin: 0.75rem 0;
 }
@@ -280,6 +281,10 @@ header {
     grid-area: pHours;
 }
 
+.parkDetails .activityInfo {
+    grid-area: pActivities;
+}
+
 .parkDetails {
     display: grid;
     margin: 1rem auto 3rem auto;
@@ -290,6 +295,7 @@ header {
     "pDescription"
     "pState "
     "pImage"
+    "pActivities"
     "pHours";
     width: max(85vw, 300px);
 }
@@ -302,6 +308,13 @@ header {
     gap: 0.45rem;
     grid-template-columns: 45% 55%;
     width: min(80vw, 500px);
+}
+
+.parkActivity {
+    display: grid;
+    margin: 3rem auto;
+    gap: 3rem;
+    border: 2px solid red;
 }
 
 .parkDetails-standardHours .day {
