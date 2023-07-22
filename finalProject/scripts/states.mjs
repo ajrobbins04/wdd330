@@ -4,6 +4,7 @@ import { apiFetch,
          findByStateCode } from './externalServices.mjs';
 
 let allParksByState = null;
+let selectedStates = null;
 
 export default async function parksByState(parentElement, prevBtn, nextBtn) {
 
@@ -134,35 +135,57 @@ function clickNewStatePage(parentElement, prevBtn, nextBtn,
 async function includeState(event, clickedStates, parentElement, 
     currentPage, finalPage, prevBtn, nextBtn) {
 
-    const stateAbbr = event.target.value;
-    const fullNameState = statesObj[stateAbbr];    
+    const state = event.target;
+    const stateAbbr = state.value;
 
-    // create array that holds the full names 
-    // of selected states
-    clickedStates.push(fullNameState);
+    if (!state.classList.contains('included')) {
+ 
+        state.classList.add('included');
+        const fullNameState = statesObj[stateAbbr];    
 
-    // this would alphabetize the states incorrectly
-    // if they were abbreviated.
-    const statesSorted = clickedStates.sort();
+        // create array that holds the full names 
+        // of selected states
+        clickedStates.push(fullNameState);
 
-    // updated selectedStates w/abbreviated state names
-    const abbrStates = statesSorted.map((fullNameState) => {
-        return findStateAbbr(fullNameState);
-    });
+        // this would alphabetize the states incorrectly
+        // if they were abbreviated.
+        const statesSorted = clickedStates.sort();
 
-    const selectedStates = Object.entries(statesObj).reduce((acc, [abbr, name], index) => {
-        if (abbrStates.includes(abbr)) {
-            acc[index] = abbr;
+        // updated selectedStates w/abbreviated state names
+        const abbrStates = statesSorted.map((fullNameState) => {
+            return findStateAbbr(fullNameState);
+        });
+
+        selectedStates = Object.entries(statesObj).reduce((acc, [stateAbbr, name], index) => {
+            if (abbrStates.includes(stateAbbr)) {
+                acc[index] = stateAbbr;
+            }
+            return acc;
+        }, {});
+
+        // changes whenever another state is added/removed 
+        finalPage = Object.keys(selectedStates).length;
+
+        displaySelectedStatePage(selectedStates, parentElement, currentPage);
+        clickNewSelectedStatePage(selectedStates, parentElement, prevBtn, nextBtn,
+                                  currentPage, finalPage);
+    }
+    else {
+        const removeKey = Object.keys(selectedStates).find((key) => {
+            return selectedStates[key] === stateAbbr;
+        })
+
+        if (removeKey) {
+
+            delete selectedStates[removeKey];
+            finalPage -= 1;
+
+            displaySelectedStatePage(selectedStates, parentElement, currentPage);
+            clickNewSelectedStatePage(selectedStates, parentElement, prevBtn, nextBtn,
+                                      currentPage, finalPage);
         }
-        return acc;
-    }, {});
-
-    // changes whenever another state is added/removed 
-    finalPage = Object.keys(selectedStates).length;
-
-    displaySelectedStatePage(selectedStates, parentElement, currentPage);
-    clickNewSelectedStatePage(selectedStates, parentElement, prevBtn, nextBtn,
-                              currentPage, finalPage);
+    }
+    
 }
 
 
@@ -192,7 +215,7 @@ function clickNewSelectedStatePage(selectedStates, parentElement, prevBtn, nextB
     function updateButtons() {
 
         // in case only one state was selected
-        if (currentPage == 1 && finalPage == 1) {
+        if (currentPage === 1 && finalPage === 1) {
             prevBtn.classList.add('hide');
             nextBtn.classList.add('hide');
         }
