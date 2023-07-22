@@ -181,6 +181,13 @@ header {
     justify-content: space-evenly;
 }
 
+.menu-link {
+    transition: font-size 0.35s ease;
+}
+
+.menu-link:hover {
+    font-size: calc(var(--medium-font) + 0.25rem);
+}
 /** index.html content layout **/
 .homePage h1 {
     grid-area: title;

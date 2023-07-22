@@ -20,7 +20,7 @@ const resultsPerPage = 16;
 export default async function parkList(selector) {
 
     //window.addEventListener('DOMContentLoaded', restorePagePosition);  
-  
+
     // the element that all park results will be placed in
     const parentElement = document.querySelector(selector);  
 

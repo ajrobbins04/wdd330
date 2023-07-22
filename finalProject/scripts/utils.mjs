@@ -103,10 +103,16 @@ export function selectRandomImage(park)
 }
 
 // year will be placed in footer, next to copyright
-export function getCurrentYear() {
-  const date = new Date();
-  const year = date.getFullYear();
-  return year;
+function getCurrentYear() {
+  const currentDate = new Date();
+  const currentYear = currentDate.getFullYear();
+  
+  return currentYear;
+}
+
+function updateFooter() {
+  const currentYear = getCurrentYear();
+  document.getElementById('copyright-year').textContent = currentYear;
 }
 
 export function loadHeaderFooter() {
@@ -117,11 +123,8 @@ export function loadHeaderFooter() {
   const header = document.querySelector('#template-header');
   const footer = document.querySelector('#template-footer');
 
-  // const year = getCurrentYear();
-  // document.querySelector('#copyright-year').textContent = ` ${year}`; 
-
   renderWithTemplate(headerTemplateFn, header);
-  renderWithTemplate(footerTemplateFn, footer);
+  renderWithTemplate(footerTemplateFn, footer, {}, updateFooter);
   
 }
 
