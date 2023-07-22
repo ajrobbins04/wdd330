@@ -46,7 +46,6 @@ export default async function parkList(selector) {
     if (!finalPage) {
         finalPage = getNumPages(allParks);
     }
-    
 
     // display first 10 park results on single page
     displayPage(allParks, parentElement, currentPage);

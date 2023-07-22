@@ -1,5 +1,5 @@
-import { loadHeaderFooter } from './utils.mjs';
+import { loadVisitPageHeaderFooter } from './utils.mjs';
 import visitList from './planVisits.mjs';
 
-loadHeaderFooter();
+loadVisitPageHeaderFooter();
 visitList();

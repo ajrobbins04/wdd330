@@ -1,8 +1,6 @@
-import { loadHeaderFooter,
-restorePagePosition,
-getParam } from './utils.mjs';
+import { loadSearchPageHeaderFooter, restorePagePosition } from './utils.mjs';
 import parkList from './parkList.mjs';
 
-loadHeaderFooter();
+loadSearchPageHeaderFooter();
 parkList('.parkResults');
  

@@ -188,6 +188,11 @@ header {
 .menu-link:hover {
     font-size: calc(var(--medium-font) + 0.25rem);
 }
+
+.active {
+    border-bottom: 2px solid var(--primary-color);
+}
+
 /** index.html content layout **/
 .homePage h1 {
     grid-area: title;

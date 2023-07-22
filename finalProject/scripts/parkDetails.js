@@ -1,7 +1,7 @@
 import parkDetails from './parkDetails.mjs';
-import { getParam, loadHeaderFooter } from './utils.mjs';
+import { getParam, loadDetailsPageHeaderFooter } from './utils.mjs';
 
-loadHeaderFooter();
+loadDetailsPageHeaderFooter();
 
 const parkCode = getParam('parkCode');
 parkDetails(parkCode);

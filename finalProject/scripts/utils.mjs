@@ -115,7 +115,8 @@ function updateFooter() {
   document.getElementById('copyright-year').textContent = currentYear;
 }
 
-export function loadHeaderFooter() {
+// for the main search page
+export function loadSearchPageHeaderFooter() {
 
   const headerTemplateFn = loadTemplate('./partials/header.html');
   const footerTemplateFn = loadTemplate('./partials/footer.html');
@@ -123,11 +124,74 @@ export function loadHeaderFooter() {
   const header = document.querySelector('#template-header');
   const footer = document.querySelector('#template-footer');
 
-  renderWithTemplate(headerTemplateFn, header);
+  renderWithTemplate(headerTemplateFn, header, {}, updateSearchPageHeader);
   renderWithTemplate(footerTemplateFn, footer, {}, updateFooter);
   
 }
 
+// only the 'Search Parks' header link will be underlined
+function updateSearchPageHeader() {
+  const searchPage = document.getElementById('search');
+  const visitPage = document.getElementById('planVisit');
+
+  searchPage.classList.add('active');
+
+  if (visitPage.hasAttribute('active')) {
+    visitPage.classList.remove('active')
+  }
+ 
+}
+
+// only the 'Visit List' header link will be underlined
+function updateVisitPageHeader() {
+  const searchPage = document.getElementById('search');
+  const visitPage = document.getElementById('planVisit');
+
+  searchPage.classList.remove('active');
+  visitPage.classList.add('active')
+}
+
+// for the visit list page
+export function loadVisitPageHeaderFooter() {
+
+  const headerTemplateFn = loadTemplate('./partials/header.html');
+  const footerTemplateFn = loadTemplate('./partials/footer.html');
+
+  const header = document.querySelector('#template-header');
+  const footer = document.querySelector('#template-footer');
+
+  renderWithTemplate(headerTemplateFn, header, {}, updateVisitPageHeader);
+  renderWithTemplate(footerTemplateFn, footer, {}, updateFooter);
+  
+}
+
+// neither of the header links will be underlined
+function updateDetailsPageHeader() {
+  const searchPage = document.getElementById('search');
+  const visitPage = document.getElementById('planVisit');
+
+  if (searchPage.hasAttribute('active')) {
+    searchPage.classList.remove('active')
+  }
+
+  else if (visitPage.hasAttribute('active')) {
+    visitPage.classList.remove('active')
+  }
+}
+
+// for the park details page
+export function loadDetailsPageHeaderFooter() {
+
+  const headerTemplateFn = loadTemplate('./partials/header.html');
+  const footerTemplateFn = loadTemplate('./partials/footer.html');
+
+  const header = document.querySelector('#template-header');
+  const footer = document.querySelector('#template-footer');
+
+  renderWithTemplate(headerTemplateFn, header, {}, updateDetailsPageHeader);
+  renderWithTemplate(footerTemplateFn, footer, {}, updateFooter);
+  
+}
 
 export const states = [
   'AL',
