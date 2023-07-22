@@ -1,7 +1,7 @@
 import { getLocalStorage, 
-    renderListWithTemplate,
-    convertStateAbbr,
-    selectRandomImage } from "./utils.mjs";
+         renderListWithTemplate,
+         selectRandomImage } from "./utils.mjs";
+import { convertStateAbbr  } from "./states.mjs";
 
 export default function visitList() {
 

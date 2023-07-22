@@ -18,7 +18,8 @@
     --tertiary-color: #845A4B;
     --accent-color: #5e0202; 
     --font-color: #303030;
-    --hover-color: rgba(79, 126, 81, 1);
+    --secondary-color-lighter: rgba(79, 126, 81, 0.4);
+    --tertiary-color-lighter: rgba(132, 90, 75, 0.2);
 }
 
 * {
@@ -50,7 +51,8 @@ select,
 .stateOption,
 .state,
 .parkResult-learnMore,
-.btn {
+.btn,
+.activitiesList li {
     font-size: var(--medium-font);
 }
  
@@ -83,6 +85,10 @@ a,
 .added,
 .inList {
     background-color: var(--accent-color);
+}
+
+.activitiesList {
+    background-color: var(--tertiary-color-lighter);
 }
 
 /** primary elements **/
@@ -314,7 +320,6 @@ header {
     display: grid;
     margin: 3rem auto;
     gap: 3rem;
-    border: 2px solid red;
 }
 
 .parkDetails-standardHours .day {

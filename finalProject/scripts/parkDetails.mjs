@@ -104,7 +104,7 @@ function getAllParkActivities(parkActivities) {
 
 function renderParkActivities(allParkActivities) {
 
-    const parentElement = document.getElementById('activitiesList');
+    const parentElement = document.querySelector('.activitiesList');
     let id = 1;
 
     for (const [name, description] of Object.entries(allParkActivities)) {
