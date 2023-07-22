@@ -1,15 +1,13 @@
-import { convertStateAbbr,
-         renderListWithTemplate,
-         renderNestedListWithTemplate,
+import { renderListWithTemplate,
          selectRandomImage,
          states,
-         states_short,
          regions,
-         regions_short, 
          setPagePosition,
          restorePagePosition } from './utils.mjs';
-import { displayStatePage,
-         clickNewStatePage } from './states.mjs';
+import { statesObj,
+         displayStatePage,
+         clickNewStatePage,
+         convertStateAbbr } from './states.mjs';
 import { apiFetch,
          findByStateCode } from './externalServices.mjs';
 
@@ -181,6 +179,8 @@ async function switchResultDisplay(parentElement, value,
         
         let selectedStates = [];
         const stateOptions = document.querySelectorAll('.stateBox');
+        
+        // let user choose states to view
         stateOptions.forEach((state) => {
             state.addEventListener('click', (event) => {
                 includeState(event, selectedStates, parentElement);
@@ -327,7 +327,7 @@ async function getParksBySubRegion(subRegion) {
 
 function parkResultTemplate(data) {
 
-    const fullStates = convertStateAbbr(data.states);
+    const fullStateName = convertStateAbbr(data.states);
     const imageIndex = selectRandomImage(data);
  
     // make sure an image is included before trying to place
@@ -335,7 +335,7 @@ function parkResultTemplate(data) {
     if (data.images.length > 0) {
         return `<li class="parkResult">
         <h2 class="name parkResult-name">${data.fullName}</h2>
-        <p class="state parkResult-state">Located in ${fullStates}</p>
+        <p class="state parkResult-state">Located in ${fullStateName}</p>
         <div class="hover overlay">
            <picture>
                 <img class="park-img parkResult-img" src="${data.images[imageIndex].url}" alt="${data.images[0].altText}">
@@ -352,7 +352,7 @@ function parkResultTemplate(data) {
     else {
         return `<li class="parkResult">
         <h2 class="name parkResult-name">${data.fullName}</h2>
-        <p class="state parkResult-state">Located in ${fullStates}</p>
+        <p class="state parkResult-state">Located in ${fullStateName}</p>
         <p class="parkResult-noImg">[No Image Provided]</p>
         <p class="description parkResult-description">${data.description}</p>
         <a class="parkResult-learnMore" href="./parkDetails.html?parkCode=${data.parkCode}">Learn More</a>

@@ -1,5 +1,4 @@
 import { renderListWithTemplate,
-         convertStateAbbr,
          selectRandomImage } from "./utils.mjs";
 
 // each page displays parks within a single state
@@ -62,9 +61,48 @@ export function clickNewStatePage(allParksByState, parentElement, prevBtn, nextB
     });
 }
 
+export function convertStateAbbr(stateAbbr) {
+
+    let fullStateName = '';
+
+    // would be true if stateAbbr string = 'NV' 
+    if (stateAbbr.length == 2) {
+        fullStateName = statesObj[stateAbbr];
+        return fullStateName;
+    }
+
+    // woud be true if stateAbbr string = 'CA,NV,UT'
+    else {
+        // would now be ['CA', 'NV', 'UT']
+        const stateAbbrArray = stateAbbr.split(',');
+
+        // would now be ['California', 'Nevada', 'Utah']
+        const fullStateNamesArray = stateAbbrArray.map(abbr => statesObj[abbr]);
+    
+        // only 2 states in array
+        if (fullStateNamesArray.length === 2) {
+            fullStateName = fullStateNamesArray.join(' and ');
+        }
+        // 3 or more states in array
+        else if (fullStateNamesArray.length > 2) {
+
+            // remove last state from array
+            const lastState = fullStateNamesArray.pop();
+
+            // Add the last state into the string as a final 
+            // add-on so .join doesn't place a comma after it
+            fullStateName = fullStateNamesArray.join(', ') + `, and ${lastState}`;
+        }
+
+        return fullStateName;
+    }
+
+}
+
 function parkResultTemplate(data) {
 
-    const fullStates = convertStateAbbr(data.states);
+    const fullStateName = convertStateAbbr(data.states);
+
     const imageIndex = selectRandomImage(data);
  
     // make sure an image is included before trying to place
@@ -72,7 +110,7 @@ function parkResultTemplate(data) {
     if (data.images.length > 0) {
         return `<li class="parkResult">
         <h2 class="name parkResult-name">${data.fullName}</h2>
-        <p class="state parkResult-state">Located in ${fullStates}</p>
+        <p class="state parkResult-state">Located in ${fullStateName}</p>
         <div class="hover overlay">
            <picture>
                 <img class="park-img parkResult-img" src="${data.images[imageIndex].url}" alt="${data.images[0].altText}">
@@ -89,10 +127,70 @@ function parkResultTemplate(data) {
     else {
         return `<li class="parkResult">
         <h2 class="name parkResult-name">${data.fullName}</h2>
-        <p class="state parkResult-state">Located in ${fullStates}</p>
+        <p class="state parkResult-state">Located in ${fullStateName}</p>
         <p class="parkResult-noImg">[No Image Provided]</p>
         <p class="description parkResult-description">${data.description}</p>
         <a class="parkResult-learnMore" href="./parkDetails.html?parkCode=${data.parkCode}">Learn More</a>
         </li>`;
     }
 }
+
+export const statesObj = {
+    AL: 'Alabama',
+    AK: 'Alaska',
+    AS: 'American Samoa',
+    AZ: 'Arizona',
+    AR: 'Arkansas',
+    CA: 'California',
+    CO: 'Colorado',
+    CT: 'Connecticut',
+    DE: 'Delaware',
+    DC: 'District of Columbia',
+    FL: 'Florida',
+    GA: 'Georgia',
+    GU: 'Guam',
+    HI: 'Hawaii',
+    ID: 'Idaho',
+    IL: 'Illinois',
+    IN: 'Indiana',
+    IA: 'Iowa',
+    KS: 'Kansas',
+    KY: 'Kentucky',
+    LA: 'Louisiana',
+    ME: 'Maine',
+    MD: 'Maryland',
+    MA: 'Massachusetts',
+    MI: 'Michigan',
+    MN: 'Minnesota',
+    MS: 'Mississippi',
+    MO: 'Missouri',
+    MT: 'Montana',
+    NE: 'Nebraska',
+    NV: 'Nevada',
+    NH: 'New Hampshire',
+    NJ: 'New Jersey',
+    NM: 'New Mexico',
+    NY: 'New York',
+    NC: 'North Carolina',
+    ND: 'North Dakota',
+    MP: 'Northern Mariana Islands',
+    OH: 'Ohio',
+    OK: 'Oklahoma',
+    OR: 'Oregon',
+    PA: 'Pennsylvania',
+    PR: 'Puerto Rico',
+    RI: 'Rhode Island',
+    SC: 'South Carolina',
+    SD: 'South Dakota',
+    TN: 'Tennessee',
+    TX: 'Texas',
+    UT: 'Utah',
+    VT: 'Vermont',
+    VI: 'Virgin Islands',
+    VA: 'Virginia',
+    WA: 'Washington',
+    WV: 'West Virginia',
+    WI: 'Wisconsin',
+    WY: 'Wyoming'
+}
+ 
