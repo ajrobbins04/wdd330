@@ -7,20 +7,28 @@ import { convertStateAbbr } from './states.mjs';
 
 export default async function parkDetails(parkCode) {
 
+    // fetch all the data for just one state
     const parksPath = 'parks?';
-    let park = await findByParkCode(parksPath, parkCode);
+    const park = await findByParkCode(parksPath, parkCode);
 
     const activitiesPath = 'thingstodo?';
-    let parkActivities = await findByParkCode(activitiesPath, parkCode);
- 
+    const parkActivities = await findByParkCode(activitiesPath, parkCode);
+    const allParkActivities = await(getAllParkActivities(parkActivities));
+
     renderParkDetails(park, parkActivities);
     checkInVisitList(park);
-
+    renderParkActivities(allParkActivities);
     
-    let activitySection = document.getElementsByClassName('parkActivity');
+    const activitySection = document.getElementsByClassName('parkActivity');
     const addVisitBtn = document.getElementById('btnVisitList');
 
-    console.log(Array.from(activitySection));
+    // listener to view an activity description
+    Array.from(activitySection).forEach((item) => {
+        item.addEventListener('click', function(event) {
+          displayActivityDescription(event);
+        })
+      });
+
     // listener for add to (or remove from) visit list button
     addVisitBtn.addEventListener('click', function(event) {
         btnClickOptions(event, park);
@@ -85,9 +93,6 @@ async function renderParkDetails(park, parkActivities) {
     document.getElementById('standardFridayHours').textContent = ` ${park.data[0].operatingHours[0].standardHours.friday}`;
     document.getElementById('standardSaturdayHours').textContent = ` ${park.data[0].operatingHours[0].standardHours.saturday}`;
     document.getElementById('standardSundayHours').textContent = ` ${park.data[0].operatingHours[0].standardHours.sunday}`;
-
-    const allParkActivities = await(getAllParkActivities(parkActivities));
-    renderParkActivities(allParkActivities);
 }
 
 
@@ -129,7 +134,7 @@ function renderParkActivities(allParkActivities) {
         // assign description to a parapgraph element
         const paragraph = document.createElement('p');
         paragraph.textContent = description;
-        paragraph.setAttribute('class', 'parkActivityDescription');
+        paragraph.setAttribute('class', 'parkActivityDescription hide');
 
         section.appendChild(listItem);
         section.appendChild(paragraph);
@@ -171,18 +176,16 @@ function removeFromVisitList(park) {
 // only shows description when the activity has been clicked,
 // and removes the description once it is clicked again.
 function displayActivityDescription(event) {
-
-    console.log('fires');
-    const activity = event.target;
-    const description = activity.querySelector('.parkActivityDescription');
+ 
+    const name = event.target;
+    const description = name.nextElementSibling;
     
-    if (!description.classList.contains('clicked')) {
+    console.log(description);
+    if (description.classList.contains('hide')) {
         description.classList.remove('hide');
-        description.classList.add('clicked');
     }
     else {
         description.classList.add('hide');
-        description.classList.remove('clicked');
     }
 }
 
