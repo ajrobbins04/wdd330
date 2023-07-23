@@ -1,51 +1,103 @@
-/*** GENERAL CONTENT ***/
+:root  {
+        /** colors **/
+        --primary-color: #FFEDD9;
+        --font-color: #303030;
+        --hover-text: #0E3A52ff;
+        --light-blue-color: #C6D7DDff;
+        --offWhite-color: #F7F6F3ff;
+}
+
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
-p,
-li,
-a,
-#last-updated {
+header, 
+main,
+footer {
+    font-size: 18px;
     font-family: 'Montserrat', sans-serif;
-    font-weight: 400;
-    font-size: 16px;
+}
+
+body {
+    background-color: var(--offWhite-color);
+}
+
+header,
+footer {
+    background-color: var(--light-blue-color);
+    padding: 2.5rem;
+}
+
+header {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+main {
+    display: grid;
+    margin: 3rem 0;
+    gap: 3rem;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.week {
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: start;
+    margin: 3.5rem 0;
+}
+
+h4 {
+    margin: 2rem 0;
+}
+
+footer {
+    display: flex;
+    flex-direction: column;
+    padding: 1.5rem;
+    justify-content: center;
+    align-items: center;
+}
+
+
+img {
+    width: min(85vw, 300px);
+}
+
+li {
+    list-style-type: none;
+    padding: .5rem .5rem .5rem 1.75rem;
 }
 
 h1,
 h2,
-h3 {
+p {
     font-family: 'Merriweather', serif;
-    font-weight: 300;
+    font-weight: 600;
+    margin: 1rem auto;
 }
  
-p,
+a {
+    cursor: pointer;
+    transition: font-size 0.5s ease;
+}
+
 a,
 #last-updated {
-    font-size: 18px;
+    text-decoration: none;
+    font-size: 1.2rem;
+    color: var(--font-color);
+    font-weight: 400;
 }
 
-h1 {
-    font-size: 38px;
-}
-
-h2 {
-    font-size: 30px;
-}
-
-
-li {
-    font-size : 20px;
-}
-
-body {
-    background-color: #C6D7DDff;
-    /*#98c1d9*/
-}
-
-
-.contain-offWhite {
-    background-color: #F7F6F3ff;
+a:hover {
+    color: var(--hover-text);
+    font-size: 1.26rem;
 }
