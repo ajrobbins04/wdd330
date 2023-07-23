@@ -30,11 +30,13 @@ footer {
     padding: 2.5rem;
 }
 
-header {
+.headerContent {
+    margin: 0 auto;
     display: flex;
     flex-wrap: wrap;
     justify-content: space-evenly;
     align-items: center;
+    max-width: 900px;
 }
 
 main {
@@ -54,6 +56,7 @@ main {
     margin: 3.5rem 0;
 }
 
+h2,
 h4 {
     margin: 2rem 0;
 }
@@ -82,6 +85,11 @@ p {
     font-family: 'Merriweather', serif;
     font-weight: 600;
     margin: 1rem auto;
+}
+
+h2,
+h3 {
+    color: var(--hover-text);
 }
  
 a {
