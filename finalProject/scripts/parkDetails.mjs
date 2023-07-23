@@ -1,5 +1,6 @@
 import { setLocalStorage,
-         getLocalStorage  } from './utils.mjs';
+         getLocalStorage,
+         isURLValid       } from './utils.mjs';
 import { findByParkCode   } from './externalServices.mjs';
 import { convertStateAbbr } from './states.mjs';
 
@@ -8,17 +9,27 @@ export default async function parkDetails(parkCode) {
 
     const parksPath = 'parks?';
     let park = await findByParkCode(parksPath, parkCode);
-    console.log(park);
+
     const activitiesPath = 'thingstodo?';
     let parkActivities = await findByParkCode(activitiesPath, parkCode);
-    console.log(parkActivities);
-
+ 
     renderParkDetails(park, parkActivities);
     checkInVisitList(park);
+    checkForClickEvents();
+
+    const activitySection = document.getElementsByClassName('parkActivity');
+    const addVisitBtn = document.getElementById('btnVisitList');
+
+    // listener to display a short description 
+    // of the listed activity
+    Array.from(activitySection).forEach((item) => {
+        item.addEventListener('click', function(event) {
+            displayActivityDescription(event);
+        })
+    });
 
     // listener for add to (or remove from) visit list button
-    document.getElementById('btnVisitList')
-    .addEventListener('click', function(event) {
+    addVisitBtn.addEventListener('click', function(event) {
         btnClickOptions(event, park);
     });
 }
@@ -56,7 +67,8 @@ function checkInVisitList(park) {
     }
 }
 
-function renderParkDetails(park, parkActivities) {
+
+async function renderParkDetails(park, parkActivities) {
 
     // park name and description
     document.getElementById('parkDetails-name').textContent = park.data[0].fullName;
@@ -81,47 +93,94 @@ function renderParkDetails(park, parkActivities) {
     document.getElementById('standardSaturdayHours').textContent = ` ${park.data[0].operatingHours[0].standardHours.saturday}`;
     document.getElementById('standardSundayHours').textContent = ` ${park.data[0].operatingHours[0].standardHours.sunday}`;
 
-    const allParkActivities = getAllParkActivities(parkActivities);
-    renderParkActivities(allParkActivities);
+    let isValid = null;
+    const allParkActivities = await(getAllParkActivities(parkActivities));
+    renderParkActivities(allParkActivities, isValid);
 }
 
-function getAllParkActivities(parkActivities) {
+
+async function getAllParkActivities(parkActivities, isValid) {
 
 
     const activities = parkActivities.data;
     const activityNames = activities.map((activity) => activity.activities[0].name);
     const activityDescriptions = activities.map((activity) => activity.shortDescription);
 
-    const allParkActivities = {};
+    let allParkActivities = {};
+    const imgUrl = activities[0].images[0].crops[0].url;
 
-    activityNames.forEach((name, index) => {
-        const description = activityDescriptions[index];
-        allParkActivities[name] = description;
-    });
+    for (const activity of activities) {
+        isValid = await isURLValid(imgUrl);
+    }
+    if (isValid) {
+    
+        const altText = activities[0].images[0].altText;
+        const imgCaption = activities[0].images[0].caption;
 
+        activityNames.forEach((name, index) => {
+            const description = activityDescriptions[index];
+            allParkActivities[name] = {
+                activityDescription: description,
+                url: imgUrl,
+                caption: imgCaption,
+                alt: altText
+            };
+        });
+    }
+    else {
+        activityNames.forEach((name, index) => {
+            const description = activityDescriptions[index];
+            allParkActivities[name] = {
+                activityDescription: description,
+                url: null
+            };
+        });
+    }
     return allParkActivities;
 }
 
-function renderParkActivities(allParkActivities) {
+
+
+function renderParkActivities(allParkActivities, isValid) {
 
     const parentElement = document.querySelector('.activitiesList');
     let id = 1;
 
     for (const [name, description] of Object.entries(allParkActivities)) {
-        // create a section to encompass each activity name
-        // and description
+        
+        // create a section to encompass each activity name,
+        // description, and image
         const section = document.createElement('section');
         section.setAttribute('class', 'parkActivity');
         section.setAttribute('id', `parkActivity-${id}`);
         id += 1;
 
+        // assign name to a list item element
         const listItem = document.createElement('li');
+        listItem.setAttribute('class', 'parkActivityItem');
         listItem.textContent = name;
    
+        // assign description to a parapgraph element
         const paragraph = document.createElement('p');
-        paragraph.textContent = description;
+        paragraph.textContent = description.activityDescription;
+        paragraph.setAttribute('class', 'parkActivityDescription hide');
 
         section.appendChild(listItem);
+
+        if (isValid) {
+            // will encompass the park activity image 
+            const picture = document.createElement('picture');
+
+            // assign url to an img element w/a classname
+            // and an alt caption
+            const image = document.createElement('img');
+            image.setAttribute('class', 'parkActivity-img');
+            image.setAttribute('src', `${description.firstUrl}`);
+            image.setAttribute('alt', `${description.alt}`);
+
+            picture.appendChild(image);
+            section.appendChild(picture);
+        }
         section.appendChild(paragraph);
         parentElement.appendChild(section);
     }
@@ -145,6 +204,7 @@ function addToVisitList(park) {
     document.getElementById('btnVisitList').classList.add('added');
 }
 
+
 function removeFromVisitList(park) {
 
     const visitList = getLocalStorage('visit-list');
@@ -154,6 +214,25 @@ function removeFromVisitList(park) {
     setLocalStorage('visit-list', newVisitList);
     document.getElementById('btnVisitList').classList.remove('inList'); 
     document.getElementById('btnVisitList').textContent = "Removed!"  
+}
+
+
+// only shows description when the activity has been clicked,
+// and removes the description once it is clicked again.
+function displayActivityDescription(event) {
+
+    console.log('fires');
+    const activity = event.target;
+    const description = activity.querySelector('.parkActivityDescription');
+    
+    if (!description.classList.contains('clicked')) {
+        description.classList.remove('hide');
+        description.classList.add('clicked');
+    }
+    else {
+        description.classList.add('hide');
+        description.classList.remove('clicked');
+    }
 }
 
 function renderCarousel() {

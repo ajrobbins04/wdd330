@@ -38,6 +38,16 @@ export function getParam(param) {
   return urlParams.get(param);
 }
 
+export async function isURLValid(url) {
+
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    img.onload = resolve(true);
+    img.onerror = () => reject(false);
+    img.src = url;
+  });
+}
+
 
 export async function renderListWithTemplate(templateFn,
   parentElement,

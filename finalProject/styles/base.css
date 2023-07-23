@@ -87,7 +87,7 @@ a,
     background-color: var(--accent-color);
 }
 
-.activitiesList {
+.parkActivity:hover {
     background-color: var(--tertiary-color-lighter);
 }
 
@@ -132,7 +132,8 @@ header {
 
 /** margins and padding **/
 h1,
-h2 {
+h2,
+.parkActivity li {
     margin: 1rem;
 }
 
@@ -181,12 +182,13 @@ header {
     justify-content: space-evenly;
 }
 
-.menu-link {
+.menu-link,
+.parkActivity li {
     transition: font-size 0.35s ease;
 }
 
 .menu-link:hover {
-    font-size: calc(var(--medium-font) + 0.25rem);
+    font-size: calc(var(--medium-font) + 0.2rem);
 }
 
 .active {
@@ -318,6 +320,11 @@ header {
     width: max(85vw, 300px);
 }
 
+.parkActivity {
+    cursor: pointer;
+    font-weight: 700;
+}
+
 /** parkDetails.html content **/
 
 .parkDetails-standardHours {
@@ -328,10 +335,10 @@ header {
     width: min(80vw, 500px);
 }
 
-.parkActivity {
+.activitiesList {
     display: grid;
     margin: 3rem auto;
-    gap: 3rem;
+    gap: 1rem;
 }
 
 .parkDetails-standardHours .day {
