@@ -19,6 +19,12 @@
         align-items: center;
     }
 
+    /* holds image and description in index.html */
+    .hover {
+        position: relative;
+        display: 
+    }
+
     .homePage,
     .parkResults,
     .park-img {
@@ -33,5 +39,9 @@
     .parkDetails,
     .parkVisitList {
         width: min(80vw, 900px);
+    }
+
+    .parkDetails .prevArrow {
+        max-width: 100px;
     }
 }

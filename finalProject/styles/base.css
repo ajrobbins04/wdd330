@@ -326,6 +326,10 @@ header {
     font-weight: 700;
 }
 
+.parkActivityDescription {
+    padding: 1rem;
+}
+
 /** parkDetails.html content **/
 
 .parkDetails-standardHours {

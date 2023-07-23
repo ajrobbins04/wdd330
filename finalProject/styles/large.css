@@ -15,5 +15,9 @@
         align-items: start; 
         column-gap: 5rem;
     }
- 
+
+    .parkDetails,
+    .parkVisitList {
+        width: min(95vw, 900px);
+    }
 }

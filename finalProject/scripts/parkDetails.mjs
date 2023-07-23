@@ -193,7 +193,7 @@ function renderCarousel() {
 
     const numImages = park.data[0].images.length;
     const carousel = document.getElementById('slides-container');
-    const slide = document.getElementsByClassName('slide');
+    const slidesContainer = document.querySelector('.slides');
     const prevButton = document.getElementById('slide-arrow-prev');
     const nextButton = document.getElementById('slide-arrow-next');
 
