@@ -2,8 +2,7 @@ import parksByState from './states.mjs';
 import { renderListWithTemplate,
          selectRandomImage,
          regions,
-         setPagePosition,
-         restorePagePosition } from './utils.mjs';
+         isURLValid } from './utils.mjs';
 import { states,
          convertStateAbbr } from './states.mjs';
 import { apiFetch,
@@ -263,16 +262,18 @@ function parkResultTemplate(data) {
 
     const fullNameState = convertStateAbbr(data.states);
     const imageIndex = selectRandomImage(data);
+
+    const isValid = isURLValid(data.images[imageIndex].url);
  
     // make sure an image is included before trying to place
     // it in the html
-    if (data.images.length > 0) {
+    if (data.images.length > 0 && isValid) {
         return `<li class="parkResult">
         <h2 class="name parkResult-name">${data.fullName}</h2>
         <p class="state parkResult-state">Located in ${fullNameState}</p>
         <div class="hover overlay">
            <picture>
-                <img class="park-img parkResult-img" src="${data.images[imageIndex].url}" alt="${data.images[0].altText}">
+                <img class="park-img parkResult-img" src="${data.images[imageIndex].url}" alt="${data.images[imageIndex].altText}">
             </picture>
             <div class="overlay-description">
                 <p class="description parkResult-description">${data.description}</p>
@@ -282,7 +283,25 @@ function parkResultTemplate(data) {
         </li>`;
     }
 
-    // for parks without an image
+    // just go with the first url b/c it is less common to have the
+    // first image as the one with a broken link
+    else if (data.images.length > 0 && !isValid) {
+        return `<li class="parkResult">
+        <h2 class="name parkResult-name">${data.fullName}</h2>
+        <p class="state parkResult-state">Located in ${fullNameState}</p>
+        <div class="hover overlay">
+           <picture>
+                <img class="park-img parkResult-img" src="${data.images[0].url}" alt="${data.images[0].altText}">
+            </picture>
+            <div class="overlay-description">
+                <p class="description parkResult-description">${data.description}</p>
+            </div>
+        </div>
+        <a class="parkResult-learnMore" href="./parkDetails.html?parkCode=${data.parkCode}">Learn More</a>
+        </li>`;
+    }
+
+    // for one park that has no image (forgot the park's name)
     else {
         return `<li class="parkResult">
         <h2 class="name parkResult-name">${data.fullName}</h2>

@@ -1,6 +1,5 @@
 import { setLocalStorage,
-         getLocalStorage,
-         isURLValid       } from './utils.mjs';
+         getLocalStorage  } from './utils.mjs';
 import { findByParkCode   } from './externalServices.mjs';
 import { convertStateAbbr } from './states.mjs';
 
