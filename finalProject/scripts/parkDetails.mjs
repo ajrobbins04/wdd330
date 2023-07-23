@@ -15,7 +15,6 @@ export default async function parkDetails(parkCode) {
  
     renderParkDetails(park, parkActivities);
     checkInVisitList(park);
-    checkForClickEvents();
 
     const activitySection = document.getElementsByClassName('parkActivity');
     const addVisitBtn = document.getElementById('btnVisitList');
