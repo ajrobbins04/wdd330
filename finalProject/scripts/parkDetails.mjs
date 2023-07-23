@@ -20,14 +20,6 @@ export default async function parkDetails(parkCode) {
     const activitySection = document.getElementsByClassName('parkActivity');
     const addVisitBtn = document.getElementById('btnVisitList');
 
-    // listener to display a short description 
-    // of the listed activity
-    Array.from(activitySection).forEach((item) => {
-        item.addEventListener('click', function(event) {
-            displayActivityDescription(event);
-        })
-    });
-
     // listener for add to (or remove from) visit list button
     addVisitBtn.addEventListener('click', function(event) {
         btnClickOptions(event, park);
