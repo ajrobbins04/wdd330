@@ -163,7 +163,7 @@ function renderParkActivities(allParkActivities, isValid) {
         // assign description to a parapgraph element
         const paragraph = document.createElement('p');
         paragraph.textContent = description.activityDescription;
-        paragraph.setAttribute('class', 'parkActivityDescription hide');
+        paragraph.setAttribute('class', 'parkActivityDescription');
 
         section.appendChild(listItem);
 

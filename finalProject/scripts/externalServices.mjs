@@ -12,7 +12,7 @@ async function convertToJson(res) {
 
 export async function apiFetch() {
   
-    const url = `https://developer.nps.gov/api/v1/parks?limit=50`;
+    const url = `https://developer.nps.gov/api/v1/parks?`;
 
     try {
         const response = await fetch(url, {
