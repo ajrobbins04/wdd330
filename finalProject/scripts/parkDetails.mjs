@@ -16,9 +16,11 @@ export default async function parkDetails(parkCode) {
     renderParkDetails(park, parkActivities);
     checkInVisitList(park);
 
-    const activitySection = document.getElementsByClassName('parkActivity');
+    
+    let activitySection = document.getElementsByClassName('parkActivity');
     const addVisitBtn = document.getElementById('btnVisitList');
 
+    console.log(Array.from(activitySection));
     // listener for add to (or remove from) visit list button
     addVisitBtn.addEventListener('click', function(event) {
         btnClickOptions(event, park);
@@ -84,55 +86,28 @@ async function renderParkDetails(park, parkActivities) {
     document.getElementById('standardSaturdayHours').textContent = ` ${park.data[0].operatingHours[0].standardHours.saturday}`;
     document.getElementById('standardSundayHours').textContent = ` ${park.data[0].operatingHours[0].standardHours.sunday}`;
 
-    let isValid = null;
     const allParkActivities = await(getAllParkActivities(parkActivities));
-    renderParkActivities(allParkActivities, isValid);
+    renderParkActivities(allParkActivities);
 }
 
 
-async function getAllParkActivities(parkActivities, isValid) {
-
+async function getAllParkActivities(parkActivities) {
 
     const activities = parkActivities.data;
     const activityNames = activities.map((activity) => activity.activities[0].name);
     const activityDescriptions = activities.map((activity) => activity.shortDescription);
 
     let allParkActivities = {};
-    const imgUrl = activities[0].images[0].crops[0].url;
 
-    for (const activity of activities) {
-        isValid = await isURLValid(imgUrl);
-    }
-    if (isValid) {
-    
-        const altText = activities[0].images[0].altText;
-        const imgCaption = activities[0].images[0].caption;
-
-        activityNames.forEach((name, index) => {
-            const description = activityDescriptions[index];
-            allParkActivities[name] = {
-                activityDescription: description,
-                url: imgUrl,
-                caption: imgCaption,
-                alt: altText
-            };
-        });
-    }
-    else {
-        activityNames.forEach((name, index) => {
-            const description = activityDescriptions[index];
-            allParkActivities[name] = {
-                activityDescription: description,
-                url: null
-            };
-        });
-    }
+    activityNames.forEach((name, index) => {
+        const description = activityDescriptions[index];
+        allParkActivities[name] = description;
+    });
     return allParkActivities;
 }
 
 
-
-function renderParkActivities(allParkActivities, isValid) {
+function renderParkActivities(allParkActivities) {
 
     const parentElement = document.querySelector('.activitiesList');
     let id = 1;
@@ -153,30 +128,15 @@ function renderParkActivities(allParkActivities, isValid) {
    
         // assign description to a parapgraph element
         const paragraph = document.createElement('p');
-        paragraph.textContent = description.activityDescription;
+        paragraph.textContent = description;
         paragraph.setAttribute('class', 'parkActivityDescription');
 
         section.appendChild(listItem);
-
-        if (isValid) {
-            // will encompass the park activity image 
-            const picture = document.createElement('picture');
-
-            // assign url to an img element w/a classname
-            // and an alt caption
-            const image = document.createElement('img');
-            image.setAttribute('class', 'parkActivity-img');
-            image.setAttribute('src', `${description.firstUrl}`);
-            image.setAttribute('alt', `${description.alt}`);
-
-            picture.appendChild(image);
-            section.appendChild(picture);
-        }
         section.appendChild(paragraph);
         parentElement.appendChild(section);
     }
-
 }
+
 
 function addToVisitList(park) {
 
